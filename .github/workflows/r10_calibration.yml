@@ -133,7 +133,7 @@ jobs:
           git config --global user.name "Team2 Calibration Bot"
           git config --global user.email "bot@team2.financial"
 
-          git add docs/r10/calibration_log_${WEEK}.md docs/r10/calibration_result_${WEEK}.json docs/r10/scores/
+          git add docs/r10/calibration_log_${WEEK}.md docs/r10/calibration_result_${WEEK}.json docs/r10/scores
 
           if git diff --staged --quiet; then
             echo "No calibration changes detected."
