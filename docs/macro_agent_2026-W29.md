@@ -1,6 +1,6 @@
 # R4 Macro Agent Report — 2026-W29
 
-**As of (SGT):** 2026-07-15  
+**As of (SGT):** 2026-07-18  
 **Target period:** 2026-07-13 to 2026-07-18  
 **Automated schedule:** Saturday  
 **Method:** Free/public data + headline collection + transparent rules; no LLM API.
@@ -49,7 +49,7 @@ Times are converted to Singapore time. Official U.S. calendars are preferred; pu
 |---|---:|---:|---:|
 | CPI-U YoY | 2026-06 | 3.53% | 4.25% |
 | Unemployment rate | 2026-06 | 4.20% | N/A |
-| Initial jobless claims (SA) | 2026-07-04 | 215000 | N/A |
+| Initial jobless claims (SA) | 2026-07-11 | 208000 | N/A |
 
 ### U.S. Treasury Yields
 
@@ -58,36 +58,39 @@ Times are converted to Singapore time. Official U.S. calendars are preferred; pu
 | 2026-07-10 | 4.21% | 4.56% | 5.06% |
 | 2026-07-13 | 4.26% | 4.62% | 5.10% |
 | 2026-07-14 | 4.18% | 4.58% | 5.08% |
+| 2026-07-15 | 4.13% | 4.55% | 5.08% |
+| 2026-07-16 | 4.16% | 4.57% | 5.09% |
+| 2026-07-17 | 4.18% | 4.55% | 5.06% |
 
-Week-to-date change: 2Y **-3.00 bps**, 10Y **+2.00 bps**, 30Y **+2.00 bps**.
+Week-to-date change: 2Y **-3.00 bps**, 10Y **-1.00 bps**, 30Y **+0.00 bps**.
 
 ### Cross-Asset Performance
 
 | Asset | Ticker | Latest date | Latest close | Weekly return |
 |---|---:|---:|---:|---:|
-| SPX | ^GSPC | 2026-07-14 | 7543.5898 | -0.42% |
-| NDX | ^NDX | 2026-07-14 | 29586.2871 | -0.80% |
-| IWM | IWM | 2026-07-14 | 294.5100 | -0.50% |
-| VIX | ^VIX | 2026-07-14 | 16.5000 | +9.78% |
-| WTI | CL=F | 2026-07-14 | 80.2100 | +12.32% |
-| BRENT | BZ=F | 2026-07-14 | 85.9200 | +13.04% |
-| DXY | DX-Y.NYB | 2026-07-14 | 100.7640 | -0.20% |
+| SPX | ^GSPC | 2026-07-17 | 7457.6899 | -1.55% |
+| NDX | ^NDX | 2026-07-17 | 28592.6602 | -4.13% |
+| IWM | IWM | 2026-07-17 | 294.0400 | -0.66% |
+| VIX | ^VIX | 2026-07-17 | 18.7700 | +24.88% |
+| WTI | CL=F | 2026-07-17 | 82.4900 | +15.52% |
+| BRENT | BZ=F | 2026-07-17 | 88.1000 | +15.91% |
+| DXY | DX-Y.NYB | 2026-07-17 | 100.7500 | -0.22% |
 
 ## All 11 S&P Sector ETFs
 
 | ETF | Sector | Weekly return | Rule-only label |
 |---|---|---:|---|
-| XLK | Technology | -1.16% | Bearish momentum |
-| XLV | Health Care | -1.59% | Bearish momentum |
-| XLF | Financials | +0.84% | Neutral momentum |
-| XLY | Consumer Discretionary | -1.14% | Bearish momentum |
-| XLC | Communication Services | -0.17% | Neutral momentum |
-| XLI | Industrials | -0.81% | Neutral momentum |
-| XLP | Consumer Staples | -0.83% | Neutral momentum |
-| XLE | Energy | +3.40% | Bullish momentum |
-| XLB | Materials | -0.49% | Neutral momentum |
-| XLRE | Real Estate | +0.07% | Neutral momentum |
-| XLU | Utilities | +0.62% | Neutral momentum |
+| XLK | Technology | -5.48% | Bearish momentum |
+| XLV | Health Care | +0.16% | Neutral momentum |
+| XLF | Financials | +0.99% | Neutral momentum |
+| XLY | Consumer Discretionary | -1.54% | Bearish momentum |
+| XLC | Communication Services | -0.89% | Neutral momentum |
+| XLI | Industrials | -1.38% | Bearish momentum |
+| XLP | Consumer Staples | +1.27% | Bullish momentum |
+| XLE | Energy | +4.72% | Bullish momentum |
+| XLB | Materials | -0.71% | Neutral momentum |
+| XLRE | Real Estate | +2.18% | Bullish momentum |
+| XLU | Utilities | -0.53% | Neutral momentum |
 
 ## Rule-Based Factors
 
@@ -106,44 +109,44 @@ Week-to-date change: 2Y **-3.00 bps**, 10Y **+2.00 bps**, 30Y **+2.00 bps**.
 
 These are headline-level leads only. A headline is not evidence of the article's full meaning.
 
-- Geopolitical: 14 headline(s) require human review.
-- Inflation: 12 headline(s) require human review.
-- Labor: 1 headline(s) require human review.
+- Geopolitical: 10 headline(s) require human review.
+- Inflation: 10 headline(s) require human review.
+- Labor: 2 headline(s) require human review.
 - Monetary Policy: 16 headline(s) require human review.
-- Oil Energy: 7 headline(s) require human review.
+- Oil Energy: 6 headline(s) require human review.
 
 | Published SGT | Categories | Publisher | Headline |
 |---|---|---|---|
-| 2026-07-15T05:13+08:00 | inflation, oil_energy, geopolitical | Reuters | [Stocks gain on softer inflation, bank results while oil rises on US-Iran hostilities - Reuters](https://news.google.com/rss/articles/CBMigwFBVV95cUxPdWRaMVFPRFNSMDhQQ1dQT09aWlhsdzdhVGVFcGUzblZreE9kSms3eXc3ZjRlbVhvdUtFRW5IQ3ZSSE42bnhoTGxIaVlwbVVQR0tLUE0yY1N3NTJ2Qko2S01pNHREcW5CbmpweXpORmVRRzdCR0RDcTRjeG9oS2tqR2hIWQ?oc=5) |
+| 2026-07-17T07:00+08:00 | monetary_policy | Federal Reserve speeches | [Jefferson, Navigating Economic Shocks: A Monetary Policymaker’s Perspective](https://www.federalreserve.gov/newsevents/speech/jefferson20260716a.htm) |
+| 2026-07-17T02:00+08:00 | monetary_policy | Federal Reserve press releases | [Agencies issue joint statement on handling of highly sensitive information during bank examinations](https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260716a.htm) |
+| 2026-07-16T23:00+08:00 | monetary_policy | Federal Reserve press releases | [Federal Reserve Board issues enforcement action with former chief lending officer of Heritage State Bank](https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260716a.htm) |
+| 2026-07-16T03:19+08:00 | monetary_policy, inflation, geopolitical | AP News | [Fed chair Warsh sidesteps Senate questions on inflation, AI, contact with Trump - AP News](https://news.google.com/rss/articles/CBMiogFBVV95cUxNRzNjSlFQVklDSTRxZWZGWWJ3SHRuRlJBVVZwLTMwUWt2Um9Wa0xUY25pU1ZldGN3WGdLMnJ5bmc1c3UyNzlWQjZYRVN1TjlNTXUtMXRIZXhfM2hXbkZaR0tkMWZtSE44RVFmT0JFaXRobUdVbzYwNFhadkhMYXR2czlYM1ROdEV5UDNDbXRoM1FCMFd0QnBVUFBJTElIbWNSNHc?oc=5) |
+| 2026-07-16T01:00+08:00 | monetary_policy | Federal Reserve speeches | [Cook, Economic Outlook](https://www.federalreserve.gov/newsevents/speech/cook20260715a.htm) |
 | 2026-07-15T02:55+08:00 | monetary_policy | Federal Reserve speeches | [Bowman, Responsible Innovation and Financial Inclusion](https://www.federalreserve.gov/newsevents/speech/bowman20260714a.htm) |
 | 2026-07-15T02:00+08:00 | monetary_policy | Federal Reserve press releases | [Minutes of the Board's discount rate meetings on June 8 and June 17, 2026](https://www.federalreserve.gov/newsevents/pressreleases/monetary20260714a.htm) |
 | 2026-07-15T01:47+08:00 | monetary_policy, inflation, geopolitical | AP News | [Warsh says Fed has ‘no tolerance’ for high inflation but provides no hints on next move - AP News](https://news.google.com/rss/articles/CBMilgFBVV95cUxOcE5VWkJ4VDlOdXE4OFNrTmFhdHdNMFFWMm1BTW45MXpvRGtoYlh3MlZoOHJFeFpCRnV0dGlrZ3BlRTdCc3dIb0xvVUtVN3hrWFc4cWdDY2puWGpHbDg4VFB2dmFYcWx3Qnc0ZEZrZFZKN3NwdUFQYXVaa09GUURwVEVhSFp4UFVhNDlQNGpXQnNiUm8wVEE?oc=5) |
 | 2026-07-15T00:40+08:00 | monetary_policy | Federal Reserve speeches | [Barr, Will Artificial Intelligence Broadly Raise Living Standards or Drive Income and Wealth Inequality?](https://www.federalreserve.gov/newsevents/speech/barr20260714a.htm) |
 | 2026-07-14T00:30+08:00 | monetary_policy | Federal Reserve speeches | [Waller, Monetary Policy at a Crossroads](https://www.federalreserve.gov/newsevents/speech/waller20260713a.htm) |
 | 2026-07-13T17:25+08:00 | monetary_policy | Federal Reserve speeches | [Bowman, Modernizing Financial Regulation](https://www.federalreserve.gov/newsevents/speech/bowman20260713a.htm) |
-| 2026-07-10T03:00+08:00 | monetary_policy | Federal Reserve press releases | [Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy](https://www.federalreserve.gov/newsevents/pressreleases/monetary20260709a.htm) |
-| 2026-07-09T23:00+08:00 | monetary_policy | Federal Reserve press releases | [Federal Reserve Board issues enforcement action with TS Banking Group, Inc. and TS Contrarian Bancshares, Inc.](https://www.federalreserve.gov/newsevents/pressreleases/enforcement20260709a.htm) |
-| 2026-07-09T02:00+08:00 | monetary_policy | Federal Reserve press releases | [Minutes of the Federal Open Market Committee, June 16-17, 2026](https://www.federalreserve.gov/newsevents/pressreleases/monetary20260708a.htm) |
-| 2026-07-08T03:00+08:00 | monetary_policy | Federal Reserve press releases | [Federal Reserve Board requests comment on a proposal to amend its requirements for banks to maintain anti-money laundering programs](https://www.federalreserve.gov/newsevents/pressreleases/bcreg20260707a.htm) |
-| 2026-07-14T06:26+08:00 | monetary_policy, geopolitical | PBS | [WATCH LIVE: Fed chair Kevin Warsh testifies on monetary policy in House hearing - PBS](https://news.google.com/rss/articles/CBMivAFBVV95cUxOYlotT0JwOFhmNUVucnU4STkwV01PM002U1ByNlM2cGd2a1UxQVpoZWFhVlpHTkwydUp6Sno2aUt1dlFtTDJQR2YtRm9PeHVuRWxURmhHSTcwU3ZBcjFOZjltS091VUE4ODAwcGJIOWpuX3pVT3FIemkwZjhDUzVVNVFVeXdWV1VDV0xMejE2d1VwN3lURTJJZmFKZTVFa2xJWm9QVVZaQjlPcF93LUVYc3ZnLUZPRHhSeGY3U9IBvAFBVV95cUxOYlotT0JwOFhmNUVucnU4STkwV01PM002U1ByNlM2cGd2a1UxQVpoZWFhVlpHTkwydUp6Sno2aUt1dlFtTDJQR2YtRm9PeHVuRWxURmhHSTcwU3ZBcjFOZjltS091VUE4ODAwcGJIOWpuX3pVT3FIemkwZjhDUzVVNVFVeXdWV1VDV0xMejE2d1VwN3lURTJJZmFKZTVFa2xJWm9QVVZaQjlPcF93LUVYc3ZnLUZPRHhSeGY3Uw?oc=5) |
-| 2026-07-14T04:19+08:00 | oil_energy, geopolitical | AP News | [Oil prices jump following the latest fighting in the Middle East, while AI stocks sink - AP News](https://news.google.com/rss/articles/CBMikgFBVV95cUxPcHZ0YWpGZjBZakNRRmRveklzX1hRUklIWUc2MzVoWE51Z1Bjc0JFU05vd2tGVWhaSVVVSmFvbHU3QWJZcEs0R2dkRjFxcG9WaGMtWFo2SmhqTTVjSDNFVFk5Zl8xcmdiaTFHUmM5cWU0RzNDeDU2TGM4RWJJMjg3Y2lYeEJBWkdqeXFWUjg0eWpNZw?oc=5) |
+| 2026-07-17T13:15+08:00 | inflation, geopolitical | CNBC | [Gold heads for biggest weekly loss in six as Middle East war fans inflation worries - CNBC](https://news.google.com/rss/articles/CBMitwFBVV95cUxPWkJ0Qk5FdldYN3BWdVRQM21wTlRwTnJHc3BGTUJpTUVNemNwSkVKT1NRSmxDaVhmaVlFSnJHU2lSM3owUGRpdVl0X0VJYWZINmNVY0xLTUp6UWZHVHdidTlrblBJVTlrNmZTNkVwRzZJLTJfTmNzLUwyVzYzWktWbHJsSG9rcnRwbHZpazBIUWZ0YmNWMUlTajJBbm9pWE1yQnFkS3hWbnNCLVlnakRVMFNoWGpPZDDSAbwBQVVfeXFMUFRUWm5sV1JvSmVYelRmRFQySUx1NW1saENKMUpMSm90NWh3NkFjd05lMzdRbE1TamdkM2VkSVZLRFFwYTlla2U0R0E4akZkcXpZQzl6M0hlMkllUmNlWFpPTFc0WThSY3dnWTJPejFGZ25pT1ZpakVoNDIxX0czQUtJbGNsRHZEbm9IREE3REdBcnVIMGh3eHZHdW1OTktOc0FUY1hHS2c3b01LWlFTeU96aURzbjRqQmN4SVQ?oc=5) |
+| 2026-07-16T22:41+08:00 | monetary_policy, labor | Yahoo Finance | [Retail Sales, Jobless Claims, Philly Fed & Q2 Earnings Positive - Yahoo Finance](https://news.google.com/rss/articles/CBMilwFBVV95cUxNUzh6U2p4TURiNDZBSlY0dVZRamhmQUpVLWpuSGhZVU12MGRkQXY5R1ZNX1BGNmQydFZOTTE3TmVEaTJUc0V1ZEk4WG5DSFJXMUF0d3E3LTZvTDVHNzVUQUtmRFg4bHRYa3ZGOFdYdkZVaW9VLUNKTFk3bjg0UWhORnFKYzYySWJURE84d0tHSUU1YjJGMEU0?oc=5) |
+| 2026-07-16T18:11+08:00 | monetary_policy, oil_energy | Yahoo Finance | [Gold declines further as rising oil prices cloud the Federal Reserve outlook - Yahoo Finance](https://news.google.com/rss/articles/CBMipAFBVV95cUxPR2c1ZzRrMmhNQ2d3bGZsRVVDZUEzZGtpbW1kekhHaUJneGJJLUNJRVA1TGFUQ1NkMnh4clBuSG1zTFY2N3pSU2FRcWpmSEs2aEtFQ0tQQUJtTVJKN1puS0cwTnNqVnIxMWd5b2p0clROZFBvaE1qQlNfaUlnY2RoM09OcnV4Wll0UmtFT1hwMHNkV01iMnhubUkxUWZIR3ZwaE9hQQ?oc=5) |
+| 2026-07-16T12:31+08:00 | inflation, geopolitical | Reuters | [Stocks rise after soft US inflation reading with Middle East in focus - Reuters](https://news.google.com/rss/articles/CBMigwFBVV95cUxQcEtOY19xRkd1VVhIYWg3cmFaU1BOUXRpRDhzaXN6UzFSa2Z2c3cwOE5YYjV5bXRwQVhiX2VhTGE1d1dvR2dQS3FnQm56VkZwOE00WER6bWoyM3U5aWtjd0xjUENON1dXcWVlLW85TGhZazVKY3BZbmRQT19IaE9TMm43Yw?oc=5) |
+| 2026-07-16T11:15+08:00 | monetary_policy, inflation | AP News | [South Korea’s central bank hikes rate for 1st time since 2023 to curb inflation, debt - AP News](https://news.google.com/rss/articles/CBMiqAFBVV95cUxPeHRGYW4zUTZwXzA2V3h2RWc0ckFDSVF2dVoyNWUyZzVPdkZzZmIwbmVCdndFOUg1ZU1hWnJLMFlmdDV1WTFTN2ZTR3NTc1BiUTZkZE5nVFhsV2J6eXctT21FLTJUN3R5QXE1a0F3OWlEV2RiNnluMVFMM3ZISHZoYzhVaTdSUmxNOGhfUE9jSEJ1bEpjRlRnUGNoazlSSG5sZFhjbDlRZWk?oc=5) |
+| 2026-07-16T00:54+08:00 | inflation, oil_energy | AP News | [US producer prices drop 0.3% from May to June on lower energy prices, but outlook is cloudy - AP News](https://news.google.com/rss/articles/CBMimwFBVV95cUxNb3dtWDg0cjIxZFg0TjJ0Nnh6MXptdzJMek41bnNwMEYyRkJpeDJzNW1UTklpVkpCVmE3ZjNWeXljb1I3OHVHeG5uRUtYb1VMeWpwNVhFb3RwaXJ5RXgtMGZSeklsNUZFbUtBREVrYXltNGI5aS1ta3VidmlQaXZLWGRKLXpZU1p6a25iWVBXLWEzMGhidVNKdkx3Zw?oc=5) |
+| 2026-07-15T20:46+08:00 | monetary_policy, inflation | CNBC | [New York Fed President Williams says inflation has peaked, rates 'well positioned' - CNBC](https://news.google.com/rss/articles/CBMitwFBVV95cUxNM3dqOXJmVElBZFdhYzJtX29fWm5tSXppQXVnXzBLb243TmpoX2hqSlZJcjRoUmVsb216YTBvdzduV3hZYmV1SnNIdWJPQjgybTROa000Y0FvYndXbVB6OXdqR2FvT3h0SGV0ZWNSWUZaQ1NLSEJEVjBpSFJBYmx6N3NhSVFCZTR1cmtLamZ5b3lHTkhaa2tjc1o2cTNfS3E5WE5LRDJHME5FbmllQzlQQjhZYkJKNFXSAbwBQVVfeXFMT0M3ZmtsUk82V3prUU9hMXo1Ti1VS3NvRXNMRFRPNXNWTkhidDJKVGNxZl90bVloVWNzQmwzR3UxYnluWENGX0dPX3RNYmZqNzhqUXN0bTBZcmU3eGwyQ1JOWTM0SGx6ZlJwbWpsUE5tel8xTTY3OW45bHlFUlRycDliVHo0OEdmRUFTb09yQXh2WVUzbUlUdWhDOWlGcXZ5cmNwQ1NkTFgxbUVXUXprT2dTeUZ0a2tLaGUtb2g?oc=5) |
+| 2026-07-15T20:36+08:00 | inflation, oil_energy | Yahoo Finance | [Inflation Declines in June as Oil Prices Ease: 5 Discretionary Picks - Yahoo Finance](https://news.google.com/rss/articles/CBMilwFBVV95cUxQOU1pVFNGRFBPZjlITFpHbUY5SDJUSnRjSGY1THVPcC1HNTFnN05HWTc5Ny1YeXVKbnp3X3ZEUmJLQnJRQ3VyX2MtZFRseUtiWndCbm1ubTFJX2pDSTZIZXRCZ2xSSHRVYUt4TTB5cFZCaG5YWC14SmtmYmFGcEhJekE0Sy1EWE5JUU5iYWJuWjEwdUdWOGpJ?oc=5) |
+| 2026-07-13T20:09+08:00 | inflation, oil_energy | Yahoo Finance | [AI boom replaces oil as key inflation risk, says Barclays - Yahoo Finance](https://news.google.com/rss/articles/CBMikwFBVV95cUxQZFdMcEcweTh6SGtEV1FSVHgzTldXNVdFeXlYMno4VS1xTHY3X19OY1p1Ml9YWG02SXRhQWFHbTRXVTQ3YlpVejNfdjREeFBnY2N4YWg2NHltTzVQT1Y2LVZ1YkktcGk5cWswZ0twQjhBakp6ek9CVVUydjluSTZKRHBKSGNneFR3QnNJWXJ5OTdXazg?oc=5) |
 | 2026-07-11T23:32+08:00 | monetary_policy, inflation | AP News | [America In Focus: Fed officials divided on US inflation views; US home prices hit all-time high - AP News](https://news.google.com/rss/articles/CBMiowFBVV95cUxNYmRkSnA4a1VCa3Fpb1FiQ1ZseFd0dW5VdVMwajdWLV91MUdtb3YydktCMEdwRk5jeGo0SnhkWlgtT281NjdibVhjUko5alZ6YmZrRVIyVjBSeTYyclRYNkFKVDY1ekNqTlZlQ0tweWYxeHdfa0c3WHoxNFM5b3FEM1UzR1RNWVdsU0p2NWwyZDRDaDZiRHJpVlZVekpjVGViQXc0?oc=5) |
-| 2026-07-10T13:39+08:00 | inflation, oil_energy | Reuters | [Investors get inflation 'wake-up call' as Trump fires up oil prices - Reuters](https://news.google.com/rss/articles/CBMijAFBVV95cUxNOUlsWGRCWlNlNDNKOWRucV85aUlzWVRwaUpkanJjbGltWURSSWlFbWUwaFpwX0JjbXRfa2Z0cHk4WXJ2QlJiSDNOeG9PcXphYUNnRDZTQmdkTks4MDVqV3lRODZrVE1oSU02c0h5RkItN1FtMG45cDVwQUoyYko0elhIaGoyY3Y1RFhERA?oc=5) |
-| 2026-07-10T06:47+08:00 | labor, geopolitical | Reuters | [Dollar slips as labor market remains stable, US-Iran tensions flare - Reuters](https://news.google.com/rss/articles/CBMivwFBVV95cUxPcEtZMUh4bWpMRVNDRm42NVlyN2dsWExFZGsyNnlFa3FRelRxT1RlcVJGRkRYODBsa3JfbkxoTWhoUHVpWWxHUWx4dW1ERDlwMlc1b0pzSE9rS3J4OU9yeUx1cHNIUm9kcW9xNjhFTl9oaXdJSFVqWHpWVkpOM3VHTnphOHo1WXBmNXFodHZ5TVVhXzE4ZFFsN2JKQmNGbE93ejhjY2VRM0JwNkNaOE1oUkdtYXZZYUZ4M3JUMFpRdw?oc=5) |
-| 2026-07-09T04:47+08:00 | oil_energy, geopolitical | AP News | [Oil prices rise, and stocks drop worldwide after Trump says ceasefire with Iran is ‘over’ - AP News](https://news.google.com/rss/articles/CBMijAFBVV95cUxQM255ZEIteU82bFZRNFpWYW9fTTlFaXdIajdXbjBYNmEzQTZBNUdXYjNjTGxTRm02S0NUQTBDa2lmYndWOV9sN3JqVFFvemRIaXhXTXFEdlFiVDB3cnc2b09hVF9Pd0dBVWhLMWpsV0UzV0NGQ194SFNVRjZBdGJRbExDN3dyVWROTFJscg?oc=5) |
-| 2026-07-09T03:08+08:00 | monetary_policy, inflation | AP News | [Fed minutes: Officials deeply divided over future path of US inflation - AP News](https://news.google.com/rss/articles/CBMilgFBVV95cUxQMHk1X2dxdlJMSVBaYnZuTnJBSGFfYjktN2ZSa2N3VkZVUDd6dU9LZl9QOU9BMko5MDltYkh6ZDhKMlJpZGt0R0k5SXN0Rjd4WUhTZFdqaUk0UG0tVFZBLW1xZjMzTkhEOFZxVEk0RVFpajhjMTloWVZZeXhsYVdRM2pRV2Q4b1JNTTdGUXNZRnFZTGhJdVE?oc=5) |
-| 2026-07-15T09:29+08:00 | geopolitical | AP News | [US reimposes its blockade on Iran after Tehran’s attacks on ships in the Strait of Hormuz - AP News](https://news.google.com/rss/articles/CBMinwFBVV95cUxNWnBwMkRnYlE0eWdLanFlS1JwcWNwQW83YkJMbFJXdzZYRGFiZUtib0UzM1hRVFozX3RCTmwxUVQzV2RvNTU2ZE56RjZOYjRQbzF5SkJ1Y0RTQnktRmg1NjliM2pMcy1kY045dVQ4bk9sYkNDU2N6WTFnNV9NNjZMa21IYkxLX3NmWDF2NXMzUmRtRkN0eGlwRmx6SHdlakU?oc=5) |
-| 2026-07-15T06:50+08:00 | geopolitical | AP News | [Writers Guild of America seeks to block Paramount's buyout of Warner in latest merger challenge - AP News](https://news.google.com/rss/articles/CBMinwFBVV95cUxPRGxPUjRxdVp1WWdERTN6SHRWUVFhdG4zanRSdnNYdDhHSzVIczlXc0p5QUl3NnRtVG5GWWxuSHo2YXVPR3JSSnYtWjBIUjR2N3gwU0NOMV81M3IyckNoMmR4OTh6N1Vta1ZxWkVoWGF1TV8yR2NjX1owT3NfWkpBNnJVTHhyNlk3TFFQd2V3N1FXUWtUclFEUnVHYnpkdE0?oc=5) |
-| 2026-07-15T04:52+08:00 | inflation | AP News | [US stocks rise after data shows slowing inflation, even as IBM plunges - AP News](https://news.google.com/rss/articles/CBMilwFBVV95cUxNOEF6RnpLaF9jU0tsSVNGdDZ4SW41OGZhMlplaTl3cExkUUJlS1g5Y2JveDRTbWFwa2RRWXlEdDgwTE9HNzc2aXVrdEltZ1JVcHhCdW5kd2JxOTF5MTNTb1l6ZDZIXzUxVnZaWVRjbTMtWTlRZjRCV2xORzcxYi1wNzRPdDN4cnlicno2aUhZdS1mN2R3X0F3?oc=5) |
-| 2026-07-15T04:51+08:00 | geopolitical | AP News | [Mahmoud Khalil files suit alleging a ‘public-private’ conspiracy to target Israel’s critics - AP News](https://news.google.com/rss/articles/CBMirAFBVV95cUxOLXM0djZrOEdJMndKeVpQV1F5SlJFaFZmTXVRTnFmNDJ5VmRZOHNBNXlZemMyTTJUTFFubkRXdzJPS1dnTG1fUmtVRUFRTmNWTUp1bXJ6U2hBbVJ3bDd4bjlWbW9sS0dldnpqYlBoS1h3RzRFX3dlOHNjb3hvZW93UE1ZRWlIMmNjbnZnanQtc3huTDJ0dmV5Vmp0QlI2OVNhbzBud2NXcjNabzNy?oc=5) |
-| 2026-07-15T04:32+08:00 | inflation | Yahoo Finance | [Nasdaq rebounds as cooling US inflation weighs on dollar - Yahoo Finance](https://news.google.com/rss/articles/CBMijAFBVV95cUxOX3dfVTR3ZktxVkhLeUxaX293S0Fwc3Z2bExHaHNHcFdRbG1fY1RCSzdwakFnNHRPdDBxRzFyNkcxQlh5Rld3eTBrSzh2TnRRTFNQa0x2NUJ6S1hmVFhoR0tiOVNpc05ERGlzcTE1Rks0OFIzc0Q3YXZEQUlpT2xYd0JRdmxYSUc0U0RMWA?oc=5) |
-| 2026-07-15T03:13+08:00 | inflation | AP News | [Inflation cools more than expected in June as gas costs fall, underlying prices ease - AP News](https://news.google.com/rss/articles/CBMilgFBVV95cUxOZ0ZNbFlHYm1IRUhtaVZuak9fcUVtc0UySC1qWnN6Snk2Rzl1NEFQWU9DblNXVGNVak8wNDNCVEwzRFUtc0xVM0xWWUFEMGFWSzlzcDdJYVQ5U0FxMHkxVDZ6YnpJNmNvdWhJRFlsMWpXYUoyRVd3SVVQS0xuNEdiMWdERkh3VDhHMXNjNDV4c0xURVBfOHc?oc=5) |
-| 2026-07-15T02:42+08:00 | monetary_policy, inflation, oil_energy, geopolitical | Baltimore Sun | [Cooling inflation eases pressure on Fed as oil prices jump when US, Iran trade strikes - Baltimore Sun](https://news.google.com/rss/articles/CBMixAFBVV95cUxOSEJ5bFN4R19jWXZOb0xzUWF3aEdTZmVWcmNibDk5Ql9KTUQtN2pNQzZ6VHlJRzc2Q2dCRVM1dTFfM3lINWpDeHlNOWhqeVlkRWhING9UWWhrWDB4blBlUlRIOTJTQU1RQnBmeE1KWGRYUU1wNWhsVXZud1l1VkFJdzNQczFkUV9nUU9YeFF2NFdoTkF5UWVsM2dOMjFPbnN2Z1F0bEdWSEFyRDNlWEZzRENFd2dPaGJqcC0xOUpGNUxVNHB1?oc=5) |
-| 2026-07-15T02:27+08:00 | geopolitical | AP News | [Federal judge awards $314 million to 3 Americans held and allegedly tortured in Venezuela - AP News](https://news.google.com/rss/articles/CBMioAFBVV95cUxNaTNWbXdzSU9VTGFMRzRqNkpWZFRwY2lSNS05UHJOdG94N2lJbFlIYWtycjZpZ2VHRW9CcFVHYkZKTF81QUZJeW5VTkJDWVhtVTlrQjVleVVvaXZvZDRJS0VpQkNKdW80MlNSWWJpVmFBNUxhci0yQnBuZXhnekRjMzN0eXZMRE9CZmFJY3pQSU4xOUZqTWxKZm9HT0F0SGR3?oc=5) |
-| 2026-07-15T01:19+08:00 | monetary_policy, inflation, oil_energy, geopolitical | WBFF | [Cooling inflation eases pressure on Fed as oil prices jump as US and Iran trade strikes - WBFF](https://news.google.com/rss/articles/CBMi4gJBVV95cUxNd2pDUHBUVFJXMzhyOE9VMFVaRnVac1FDT1hIRHh5WXlUOHBmTk90Q3NtYXVQMkFUN3RrU25XT0hOMmF3QVdsU3I2OVFmTkdveWlQTjFBRXZMQjZ5Qi1oTmJjc1dGTzVxWDhQbWgtTWxKVlZWcTNjeTVhS0NCSjNQUUVwdDF3MU5hakFfSjhHNXJvVHZuakptTm8wc0pHNXBsbzZJcnZGUUdIXzdCRmhNQUtrVklpcmhzTGZKMTVqVkkwcGUwd0pzdTBIYzlmMnpMRXgwZWxvRzUzSUk2ZS12WlhlUGFUNV9hZkJUM3RnLVVKRm84aGpDdUZzMUJrWHN5MElPNm9RNU1vN2poaUd6c2xUMXlZNFpkOHp5bGlMWGxJZmxUWHNlUFI0dlpyRFlkeklvOUQzUEZnc2s3YzBvanJFdERPYlJucEpPUTVGVXM4NFgzQUF5Q01CcXBlWUVVcEE?oc=5) |
-| 2026-07-15T00:27+08:00 | monetary_policy, inflation, oil_energy, geopolitical | Hindustan Times | [Why cooling US inflation eases pressure on the Fed despite oil prices jumping after Iran strikes \| Hindustan Times - Hindustan Times](https://news.google.com/rss/articles/CBMi-wFBVV95cUxNak0zZXhqOW5zNXZEVnZ2d0o1djdGc1I5SjM0cWdrOHJFck9IWm5zejQzd1RLaWw3X0ZqRXd3VHA4Z2RPbm9aTGhxbmxPZjRIM0M3Ylo0YlJTSVNjNVNjNDIzRGtvLUtUSTR2TDZuWW5WMUFXVDE4MHBZNThjUElXb1lIbDRURi1oY3hnQmdGeUdCeC03NDItazIxWG53R1FRbTZqNk51MG5nSnhjSVlwbkRrOHQ5TDlZRmxDRWlrMV9qb01kd3dtNWt0LVNBeTdxV21RZjYzMzJrQlFiTU1TZVI1bTlrRG9IelJxNk43bk5yZU9IZUgwQWxFNNIBgAJBVV95cUxQdEhURmFRZUMyaGpIaHNfbXNjVFRkV0ZSU0xoZ002SS16dFJobVRYTl9SUUJyTHE0bHk4Z21YcmxWTmdES0JrNUZnanBHUEZQR0RuQ3k0YUgwTVhmOG96ejhwQzljSXVtYVozYmhGeWR4UDF1VWtXMkZxMWdjZmFjY2lHVW85Y0dsR3BzRlA3aVFOQUlOaXlqWmNwbld1QzFoLWRudWpGNzRldFdyWElaR1VoYTZ0bkV5dHFYT1NSUEVVTTZuNUd4VzhzcUp0bTVnY1g1OHlmV1J4RXlTTFdCQ1N1djJWQkQ3Q0pUTWlfRVBFYlN3RDBaLU1wYnNqTVpU?oc=5) |
-| 2026-07-14T20:31+08:00 | inflation | Financial Times | [US inflation fell more than expected to 3.5% in June as petrol prices tumbled - Financial Times](https://news.google.com/rss/articles/CBMihAFBVV95cUxQMmFLWHRoUE9ORGZ2eHNRSWlWSU5fejViWlBjT1NWcndmX2ZRUXQxd1lQNWU5WGlLbjI5WmpYVnJUQk1icWJUdXV1NEUtck15cDgtWk5sZDVic01NRzRNbWpzbDBxWndhRDlENnphU3ZuOXlWUWgydEc1WVlzLVlVR1BEMVA?oc=5) |
-| 2026-07-14T12:10+08:00 | geopolitical | AP News | [US attacks Iran and Tehran retaliates across the Middle East as both vie for control of strait - AP News](https://news.google.com/rss/articles/CBMinwFBVV95cUxNQXlDMHpMczFma2paOVJQMzZuZzVNVFZLeS04V0VXUk1zUFBSTGRaelYzaU1fQlg0azEwQ1dQQ2lfV2VmOFBMZ0ZGa0tjSWJGUWVFdDhhUTdCbmpKMy1QRHVOdE5YRnliNmJfVkRKU09zdVhYSm1hQW94MDlUbEp1OXB0ZjIzZlFtYUdZZHBQb2pHT1V5bjZtbVE0QVN3cTg?oc=5) |
+| 2026-07-18T12:51+08:00 | geopolitical | AP News | [US and Iran escalate strikes across Mideast - AP News](https://news.google.com/rss/articles/CBMinwFBVV95cUxPNDdzTHpvMkVtSEIzSklZWnpnSk8wZVE4QVUzOHFBLXl2Smc0eUxaTkNQdi1KLTBtb3piRU5aeDlXcVB3eXRRazRlcXVWaHl4QTFMOUR6S0VwMjlpWGlCd1hwSGgyV3NEd3QycE1CWEZ5VEVpbFdKVEdUSE14MThPUmdoTFFJXzRQTDdBMVZaeDYxam41TWY2VnBhZjU4ME0?oc=5) |
+| 2026-07-18T11:44+08:00 | geopolitical | AP News | [US lets Hong Kong emergency declaration lapse, lifting some sanctions as Trump order stays - AP News](https://news.google.com/rss/articles/CBMingFBVV95cUxNampFOXhtR1UzaFhtSDZYUW04LVpsYXBRcktvYmdFVHBtcm9FWDJWTzVxQlNnaGdHeDFEd1pWdW9QX0FoX01kVGRCYjR5dThBZXF3dWdCZllZUnMwbU5NSW9VQUN6d1VScGJQWC1TaUlVQ3J2Z3g0T0h6al9walYzTnliUXBZbVpRd0RZand4c0VMT250SVhlVFBEQ28wUQ?oc=5) |
+| 2026-07-18T08:07+08:00 | geopolitical | AP News | [US cancels automatic protections for imperiled animals as critics warn of extinctions - AP News](https://news.google.com/rss/articles/CBMimwFBVV95cUxNamFyb3ZPb1RDQmxFdVN3SVRkRjVZcU9Fa1A1V2ZEdlQzZ2dnM0I0WXFLc3I4UjNab0c5Sm1vWWpzelZncnhWb1dNa1RZazJVSXUzRzducXJTWjVKT2JzNldOalktZTBFSmktQnl5d192MHExN0N6d2g0aEtrcUFsa2s5WDNTN2pmNmRzYkVyOG5LZFM3VVZXUzVFRQ?oc=5) |
+| 2026-07-18T04:56+08:00 | oil_energy | AP News | [The sell-off for AI stars worsens, while oil prices keep jumping - AP News](https://news.google.com/rss/articles/CBMimgFBVV95cUxPRjhsV0pGUU1wc3ZYY09ocnNhWDFWMGtwSXhoN3ZaRDEyNG5Eb3JpeWlmeWR4RHUyNmFfNzhSTmEyclZLaW91UFdsN2hUWHF3STczc0xMQnBTeG5QUEs1LTlLTDBMN3UtMHM5ZDdEVGRNR3cxcVdJM3luUEQ2Ry00V2hCdnVyQm1XR1lHdENWVTFEMWF6eFNQUHBR?oc=5) |
+| 2026-07-18T03:45+08:00 | oil_energy | AP News | [US oil firms sign deals with Iraq to develop alternative shipping routes - AP News](https://news.google.com/rss/articles/CBMiigFBVV95cUxQbXI1N1BXdjQzd3Vvd2luWENZVW42VkhrZmNKdW82WFJ5NXFRdnVha2dyTUZ1OFNITDZhRzJGVEdNbHFfclp0dkVDd2JLMGJUY0k1R29KcnhNckNOMjJTaXhISUtnMmJhOU9OTjlKTmQ2NmRlaXl1Y0t5MXFvVVlJQk9GZ3pja2xvUkE?oc=5) |
+| 2026-07-18T03:33+08:00 | geopolitical | AP News | [Iranian strike damages a Kuwait desalination plant, exposing water vulnerability in dry Mideast - AP News](https://news.google.com/rss/articles/CBMiqAFBVV95cUxQRGVJbndDX0t6eVRMcXVhUEtKLVlUYmJZeG5yYWNja0VPdU9nYTRuN25NeVRYcGNhaU5YT1poZW5LN2ZxUHRXaFhOZnp5Y2V6YnpUdWxaWUEyZlMzc2M0c1lIaUxIMmVpMkwza1NUSXAtbkhZNmYyekcxaFJTNmdTckhQamhyNHEyM2JickFyUFNMOVVLM1F5WVFkUlFmdHJIMVd3LWFJTmw?oc=5) |
+| 2026-07-18T03:01+08:00 | labor | AP News | [Mullin pushes states to comply with election demands, echoing Trump's claims about midterm risks - AP News](https://news.google.com/rss/articles/CBMipgFBVV95cUxPM2VQaU9ST1I2NU9GVE03VTdVRXAzV0FfMVV2R0c1aExIcFRoYXY0b1BLU1R5LXFHMFNUVjBRd1R6MmdWWGFCQjhpQnR0MXlvbVZYMEhXVFo0SDNfYjBWMWFBb1lubnRSc1l0WU5iNVpTVTk2dmhOb25MX3VxOG5wZU9PMzgtcF9HaVZfWU5Ra2dnSWFHRGU3NjJKeGlraE4xU2dwcEZ3?oc=5) |
+| 2026-07-17T21:28+08:00 | geopolitical | AP News | [China rejects Trump’s election interference claim as ‘groundless accusations’ - AP News](https://news.google.com/rss/articles/CBMikAFBVV95cUxOUGh5OFRDOFd2ZERZNElwTzl2LUdQVnhiQmZtWjUzRGtfeXdKckNZTTRnSEJCM0hpeVdVZml3RHlPOUgyeEFOa25NVVVpczM0amNjYzV1NmNIc0NGWkNfNDFvcHBzTHpyLUFONG96U0JQUl8zaVNpZTkxX0JmTnQtckVFU3JVMGc0YlAzZG5tNWs?oc=5) |
+| 2026-07-17T17:56+08:00 | geopolitical | AP News | [China warns of reciprocal countermeasures after US shortens foreign journalist visas - AP News](https://news.google.com/rss/articles/CBMipgFBVV95cUxOZDFQa1hqTFZJU1NyWDF6OXl6ekpPRlRYR2lldk0xWjdKUUMxdDI3aFl0ekpiOWhmdW4waGpsdExnMDJOdTlVYnZMWXRaZy1XcThiY194UEZRNG90NDdmbnlLYXQyb1BkRGJ6ZURfdWV3bE1fSUtReERTQm40V2piT255aXdZbDYwUUJmT0R2UlZCQXhwRnd5amdUakZkQTZkZE54eG13?oc=5) |
 
 ## R4 Manual Interpretation Checklist
 
@@ -168,10 +171,10 @@ These are headline-level leads only. A headline is not evidence of the article's
 | Federal Reserve official calendar | ok | 8 key events parsed from 1 month page(s) |
 | DOL weekly claims release cadence | derived | 2 expected Thursday release(s); holiday changes require verification |
 | Free public weekly economic-calendar fallback | ok | 11 key U.S. events parsed; used only to fill official-calendar gaps |
-| Federal Reserve press releases | ok | 5 relevant dated headlines |
-| Federal Reserve speeches | ok | 4 relevant dated headlines |
-| Google News AP-only search | ok | 22 relevant dated headlines |
-| Google News macro search | ok | 88 relevant dated headlines |
+| Federal Reserve press releases | ok | 3 relevant dated headlines |
+| Federal Reserve speeches | ok | 6 relevant dated headlines |
+| Google News AP-only search | ok | 36 relevant dated headlines |
+| Google News macro search | ok | 99 relevant dated headlines |
 | CME FedWatch | skipped | No stable free public FedWatch API; dynamic dashboard remains a manual R4 check. |
 | Trading Economics calendar API | skipped | Reliable API access requires credentials; guest endpoint returns HTTP 410. |
 | Finviz futures performance | replaced | Direct scraping is fragile; market moves use yfinance or the same-week R6 snapshot. |
