@@ -3,6 +3,7 @@ import json
 import re
 from datetime import datetime
 from pathlib import Path
+import csv
 
 
 TARGETS = {
@@ -538,6 +539,23 @@ def generate_markdown(week, scored_items, missing_predictions, missing_actuals, 
     return "\n".join(lines)
 
 
+def write_scores_to_csv(result, week, output_dir):
+    """Write scores to .csv files in output_dir."""
+    csv_folder = output_dir / "scores"
+    csv_folder.mkdir(parents=True, exist_ok=True)
+    for item in result["items_scored"]:
+        target = item["target"]
+        csv_filename = csv_folder / f"{target}.csv"
+        file_exists = csv_filename.is_file()
+        fields = ["week"] + list(item.keys())[2:]  # skip the first two items
+        row = [week] + list(item.values())[2:]
+        with open(csv_filename, "a", newline="") as csv_file:
+            csv_writer = csv.writer(csv_file)
+            if not file_exists:
+                csv_writer.writerow(fields)
+            csv_writer.writerow(row)
+
+
 def main():
     parser = argparse.ArgumentParser(description="R10 calibration automation using prediction and actual files.")
     parser.add_argument("--week", required=True, help="Prediction week to evaluate, e.g. W25")
@@ -556,7 +574,6 @@ def main():
     # Load predictions file
     prediction_text = read_text(prediction_path)
     predictions = parse_predictions(prediction_text)
-    print(predictions)
 
     # Load actuals file
     actual_text = read_text(actual_path)
@@ -599,6 +616,8 @@ def main():
         }
     }
 
+    write_scores_to_csv(result, week, output_dir)
+
     json_name = f"calibration_result_{week}.json"
     md_name = f"calibration_log_{week}.md"
 
@@ -614,6 +633,7 @@ def main():
     print(f"Generated: {json_path}")
     print(f"Generated: {md_path}")
     print(f"Working calibration score: {working_calibration_score}")
+    print(f"Logged scores to {output_dir / 'scores'}")
 
 
 if __name__ == "__main__":
