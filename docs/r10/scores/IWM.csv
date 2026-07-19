@@ -1,0 +1,2 @@
+week,prediction,predicted_direction,predicted_range,confidence_raw,confidence_scoring_bucket,actual_pct,actual_direction,hit,range_result,score,prediction_source
+W28,Up,up,+0.5% to +1.6%,Medium,Medium,-0.66,down,False,Outside range,0,primary_prediction_section
