@@ -82,8 +82,7 @@ def main():
     r5_paths = [
         f"technical_agent-{week}.md",
         f"technical_agent_{week}.md",
-        f"r5_technical_agent/technical_agent-{week}.md",
-        f"technical_agent-W29.md"
+        f"r5_technical_agent/technical_agent-{week}.md"
     ]
     context_r5 = load_upstream_file(r5_paths)
 
