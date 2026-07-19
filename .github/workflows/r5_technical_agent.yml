@@ -1,74 +1,163 @@
 name: Automated Technical Agent
 
 on:
-  # push:
-  #   branches:
-  #     - Week-07
-  # Activates the single-variable override panel on GitHub Web UI
   workflow_dispatch:
     inputs:
       custom_market_week:
-        description: 'Target MARKET week to capture (Leave BLANK for automated current week, e.g., W24)'
+        description: "Target market week, e.g. W29. Leave blank for current ISO week."
         required: false
         type: string
-
-  # Runs every Saturady at 07:00 Singapore
+      custom_market_year:
+        description: "Target market year, e.g. 2026. Leave blank for current UTC year."
+        required: false
+        type: string
   schedule:
-    - cron: '0 23 * * 5'
+    # Saturday 07:00 Singapore/Beijing time (Friday 23:00 UTC)
+    - cron: "0 23 * * 5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: r5-technical-agent-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   audit_and_log:
+    name: Generate and commit R5 outputs
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout Active Repository Branch
-        uses: actions/checkout@v3
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
+          fetch-depth: 0
 
-      - name: Initialize Python Core Environment
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
+          cache: "pip"
 
-      - name: Deploy Script Dependencies
+      - name: Install dependencies
+        shell: bash
         run: |
-          pip install yfinance argparse mplfinance
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install yfinance pandas matplotlib mplfinance
 
-      - name: Resolve Decoupled Execution Week Variables
-        id: resolve_weeks
+      - name: Resolve market week and year
+        shell: bash
         run: |
-          if [ -n "${{ github.event.inputs.custom_market_week }}" ]; then
-            M_WEEK=$(echo "${{ github.event.inputs.custom_market_week }}" | tr '[:lower:]' '[:upper:]')
-            WEEK_NUM=$(echo "$M_WEEK" | tr -cd '0-9')
-            echo "Execution Mode: Manual Override."
+          set -euo pipefail
+
+          RAW_WEEK="${{ github.event.inputs.custom_market_week }}"
+          RAW_YEAR="${{ github.event.inputs.custom_market_year }}"
+
+          if [ -n "$RAW_WEEK" ]; then
+            RAW_WEEK=$(echo "$RAW_WEEK" | tr '[:lower:]' '[:upper:]' | tr -d '[:space:]')
           else
-            WEEK_NUM=$(date +%V)
-            M_WEEK="W${WEEK_NUM}"
-            echo "Execution Mode: Automated Cron Resolution."
+            RAW_WEEK="W$(date -u +%V)"
           fi
 
-          echo "MARKET_WEEK=$M_WEEK" >> $GITHUB_ENV
-
-          echo "Resolved MARKET_WEEK: $M_WEEK"
-
-      - name: Run Dynamic Matrix Market Audit
-        run: |
-          python r5_technical_automation.py --market-week ${{ env.MARKET_WEEK }}
-
-      - name: Secure Ledger Artifacts & Route Commit to Active Branch
-        run: |
-          git config --global user.name "Team2 Data Automation Bot"
-          git config --global user.email "bot@team2.financial"
-
-          git add technical_agent_*.json technical_agent-*.md chart_SPX_*.png chart_NDX_*.png chart_IWM_*.png
-
-          if git diff --staged --quiet; then
-            echo "No data changes detected. Terminating smoothly."
-          else
-            git commit -m "chore(data): automated market ledger alignment [skip ci]"
-            echo "Routing validated payload back to upstream context: ${{ github.ref_name }}"
-            git push origin HEAD:${{ github.ref_name }}
+          if [[ ! "$RAW_WEEK" =~ ^W?[0-9]{1,2}$ ]]; then
+            echo "::error::Invalid market week: $RAW_WEEK. Use W29 or 29."
+            exit 1
           fi
+
+          WEEK_NUMBER="${RAW_WEEK#W}"
+          WEEK_NUMBER=$((10#$WEEK_NUMBER))
+          if [ "$WEEK_NUMBER" -lt 1 ] || [ "$WEEK_NUMBER" -gt 53 ]; then
+            echo "::error::Week number must be between 1 and 53."
+            exit 1
+          fi
+          printf -v MARKET_WEEK "W%02d" "$WEEK_NUMBER"
+
+          if [ -n "$RAW_YEAR" ]; then
+            MARKET_YEAR="$RAW_YEAR"
+          else
+            MARKET_YEAR="$(date -u +%Y)"
+          fi
+
+          if [[ ! "$MARKET_YEAR" =~ ^[0-9]{4}$ ]]; then
+            echo "::error::Invalid market year: $MARKET_YEAR"
+            exit 1
+          fi
+
+          echo "MARKET_WEEK=$MARKET_WEEK" >> "$GITHUB_ENV"
+          echo "MARKET_YEAR=$MARKET_YEAR" >> "$GITHUB_ENV"
+          echo "Resolved target: $MARKET_YEAR-$MARKET_WEEK"
+
+      - name: Run R5 technical automation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python r5_technical_automation.py \
+            --market-week "$MARKET_WEEK" \
+            --year "$MARKET_YEAR" \
+            --output-dir "."
+
+      - name: Verify JSON, Markdown, and charts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          JSON_FILE="technical_agent_${MARKET_WEEK}.json"
+          MD_FILE="technical_agent-${MARKET_WEEK}.md"
+          CHART_DIR="charts/${MARKET_WEEK}"
+
+          test -s "$JSON_FILE" || { echo "::error::Missing or empty $JSON_FILE"; exit 1; }
+          test -s "$MD_FILE" || { echo "::error::Missing or empty $MD_FILE"; exit 1; }
+
+          for asset in SPX NDX IWM; do
+            chart="$CHART_DIR/chart_${asset}_${MARKET_WEEK}.png"
+            test -s "$chart" || { echo "::error::Missing or empty $chart"; exit 1; }
+          done
+
+          python - <<'PY'
+          import json
+          import math
+          import os
+          from pathlib import Path
+
+          week = os.environ["MARKET_WEEK"]
+          path = Path(f"technical_agent_{week}.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+
+          for asset in ("SPX", "NDX", "IWM"):
+              item = data["metrics"].get(asset)
+              if not item:
+                  raise SystemExit(f"Missing core asset in JSON: {asset}")
+              for field in ("close_price", "ema_8", "ema_21"):
+                  value = item.get(field)
+                  if not isinstance(value, (int, float)) or not math.isfinite(float(value)):
+                      raise SystemExit(f"Invalid value: {asset}.{field}={value!r}")
+              print(f"{asset}: close={item['close_price']}")
+
+          print("Strict JSON and core price validation passed.")
+          PY
+
+      - name: Commit generated outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "Team2 Data Automation Bot"
+          git config user.email "bot@team2.financial"
+
+          git add -- \
+            "technical_agent_${MARKET_WEEK}.json" \
+            "technical_agent-${MARKET_WEEK}.md" \
+            "charts/${MARKET_WEEK}"
+
+          echo "Files staged by this run:"
+          git diff --cached --name-status
+
+          if git diff --cached --quiet; then
+            echo "No output changes detected."
+            exit 0
+          fi
+
+          git commit -m "chore(r5): update technical outputs ${MARKET_YEAR}-${MARKET_WEEK} [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
