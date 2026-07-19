@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""R5 Technical Agent: generate strict JSON, Markdown, and market charts."""
+
 from __future__ import annotations
 
 import argparse
