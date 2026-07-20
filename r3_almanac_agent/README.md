@@ -1,44 +1,38 @@
-# R3 Almanac Agent Automation
+# R3 Almanac Agent
 
-## What this does
+## Sprint 8 / W30
 
-This is the upgraded R3 Almanac Agent automation.
+The R3 automation extracts seasonal market evidence from the Stock
+Trader's Almanac 2026 and produces structured outputs for:
 
-It reads the **Stock Trader's Almanac 2026 PDF** from the same folder as the Python script and automatically extracts:
+- SPX
+- NDX using NASDAQ Composite as the documented seasonal proxy
+- IWM
+- All 11 S&P 500 sector ETF categories
 
-- June Vital Statistics
-- W25 week-specific pattern
-- Sector Index Seasonality rows
+## Output location
 
-Then it generates:
+outputs/R3/
 
-```text
-outputs/almanac_agent_W25.json
-outputs/almanac_agent_W25.csv
-outputs/almanac_agent_W25.md
-```
+## W30 outputs
 
-## Folder rule
+- almanac_agent_W30.json
+- almanac_agent_W30.csv
+- almanac_agent_W30.md
 
-The folder name does not matter.
+## Manual execution
 
-Just keep these files together:
+python r3_almanac_agent/r3_almanac_agent.py W30 \
+  "2026-07-27 to 2026-07-31"
 
-```text
-r3_almanac_agent.py
-requirements.txt
-Stock Trader's Almanac 2026_L.pdf
-```
+## Validation
 
-## How to run
+The automation fails before writing files when it detects:
 
-```bash
-pip install -r requirements.txt
-python r3_almanac_agent.py
-```
-
-## Why this satisfies Sprint 5
-
-Sprint 5 requires automated structured agent output.
-
-This script parses the PDF and produces JSON / CSV / Markdown files automatically.
+- NaN or infinity
+- Null or blank values
+- Invalid dates
+- Missing indices or sectors
+- Invalid percentage formats
+- Failed PDF extraction
+- Fallback or estimated data
