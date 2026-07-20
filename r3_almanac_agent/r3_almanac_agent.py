@@ -115,62 +115,130 @@ def find_page(pages: list[dict[str, Any]], include: list[str], exclude: list[str
             return page
     raise ValueError(f"Could not automatically isolate PDF page matching parameters: {include}")
 
-def extract_vital_statistics(pages: list[dict[str, Any]], month: str) -> dict[str, Any]:
+def extract_vital_statistics(
+    pages: list[dict[str, Any]],
+    month: str,
+) -> dict[str, Any]:
     m_lower = month.lower()
-    try:
-        page = find_page(
-            pages,
-            include=[f"{month} ALMANAC", f"{month.capitalize()} Vital Statistics", "Average % Change"],
-            exclude=["TABLE OF CONTENTS"],
+
+    page = find_page(
+        pages,
+        include=[
+            f"{month} ALMANAC",
+            f"{month.capitalize()} Vital Statistics",
+            "Average % Change",
+        ],
+        exclude=["TABLE OF CONTENTS"],
+    )
+
+    text = re.sub(r"\s+", " ", page["text"])
+
+    rank_match = re.search(
+        r"Rank\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)",
+        text,
+    )
+    avg_match = re.search(
+        r"Average % Change\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)",
+        text,
+    )
+    midterm_match = re.search(
+        r"Midterm Yr Avg % Chg\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)\s+"
+        r"([–−-]?\d+\.\d+)",
+        text,
+    )
+
+    if not rank_match:
+        raise ValueError(
+            f"R3 extraction failed: {month} rank row not found "
+            f"on PDF page {page['page_number']}."
         )
-        text = re.sub(r"\s+", " ", page["text"])
-        
-        rank_match = re.search(r"Rank\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)", text)
-        avg_match = re.search(r"Average % Change\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)", text)
-        midterm_match = re.search(r"Midterm Yr Avg % Chg\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)\s+([–−-]?\d+\.\d+)", text)
 
-        if not rank_match or not avg_match or not midterm_match:
-            raise ValueError("Table regex mismatch, falling back.")
+    if not avg_match:
+        raise ValueError(
+            f"R3 extraction failed: {month} average-return row not found "
+            f"on PDF page {page['page_number']}."
+        )
 
-        columns = ["DJIA", "SPX", "NDX", "RUSSELL_1000", "IWM"]
-        names = {"DJIA": "Dow Jones Industrial Average", "SPX": "S&P 500", "NDX": "NASDAQ", "RUSSELL_1000": "Russell 1000", "IWM": "Russell 2000"}
-        
-        ranks, avgs, midterms = rank_match.groups(), avg_match.groups(), midterm_match.groups()
-        result: dict[str, Any] = {}
-        for idx, col in enumerate(columns):
-            result[col] = {
-                "index": names[col],
-                f"{m_lower}_rank": int(ranks[idx]),
-                f"normal_{m_lower}_average_return": format_percent(avgs[idx]),
-                f"midterm_{m_lower}_average_return": format_percent(midterms[idx]),
-                "source_page": page["page_number"],
-                "extraction_method": f"parsed_from_{m_lower}_vital_statistics_table",
-            }
-        return {"SPX": result["SPX"], "NDX": result["NDX"], "IWM": result["IWM"]}
+    if not midterm_match:
+        raise ValueError(
+            f"R3 extraction failed: {month} midterm-return row not found "
+            f"on PDF page {page['page_number']}."
+        )
 
-    except Exception:
-        return {
-            "SPX": {"index": "S&P 500", f"{m_lower}_rank": 5, f"normal_{m_lower}_average_return": "+1.2%", f"midterm_{m_lower}_average_return": "-0.5%", "source_page": 40, "extraction_method": "fallback_estimation"},
-            "NDX": {"index": "NASDAQ", f"{m_lower}_rank": 4, f"normal_{m_lower}_average_return": "+2.1%", f"midterm_{m_lower}_average_return": "+0.8%", "source_page": 40, "extraction_method": "fallback_estimation"},
-            "IWM": {"index": "Russell 2000", f"{m_lower}_rank": 8, f"normal_{m_lower}_average_return": "+0.4%", f"midterm_{m_lower}_average_return": "-1.1%", "source_page": 40, "extraction_method": "fallback_estimation"}
+    columns = ["DJIA", "SPX", "NDX", "RUSSELL_1000", "IWM"]
+    names = {
+        "DJIA": "Dow Jones Industrial Average",
+        "SPX": "S&P 500",
+        "NDX": "NASDAQ",
+        "RUSSELL_1000": "Russell 1000",
+        "IWM": "Russell 2000",
+    }
+
+    ranks = rank_match.groups()
+    averages = avg_match.groups()
+    midterms = midterm_match.groups()
+
+    result: dict[str, Any] = {}
+
+    for index, ticker in enumerate(columns):
+        result[ticker] = {
+            "index": names[ticker],
+            f"{m_lower}_rank": int(ranks[index]),
+            f"normal_{m_lower}_average_return": format_percent(
+                averages[index]
+            ),
+            f"midterm_{m_lower}_average_return": format_percent(
+                midterms[index]
+            ),
+            "source_page": page["page_number"],
+            "extraction_method":
+                f"parsed_from_{m_lower}_vital_statistics_table",
         }
 
-def extract_dynamic_weekly_pattern(pages: list[dict[str, Any]], month: str, current_week: str) -> dict[str, Any]:
-    try:
-        page = find_page(pages, include=[f"{month} 2026"])
-        text = re.sub(r"\s+", " ", page["text"])
-        evidence = f"Automated structural seasonal pattern mapped successfully for forecast window framework."
-        page_num = page["page_number"]
-    except Exception:
-        evidence = f"General dynamic cyclical market consolidation trend observed across target forecast window timeline."
-        page_num = 60
+    return {
+        "SPX": result["SPX"],
+        "NDX": result["NDX"],
+        "IWM": result["IWM"],
+    }
+
+def extract_dynamic_weekly_pattern(
+    pages: list[dict[str, Any]],
+    month: str,
+    current_week: str,
+) -> dict[str, Any]:
+    page = find_page(
+        pages,
+        include=[f"{month} 2026"],
+        exclude=["STRATEGY CALENDAR"],
+    )
+
+    text = re.sub(r"\s+", " ", page["text"]).strip()
+
+    if not text:
+        raise ValueError(
+            f"R3 weekly-pattern extraction failed: "
+            f"{month} 2026 planner text is empty."
+        )
 
     return {
         "name": f"Dynamic Weekly Boundary Matrix ({current_week})",
-        "evidence": evidence,
-        "source_page": page_num,
-        "extraction_method": "parameterized_weekly_planner_extraction",
-        "interpretation": f"Seasonal matrix indication mapped successfully for predictive forecast sprint window.",
+        "evidence":
+            f"{month.capitalize()} 2026 weekly planner source located.",
+        "source_page": page["page_number"],
+        "extraction_method":
+            "parameterized_weekly_planner_extraction",
+        "interpretation":
+            "Seasonal planner evidence was located for the "
+            "forecast-month context.",
     }
 
 def compact_window(start_month: str, start_part: str, finish_month: str, finish_part: str) -> str:
@@ -181,7 +249,8 @@ def extract_sector_table_rows(pages: list[dict[str, Any]]) -> dict[str, Any]:
     table_page = find_page(pages, include=["SECTOR INDEX SEASONALITY TABLE", "Average % Return"])
     page_number = table_page["page_number"]
     combined_text = table_page["text"]
-
+    missing_sectors: list[str] = []
+    
     for page in pages:
         if page["page_number"] == page_number + 1:
             combined_text += "\n" + page["text"]
@@ -224,13 +293,9 @@ def extract_sector_table_rows(pages: list[dict[str, Any]]) -> dict[str, Any]:
             break
 
         if not found:
-            extracted[project_ticker] = {
-                "project_ticker": project_ticker, "project_sector": request["project_sector"],
-                "pdf_ticker": pdf_ticker, "pdf_sector": request["pdf_sector"], "signal": desired_type.upper(),
-                "seasonal_window": "Dynamic Matrix", "average_return_25_year": "+1.5%",
-                "average_return_10_year": "+0.9%", "average_return_5_year": "+0.4%",
-                "source_page": page_number, "extraction_method": "fallback_matrix_mapping"
-            }
+            missing_sectors.append(
+                f"{project_ticker} ({pdf_ticker}, {desired_type})"
+            )
 
     return extracted
 
@@ -353,7 +418,7 @@ def main() -> None:
 
     # 1. Output structured JSON Matrix
     json_path = output_dir / f"almanac_agent_{WEEK}.json"
-    json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False,), encoding="utf-8")
 
     # 2. Output Data Evidence CSV (Fused Legacy Rich Architecture)
     csv_path = output_dir / f"almanac_agent_{WEEK}.csv"
