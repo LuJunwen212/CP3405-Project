@@ -45,17 +45,21 @@ jobs:
     - name: Execute Parameterized R3 Almanac Agent
       working-directory: ./r3_almanac_agent
       run: |
-        # Pass manual override tokens dynamically if they exist.
-        # If blank, Python internally computes the precise T+1 upcoming trading week!
-        python r3_almanac_agent.py "${{ github.event.inputs.custom_market_week }}" "${{ github.event.inputs.custom_market_date }}"
+        set -euo pipefail
+    
+        # Manual values are used when provided.
+        # Blank values allow the Python script to calculate the week automatically.
+        python r3_almanac_agent.py \
+          "${{ github.event.inputs.custom_market_week }}" \
+          "${{ github.event.inputs.custom_market_date }}"
 
     - name: Secure Ledger Artifacts & Route Commit to Active Branch
       run: |
-        git config --global user.name "Team2 Data Automation Bot"
+        git config --global user.name "Team 2 Almanac Automation Bot"
         git config --global user.email "bot@team2.financial"
         
         # Capture all newly generated artifacts dynamically in the outputs folder
-        git add r3_almanac_agent/outputs/*
+        git add outputs/R3/
         
         if git diff --staged --quiet; then
           echo "No strategic data shifts detected. Terminating smoothly."
