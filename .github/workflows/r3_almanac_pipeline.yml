@@ -53,6 +53,34 @@ jobs:
           "${{ github.event.inputs.custom_market_week }}" \
           "${{ github.event.inputs.custom_market_date }}"
 
+    - name: Verify R3 artifacts
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        WEEK="${{ github.event.inputs.custom_market_week }}"
+
+        if [ -z "$WEEK" ]; then
+          WEEK="W$(date +%V)"
+        fi
+
+        for extension in json csv md; do
+          file="outputs/R3/almanac_agent_${WEEK}.${extension}"
+
+          if [ ! -s "$file" ]; then
+            echo "Missing or empty R3 artifact: $file"
+            exit 1
+          fi
+        done
+
+        if grep -RniE '(^|[^a-z])(nan|null|n/a|infinity)([^a-z]|$)' \
+          "outputs/R3/almanac_agent_${WEEK}."*; then
+          echo "Invalid value detected in R3 outputs."
+          exit 1
+        fi
+
+        echo "All R3 artifacts exist and passed verification."
+
     - name: Secure Ledger Artifacts & Route Commit to Active Branch
       run: |
         git config --global user.name "Team 2 Almanac Automation Bot"

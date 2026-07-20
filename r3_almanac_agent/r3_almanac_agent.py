@@ -138,6 +138,43 @@ def format_percent(value: str) -> str:
         return f"{value}%"
     return f"+{value}%"
 
+def percent_to_float(value: str) -> float:
+    normalized = normalize_minus(value).replace("%", "").strip()
+    return float(normalized)
+
+
+def derive_index_outlook(
+    monthly_stats: dict[str, Any],
+    month: str,
+) -> tuple[str, str]:
+    month_key = month.lower()
+    return_key = f"midterm_{month_key}_average_return"
+
+    returns = [
+        percent_to_float(item[return_key])
+        for item in monthly_stats.values()
+    ]
+
+    average_return = sum(returns) / len(returns)
+    positive_count = sum(value > 0 for value in returns)
+    negative_count = sum(value < 0 for value in returns)
+
+    if average_return >= 0.5:
+        bias = "Bullish"
+    elif average_return <= -0.5:
+        bias = "Bearish"
+    else:
+        bias = "Neutral"
+
+    if positive_count == len(returns) or negative_count == len(returns):
+        confidence = "HIGH"
+    elif positive_count >= 2 or negative_count >= 2:
+        confidence = "MEDIUM"
+    else:
+        confidence = "LOW"
+
+    return bias, confidence
+
 def find_page(pages: list[dict[str, Any]], include: list[str], exclude: list[str] | None = None) -> dict[str, Any]:
     exclude = exclude or []
     for page in pages:
@@ -209,7 +246,7 @@ def extract_vital_statistics(
     names = {
         "DJIA": "Dow Jones Industrial Average",
         "SPX": "S&P 500",
-        "NDX": "NASDAQ",
+        "NDX": "NASDAQ Composite — used as NDX seasonal proxy",
         "RUSSELL_1000": "Russell 1000",
         "IWM": "Russell 2000",
     }
@@ -399,7 +436,7 @@ def build_report(pdf_path: Path, pages: list[dict[str, Any]]) -> dict[str, Any]:
     week_pattern = extract_dynamic_weekly_pattern(pages, TARGET_MONTH, WEEK)
     sector_signals = extract_sector_table_rows(pages)
 
-    current_bias = "Neutral-Bullish" if TARGET_MONTH == "JULY" else "Bearish"
+    current_bias, current_confidence = derive_index_outlook(monthly_stats, TARGET_MONTH)
 
     return {
         "agent": AGENT,
@@ -417,7 +454,7 @@ def build_report(pdf_path: Path, pages: list[dict[str, Any]]) -> dict[str, Any]:
         "week_specific_pattern": week_pattern,
         "sector_signals": sector_signals,
         "almanac_bias": current_bias,
-        "confidence": "HIGH",
+        "confidence": current_confidence,
         "thesis": f"Strategic seasonal intelligence evaluation compiled in week {WEEK}. Internal data models capture predictive trading matrix signals for target duration {DATE_RANGE} under {TARGET_MONTH.capitalize()} systemic cycles.",
     }
 
