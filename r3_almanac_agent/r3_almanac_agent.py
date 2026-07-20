@@ -341,8 +341,9 @@ Automation Node: `Fully Parameterized Cloud Workflow (T+1 Forecast Roll)`
 
 def main() -> None:
     folder = script_folder()
-    output_dir = folder / "outputs"
-    output_dir.mkdir(exist_ok=True)
+    repo_root = folder.parent
+    output_dir = repo_root / "outputs" / "R3"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     pdf_path = find_pdf(folder)
     print(f"Executing parameter-driven forecast run with asset: {pdf_path.name}")
