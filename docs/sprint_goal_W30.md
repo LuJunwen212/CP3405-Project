@@ -7,8 +7,7 @@ Building on Sprint 7 lessons, the team will complete the following key tasks for
 1. **Check R8 and R7 Logical Conflicts**: Identify and fix any logical contradictions between R8 LLM synthesis and R7 Human Scoring, and find the root causes.
 2. **Improve R9 Automation**: Further enhance and complete R9 repository merging, release packaging, and tagging automation.
 3. **Fix and Validate R5 Code**: Update and improve R5 automation code to verify actual JSON and Markdown values, find any root cause of calculation issues, and ensure full data accuracy before downstream processing.
-4. **Organize Output Folder Structure**: Systematically reorganize project files by creating and assigning a dedicated directory for each role (e.g., `outputs/R3/`, `outputs/R4/`, `outputs/R5/`, etc.).
-5. **Force Workflow Failures on NaN Values**: Update GitHub Actions and verification scripts so that any detected `NaN` or invalid data strictly fails the workflow instead of publishing bad output files.
+4. **Force Workflow Failures on NaN Values**: Update GitHub Actions and verification scripts so that any detected `NaN` or invalid data strictly fails the workflow instead of publishing bad output files.
 
 The team should automate as much of the workflow as possible. Where full automation cannot be achieved, each responsible role must implement partial automation where feasible and manually complete the remaining work before the required deadline. Technical limitations or automation failures must not result in missing deliverables.
 
