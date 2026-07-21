@@ -361,8 +361,6 @@ Confidence rules:
 | Two of three returns have the same direction | Medium |
 | No directional majority | Low |
 
-This replaces the previous hardcoded bias and confidence values.
-
 ---
 
 ## Validation Rules
