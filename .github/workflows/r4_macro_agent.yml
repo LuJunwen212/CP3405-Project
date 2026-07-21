@@ -3,7 +3,7 @@ name: R4 Weekly Macro Agent
 on:
   push:
     branches:
-      - Week--8
+      - week--8
   workflow_dispatch:
     inputs:
       as_of_sgt:
