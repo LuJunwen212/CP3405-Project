@@ -12,16 +12,16 @@ The repository is used to organise project work, track progress, store evidence,
 
 | Role    | Member(s)                                |
 | ------- | ---------------------------------------- |
-| Role 1  | Junwen Lu                                  |
-| Role 2  | The Bao Le                                   |
-| Role 3  | Zaikun Zheng                      |
-| Role 4  | Wenhan Hu, Hao Wang                      |
-| Role 5  | Qinyang Wu                                    |
-| Role 6  | Guanyu Lu                   |
+| Role 1  |  Zaikun Zheng                                 |
+| Role 2  | Guanyu Lu, Qinyang Wu                                   |
+| Role 3  | The Bao Le                       |
+| Role 4  | Wenhan Hu                      |
+| Role 5  | Yu-Chu Lin                                    |
+| Role 6  | Hamzah Nutt (Opal)                   |
 | Role 7  | Viral Stock                            |
 | Role 8  | Yijie Kan                               |
-| Role 9  | Yu-Chu Lin |
-| Role 10 | Hamzah Nutt (Opal)                       |
+| Role 9  | Junwen Lu |
+| Role 10 | Hao Wang                     |
 
 ---
 
