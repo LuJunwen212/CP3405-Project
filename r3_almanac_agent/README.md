@@ -13,26 +13,6 @@ The automation produces seasonal evidence for:
 
 The script generates JSON, CSV, and Markdown outputs from one validated report object. Invalid or incomplete data causes the workflow to fail before the outputs are committed.
 
----
-
-## Sprint 8 Improvements
-
-The Sprint 8 version includes:
-
-- Repository-level role output directory: `outputs/R3/`
-- Automatic current-week output naming
-- Automatic next-week forecast date calculation
-- Manual week and date-range overrides
-- SPX, NDX, IWM, and all 11 sector categories
-- Strict extraction from the Almanac PDF
-- No fallback or estimated replacement values
-- Validation for NaN, infinity, null, blank, malformed, missing, or unexpected data
-- Evidence-based Almanac bias and confidence
-- GitHub Actions output verification
-- Automatic commit and push of changed R3 outputs
-
----
-
 ## Repository Structure
 
 ```text
@@ -693,21 +673,3 @@ r3_almanac_agent/outputs/
 ```
 
 R7, R8, R9, and pipeline verification logic should use the repository-level R3 output path.
-
----
-
-## Sprint 8 Completion Evidence
-
-Recommended evidence for the Sprint review:
-
-- Successful local W30 run
-- Successful GitHub Actions W30 run
-- Failed GitHub Actions NaN test
-- Evidence that the failed run created no output commit
-- JSON, CSV, and Markdown files in `outputs/R3/`
-- SPX, NDX, and IWM coverage
-- All 11 sector categories
-- Updated Python validation
-- Updated workflow verification
-- Updated README
-- Final output-path handoff to downstream roles
