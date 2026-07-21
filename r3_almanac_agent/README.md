@@ -262,13 +262,6 @@ Example:
 
 Both fields can be left blank. Blank values cause the Python script to use its automatic week and next-week date calculations.
 
-Recommended controlled W30 test:
-
-```text
-custom_market_week: W30
-custom_market_date: 2026-07-27 to 2026-07-31
-```
-
 ---
 
 ## Generated Outputs
