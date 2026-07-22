@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import argparse
 from datetime import datetime
@@ -11,9 +12,8 @@ OPENROUTER_URL = "https://openrouter.ai/api/v1"
 
 def query_model(model_string, prompt, api_key):
     """
-    Safely queries the specified model via the unified OpenRouter gateway.
+    Safely queries the specified model via OpenRouter gateway and strips markdown artifacts.
     """
-    # Robust pre-flight check for API Key presence
     if not api_key or api_key.strip().lower() in ["", "none", "null", "undefined"]:
         return (
             "API Key Error: OPENROUTER_API_KEY environment variable is missing. "
@@ -21,7 +21,6 @@ def query_model(model_string, prompt, api_key):
             "❌ Key Missing"
         )
     try:
-        # Initialize standard OpenAI client adapted for OpenRouter
         client = OpenAI(
             base_url=OPENROUTER_URL,
             api_key=api_key.strip(),
@@ -35,7 +34,11 @@ def query_model(model_string, prompt, api_key):
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3
         )
-        return response.choices[0].message.content, "✅ Success"
+        raw_text = response.choices[0].message.content
+        
+        # Post-processing: Remove lingering markdown symbols (** and *) for 100% plain text
+        clean_text = re.sub(r'\*+', '', raw_text)
+        return clean_text, "✅ Success"
     except Exception as e:
         return f"Inference Error on {model_string}: {str(e)}", "❌ API Error"
 
@@ -61,16 +64,15 @@ def load_upstream_file(paths_to_try):
 # =====================================================================
 def main():
     parser = argparse.ArgumentParser(description="R8 Multi-Model Consensus Engine")
-    parser.add_argument("--market-week", required=True, help="e.g., W29")
+    parser.add_argument("--market-week", required=True, help="e.g., W30")
     args = parser.parse_args()
     week = args.market_week
 
     print(f"📅 Initiating R8 Multi-Model Consensus Audit for {week}...")
 
-    # Safely retrieve the OpenRouter API key from env variables
     api_key = os.getenv("OPENROUTER_API_KEY")
 
-    # 1. Dynamically search and load R3 Almanac (Seasonal Patterns)
+    # 1. Load R3 Almanac
     r3_paths = [
         f"outputs/R3/almanac_agent_{week}.md",
         f"almanac_agent_{week}.md",
@@ -79,7 +81,7 @@ def main():
     ]
     context_r3 = load_upstream_file(r3_paths)
 
-    # 2. Dynamically search and load R5 Technical Analysis (Supporting both '-' and '_')
+    # 2. Load R5 Technical Analysis
     r5_paths = [
         f"outputs/R5/technical_agent-{week}.md",
         f"outputs/R5/technical_agent_{week}.md",
@@ -89,7 +91,7 @@ def main():
     ]
     context_r5 = load_upstream_file(r5_paths)
 
-    # 3. Dynamically search and load R4 Macro Analysis
+    # 3. Load R4 Macro Analysis
     r4_paths = [
         f"outputs/R4/macro_agent_{week}.md",
         f"docs/macro_agent_2026-{week}.md",
@@ -101,8 +103,7 @@ def main():
     if not context_r4:
         print("ℹ️ R4 Macro Agent data not found. Falling back to dynamic baseline context.")
 
-    # 4. Construct Unified Quantitative Consensus Prompt using Strict Custom Template
-    # 4. Construct Unified Quantitative Consensus Prompt (STRICT PLAIN TEXT FORMAT)
+    # 4. Construct Unified Quantitative Consensus Prompt (Strict Plain Text Instruction)
     base_prompt = f"""You are a professional institutional market strategist.
 Based ONLY on the Almanac Agent, Macro Agent, and Technical Agent reports provided in the attachment, generate a weekly market synthesis for the S&P 500 for {week}.
 
@@ -110,44 +111,44 @@ Instructions:
 1. Do not introduce external data.
 2. Use only the information contained in the provided reports.
 3. Be objective and evidence-based.
-4. STRICT PLAIN TEXT ONLY: Do NOT use any Markdown formatting in your response (No bold `**`, no italics `*`, no headers `#`, no bullet points `-` or `*`). Write pure plain text only.
-5. Follow the EXACT output format below line by line.
+4. STRICT PLAIN TEXT ONLY: Do NOT use any Markdown formatting in your response (No bold `**`, no italics `*`, no headers `#`, no brackets `[` or `]`). Write pure plain text only.
+5. Follow the exact output format below line by line.
 
 OUTPUT FORMAT
 
 Weekly Market Synthesis
 Direction
-[Up / Down / Sideways]
+Up / Down / Sideways
 
 Bias
-[Bullish / Neutral-Bullish / Neutral / Neutral-Bearish / Bearish]
+Bullish / Neutral-Bullish / Neutral / Neutral-Bearish / Bearish
 
 Top Bullish Factors
-1. [Factor 1]
-2. [Factor 2]
+1. Factor 1
+2. Factor 2
 
 Top Bearish Factors
-1. [Factor 1]
-2. [Factor 2]
+1. Factor 1
+2. Factor 2
 
 Most Important Macro Driver
-[One paragraph]
+One paragraph
 
 Most Important Technical Signal
-[One paragraph]
+One paragraph
 
 Most Important Seasonal Factor
-[One paragraph]
+One paragraph
 
 Expected SPX Trading Range
-Lower Bound: [Value]
-Upper Bound: [Value]
+Lower Bound: Value
+Upper Bound: Value
 
 Confidence Level
-[Low / Medium / High]
+Low / Medium / High
 
 Final Weekly Call
-[One concise paragraph]
+One concise paragraph
 
 Reasoning Summary
 Point 1
@@ -168,11 +169,11 @@ Point 5
 {context_r5 if context_r5 else 'Technical Data: S&P 500 trend is on watch. EMA indicators neutral.'}
 """
 
-    # 5. Targeted Models (GPT-4o-mini, Llama/Claude alternative, Qwen stable paid tier)
+    # 5. Targeted Models (Using high-availability endpoints on OpenRouter)
     models = {
         "ChatGPT": "openai/gpt-4o-mini",
         "Claude": "meta-llama/llama-3.1-70b-instruct", 
-        "Qwen": "qwen/qwen-2.5-72b-instruct"
+        "Qwen": "deepseek/deepseek-chat"  # Replaced unstable Qwen endpoint with highly reliable DeepSeek-V3/Qwen equivalent
     }
 
     print("🚀 Dispatching API requests concurrently to OpenRouter cloud nodes...")
@@ -184,7 +185,7 @@ Point 5
     raw_responses = {
         "ChatGPT_4o_Mini": res_chatgpt,
         "Claude_Llama_Alternative": res_claude,
-        "Qwen_2.5_72B_Standard": res_qwen
+        "Qwen_DeepSeek_Alternative": res_qwen
     }
     
     raw_json_path = f"r8_raw_responses_{week}.json"
@@ -197,12 +198,12 @@ Point 5
     bias_cld = "Parsed" if "Success" in status_claude else "⚠️ Error"
     bias_qwn = "Parsed" if "Success" in status_qwen else "⚠️ Error"
 
-    # 8. Compile the executive Markdown dashboard (Fully Uncut Presentation)
+    # 8. Compile the executive Markdown dashboard
     comparison_table = (
         f"# 📊 R8 Multi-Model Consensus Strategy Dashboard ({week})\n"
         f"Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
         "## 🔍 Prediction Uncertainty Assessment Matrix (Model Consensus & Alignment)\n\n"
-        "| Evaluation Dimension | ChatGPT (4o-mini) | Claude (Alternative) | Qwen (2.5-72B) |\n"
+        "| Evaluation Dimension | ChatGPT (4o-mini) | Claude (Alternative) | Qwen / DeepSeek |\n"
         "| :--- | :--- | :--- | :--- |\n"
         f"| **Consensus Bias** | {bias_gpt} | {bias_cld} | {bias_qwn} |\n"
         f"| **Response Status** | {status_chatgpt} | {status_claude} | {status_qwen} |\n\n"
@@ -216,7 +217,7 @@ Point 5
         "```text\n"
         f"{res_claude}\n"
         "```\n\n"
-        "### 🟡 Qwen 2.5 72B Analysis\n"
+        "### 🟡 Qwen / DeepSeek Alternative Analysis\n"
         "```text\n"
         f"{res_qwen}\n"
         "```\n\n"
