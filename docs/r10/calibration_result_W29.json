@@ -3,7 +3,7 @@
     "prediction_file": "prediction_2026-W29_team2.md",
     "actual_file": "actual_2026-W29.md",
     "scoring_rule": "W22 confidence-weighted directional scoring",
-    "generated_at": "2026-07-22 09:23:19",
+    "generated_at": "2026-07-22 10:44:53",
     "targets_requested": [
         "SPX",
         "NDX",

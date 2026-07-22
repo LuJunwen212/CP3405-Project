@@ -2,3 +2,4 @@ week,prediction,predicted_direction,predicted_range,confidence_raw,confidence_sc
 W28,Up,up,+1.0% to +2.5%,Medium-High,High,-5.48,down,False,Outside range,-2,primary_prediction_section
 W28,Up,up,+1.0% to +2.5%,Medium-High,High,-5.48,down,False,Outside range,-2,primary_prediction_section
 W29,Down,down,-2.0% to +0.3%,Medium,Medium,2.96,up,False,Outside range,0,primary_prediction_section
+W29,Down,down,-2.0% to +0.3%,Medium,Medium,2.96,up,False,Outside range,0,primary_prediction_section

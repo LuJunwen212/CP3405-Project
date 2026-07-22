@@ -57,4 +57,4 @@ The same scoring method from W22 is reused for consistency.
 
 This calibration measures directional accuracy with confidence weighting. The range check is reported separately and does not change the official W22-style score.
 
-Generated automatically at: 2026-07-22 09:23:19
+Generated automatically at: 2026-07-22 10:44:53
