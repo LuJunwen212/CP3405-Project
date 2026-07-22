@@ -1,3 +1,4 @@
 week,prediction,predicted_direction,predicted_range,confidence_raw,confidence_scoring_bucket,actual_pct,actual_direction,hit,range_result,score,prediction_source
 W28,Neutral-Bullish,up,N/A,Medium,Medium,-1.54,down,False,N/A,0,sector_call_fallback
 W28,Neutral-Bullish,up,N/A,Medium,Medium,-1.54,down,False,N/A,0,sector_call_fallback
+W29,Bearish,down,N/A,Medium,Medium,-0.49,down,True,N/A,2,sector_call_fallback
