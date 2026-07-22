@@ -102,6 +102,7 @@ def main():
         print("ℹ️ R4 Macro Agent data not found. Falling back to dynamic baseline context.")
 
     # 4. Construct Unified Quantitative Consensus Prompt using Strict Custom Template
+    # 4. Construct Unified Quantitative Consensus Prompt (STRICT PLAIN TEXT FORMAT)
     base_prompt = f"""You are a professional institutional market strategist.
 Based ONLY on the Almanac Agent, Macro Agent, and Technical Agent reports provided in the attachment, generate a weekly market synthesis for the S&P 500 for {week}.
 
@@ -109,7 +110,8 @@ Instructions:
 1. Do not introduce external data.
 2. Use only the information contained in the provided reports.
 3. Be objective and evidence-based.
-4. Follow the exact output format below. Do not add or remove any headings.
+4. STRICT PLAIN TEXT ONLY: Do NOT use any Markdown formatting in your response (No bold `**`, no italics `*`, no headers `#`, no bullet points `-` or `*`). Write pure plain text only.
+5. Follow the EXACT output format below line by line.
 
 OUTPUT FORMAT
 
@@ -121,8 +123,12 @@ Bias
 [Bullish / Neutral-Bullish / Neutral / Neutral-Bearish / Bearish]
 
 Top Bullish Factors
+1. [Factor 1]
+2. [Factor 2]
 
 Top Bearish Factors
+1. [Factor 1]
+2. [Factor 2]
 
 Most Important Macro Driver
 [One paragraph]
@@ -134,8 +140,8 @@ Most Important Seasonal Factor
 [One paragraph]
 
 Expected SPX Trading Range
-Lower Bound:
-Upper Bound:
+Lower Bound: [Value]
+Upper Bound: [Value]
 
 Confidence Level
 [Low / Medium / High]
