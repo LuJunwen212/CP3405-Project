@@ -1,5 +1,5 @@
 # Team 2 — Sprint 8 Mid-Week Stand-up (W30)
-**Date:** Wednesday, 15 July 2026  
+**Date:** Wednesday, 22 July 2026  
 **Prepared by:** R2 — Scrum Master  
 **Sprint:** Sprint 8 / vW30  
 **Overall status:** On track.
@@ -11,7 +11,7 @@ All roles were checked individually by Wednesday. Most technical roles have made
 ## Role Check-Ins
 
 ### R1 — Product Owner
-**Status:** Completed
+**Status:** Completed.
 
 R1 completed the Sprint 8 goal and Definition of Done on Monday and remained available to clarify requirements.
 
@@ -22,7 +22,7 @@ R1 completed the Sprint 8 goal and Definition of Done on Monday and remained ava
 ---
 
 ### R2 — Scrum Master
-**Status:** In progress 
+**Status:** In progress. 
 
 R2 completed individual progress checks, reviewed each role against its Definition of Done, identified dependency and accountability risks, and documented the team's midweek status.
 
@@ -50,7 +50,7 @@ R3 has achieved the following:
 ---
 
 ### R4 — Macro Agent
-**Status:** In progress 
+**Status:** In progress. 
 
 R4 completed the main Macro Agent implementation. The script collects data from public macroeconomic, market, Treasury, labour, Federal Reserve, and news sources. It includes retry handling, status logging, structured error handling, partial-safe execution, all 11 sector ETFs, and CSV, JSON, and Markdown output generation.
 
@@ -61,7 +61,7 @@ R4 completed the main Macro Agent implementation. The script collects data from 
 ---
 
 ### R5 — Technical Agent
-**Status:**  In progress
+**Status:**  In progress.
 
 R5's latest script covers SPX, NDX, IWM, and all 11 sector ETFs. It calculates EMA 8, EMA 21, support, resistance, technical direction, and confidence. It also includes validation, retry and fallback download methods, error reporting, charts, JSON output, and a structured Markdown report.R5 this week accomplished the tasks of Fixing and Validating R5 Code as well as forcing workflow failures on NaN values.
 
@@ -76,7 +76,7 @@ R5's latest script covers SPX, NDX, IWM, and all 11 sector ETFs. It calculates E
 ---
 
 ### R7 — Human Score
-**Status:** Not started — waiting on planned dependencies
+**Status:** Not started — waiting on planned dependencies.
 
 R7's Human Score and Wild Card review can only begin after the R8 synthesis and upstream reports are complete.
 
@@ -87,16 +87,28 @@ R7's Human Score and Wild Card review can only begin after the R8 synthesis and 
 ---
 
 ### R8 — LLM Operator
-**Status:** to be confirmed.
+**Status:**  In progress.
+
+R8 standardizes the output format for all major models, automatically converting the output results into plain text.
+
+**Blocker:** R8 depends on the final upstream agent reports, so we need to wait until Saturday to check the results.
+
+**R2 action:** It is necessary to inquire about the success of R8 on Saturday and promptly communicate to resolve any potential issues that may arise.
 
 ---
 
 ### R9 — GitHub Lead / Release Management
-**Status:** to be confirmed.
+**Status:** In progress.
+
+From Monday to today, R9 has been checking whether there are any issues with the code automation testing. It will merge the branch on Friday evening and create a tag on Sunday evening.
+
+**Blocker:** None.
+
+**R2 action:** Verify whether R9 merges the branch on Friday evening and tags it as "vW30" on Sunday evening.
 
 ---
 
 ### R10 — Calibration Agent
-**Status:** to be confirmed.
+**Status:** to be confirmed. 
 
 ---
