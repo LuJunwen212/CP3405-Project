@@ -72,6 +72,7 @@ def main():
 
     # 1. Dynamically search and load R3 Almanac (Seasonal Patterns)
     r3_paths = [
+        f"outputs/R3/almanac_agent_{week}.md",
         f"almanac_agent_{week}.md",
         f"r3_almanac_agent/outputs/almanac_agent_{week}.md",
         f"r3_almanac_agent/almanac_agent_{week}.md"
@@ -80,6 +81,8 @@ def main():
 
     # 2. Dynamically search and load R5 Technical Analysis (Supporting both '-' and '_')
     r5_paths = [
+        f"outputs/R5/technical_agent-{week}.md",
+        f"outputs/R5/technical_agent_{week}.md",
         f"technical_agent-{week}.md",
         f"technical_agent_{week}.md",
         f"r5_technical_agent/technical_agent-{week}.md"
@@ -88,6 +91,7 @@ def main():
 
     # 3. Dynamically search and load R4 Macro Analysis
     r4_paths = [
+        f"outputs/R4/macro_agent_{week}.md",
         f"docs/macro_agent_2026-{week}.md",
         f"macro_agent_2026-{week}.md",
         f"macro_agent_{week}.md",
@@ -97,23 +101,66 @@ def main():
     if not context_r4:
         print("ℹ️ R4 Macro Agent data not found. Falling back to dynamic baseline context.")
 
-    # 4. Construct Unified Quantitative Consensus Prompt
-    base_prompt = (
-        f"You are the Quantitative Consensus Audit Expert for Team2. Your task is to perform an integrated "
-        f"trading consensus analysis for the upcoming week ({week}) by reviewing our internal agent reports.\n\n"
-        f"=== [REPORT 1: R3 ALMANAC SEASONALITY BACKGROUND] ===\n"
-        f"{context_r3 if context_r3 else 'Almanac Data: July cycle is active. Baseline historical rank: Midterm Year.'}\n\n"
-        f"=== [REPORT 2: R5 TECHNICAL TREND ANALYSIS] ===\n"
-        f"{context_r5 if context_r5 else 'Technical Data: S&P 500 trend is on watch. EMA indicators neutral.'}\n\n"
-        f"=== [REPORT 3: R4 MACRO ENVIRONMENT] ===\n"
-        f"{context_r4 if context_r4 else 'Macro Data: Fed rate policies unchanged. Yield curve remains primary focus.'}\n\n"
-        f"=== [MANDATORY AUDIT INSTRUCTIONS] ===\n"
-        f"1. Synthesize the seasonal biases from R3 with the technical trends (EMAs, support levels) from R5.\n"
-        f"2. Formulate a unified Market Bias (Bullish, Bearish, or Neutral) for index assets (SPX, NDX).\n"
-        f"3. Provide a clear, bulleted 'Macro-Technical Strategic Justification' based on the integrated data.\n"
-        f"4. Assign an overall Consensus Confidence Score (1 to 10).\n"
-        f"Please deliver your assessment in a highly professional, concise, and structured tone."
-    )
+    # 4. Construct Unified Quantitative Consensus Prompt using Strict Custom Template
+    base_prompt = f"""You are a professional institutional market strategist.
+Based ONLY on the Almanac Agent, Macro Agent, and Technical Agent reports provided in the attachment, generate a weekly market synthesis for the S&P 500 for {week}.
+
+Instructions:
+1. Do not introduce external data.
+2. Use only the information contained in the provided reports.
+3. Be objective and evidence-based.
+4. Follow the exact output format below. Do not add or remove any headings.
+
+OUTPUT FORMAT
+
+Weekly Market Synthesis
+Direction
+[Up / Down / Sideways]
+
+Bias
+[Bullish / Neutral-Bullish / Neutral / Neutral-Bearish / Bearish]
+
+Top Bullish Factors
+
+Top Bearish Factors
+
+Most Important Macro Driver
+[One paragraph]
+
+Most Important Technical Signal
+[One paragraph]
+
+Most Important Seasonal Factor
+[One paragraph]
+
+Expected SPX Trading Range
+Lower Bound:
+Upper Bound:
+
+Confidence Level
+[Low / Medium / High]
+
+Final Weekly Call
+[One concise paragraph]
+
+Reasoning Summary
+Point 1
+Point 2
+Point 3
+Point 4
+Point 5
+
+================ ATTACHED REPORTS ================
+
+=== [REPORT 1: ALMANAC AGENT (R3)] ===
+{context_r3 if context_r3 else 'Almanac Data: July cycle is active. Baseline historical rank: Midterm Year.'}
+
+=== [REPORT 2: MACRO AGENT (R4)] ===
+{context_r4 if context_r4 else 'Macro Data: Fed rate policies unchanged. Yield curve remains primary focus.'}
+
+=== [REPORT 3: TECHNICAL AGENT (R5)] ===
+{context_r5 if context_r5 else 'Technical Data: S&P 500 trend is on watch. EMA indicators neutral.'}
+"""
 
     # 5. Targeted Models (GPT-4o-mini, Llama/Claude alternative, Qwen stable paid tier)
     models = {
