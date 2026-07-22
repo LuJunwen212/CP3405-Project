@@ -65,6 +65,34 @@ jobs:
         run: |
           python r6_macro_automation.py --market-week ${{ env.MARKET_WEEK }} --actual-week ${{ env.ACTUAL_WEEK }}
 
+      - name: Verify R3 artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          WEEK="${{ github.event.inputs.custom_market_week }}"
+
+          if [ -z "$WEEK" ]; then
+            WEEK="W$(date +%V)"
+          fi
+
+          REQUIRED_FILES=("market_snapshot_${WEEK}.json" "actual_2026-${WEEK}.md")
+
+          for file in $REQUIRED_FILES; do
+            if [ ! -s "$file" ]; then
+              echo "Missing or empty R6 artifact: $file"
+              exit 1
+            fi
+          done
+
+          if grep -RniE '(^|[^a-z])(nan|null|n/a|infinity)([^a-z]|$)' \
+            "market_snapshot_${WEEK}.json" "actual_2026-${WEEK}.md"; then
+            echo "Invalid value detected in R6 outputs."
+            exit 1
+          fi
+
+          echo "All R6 artifacts exist and passed verification."
+      
       - name: Secure Ledger Artifacts & Route Commit to Active Branch
         run: |
           git config --global user.name "Team2 Data Automation Bot"
