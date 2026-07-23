@@ -1,9 +1,9 @@
-name: Automated Cross-Asset Market Audit Pipeline
+name: R6 Automated Cross-Asset Market Audit Pipeline
 
 on:
-  push:
-    branches:
-      - week--8
+  # push:
+    # branches:
+      # - week--8
   # Activates the single-variable override panel on GitHub Web UI
   workflow_dispatch:
     inputs:
