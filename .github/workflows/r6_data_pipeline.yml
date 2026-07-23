@@ -54,16 +54,20 @@ jobs:
             A_WEEK="W${PREV_NUM}"
             echo "Execution Mode: Automated Cron Resolution."
           fi
+
+          YEAR=$(date +%Y)
           
           echo "MARKET_WEEK=$M_WEEK" >> $GITHUB_ENV
           echo "ACTUAL_WEEK=$A_WEEK" >> $GITHUB_ENV
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
           
           echo "Resolved MARKET_WEEK: $M_WEEK"
           echo "Resolved ACTUAL_WEEK: $A_WEEK"
+          echo "Resolved YEAR: $YEAR"
 
       - name: Run Dynamic Matrix Market Audit
         run: |
-          python r6_macro_automation.py --market-week ${{ env.MARKET_WEEK }} --actual-week ${{ env.ACTUAL_WEEK }}
+          python r6_macro_automation.py --market-week ${{ env.MARKET_WEEK }} --actual-week ${{ env.ACTUAL_WEEK }} --market-year ${{ env.YEAR }}
 
       - name: Verify R3 artifacts
         shell: bash
@@ -76,7 +80,7 @@ jobs:
             WEEK="W$(date +%V)"
           fi
 
-          REQUIRED_FILES=("market_snapshot_${WEEK}.json" "actual_2026-${WEEK}.md")
+          REQUIRED_FILES=("market_snapshot_${{ env.MARKET_WEEK }}.json" "actual_${{ env.YEAR }}-${{ env.ACTUAL_WEEK }}.md")
 
           for file in $REQUIRED_FILES; do
             if [ ! -s "$file" ]; then
@@ -86,7 +90,7 @@ jobs:
           done
 
           if grep -RniE '(^|[^a-z])(nan|null|n/a|infinity)([^a-z]|$)' \
-            "market_snapshot_${WEEK}.json" "actual_2026-${WEEK}.md"; then
+            "market_snapshot_${{ env.MARKET_WEEK }}.json" "actual_${{ env.YEAR }}-${{ env.ACTUAL_WEEK }}.md"; then
             echo "Invalid value detected in R6 outputs."
             exit 1
           fi
@@ -98,7 +102,7 @@ jobs:
           git config --global user.name "Team2 Data Automation Bot"
           git config --global user.email "bot@team2.financial"
           
-          git add market_snapshot_*.json actual_2026-*.md
+          git add market_snapshot_*.json actual_*-*.md
           
           if git diff --staged --quiet; then
             echo "No data changes detected. Terminating smoothly."
