@@ -1,9 +1,9 @@
-name: Automated Cross-Asset Market Audit Pipeline
+name: R6 Automated Cross-Asset Market Audit Pipeline
 
 on:
   # push:
-  #   branches:
-  #     - Week-07
+    # branches:
+      # - week--8
   # Activates the single-variable override panel on GitHub Web UI
   workflow_dispatch:
     inputs:
@@ -11,6 +11,11 @@ on:
         description: 'Target MARKET week to capture (Leave BLANK for automated current week, e.g., W24)'
         required: false
         type: string
+        
+      custom_market_year:
+        description: 'Target MARKET year to capture (Leave BLANK for automated current year, e.g., 2026)'
+        required: false
+        type: number
 
   # Standard cron scheduler configuration
   schedule:
@@ -44,33 +49,64 @@ jobs:
           if [ -n "${{ github.event.inputs.custom_market_week }}" ]; then
             M_WEEK=$(echo "${{ github.event.inputs.custom_market_week }}" | tr '[:lower:]' '[:upper:]')
             WEEK_NUM=$(echo "$M_WEEK" | tr -cd '0-9')
-            PREV_NUM=$((10#$WEEK_NUM - 1))
-            A_WEEK="W${PREV_NUM}"
-            echo "Execution Mode: Manual Override."
+            echo "Manual Override: Market Week."
           else
             WEEK_NUM=$(date +%V)
             M_WEEK="W${WEEK_NUM}"
-            PREV_NUM=$((10#$WEEK_NUM - 1))
-            A_WEEK="W${PREV_NUM}"
-            echo "Execution Mode: Automated Cron Resolution."
+            echo "Resolving market week automatically."
+          fi
+          
+          PREV_NUM=$((10#$WEEK_NUM - 1))
+          A_WEEK="W${PREV_NUM}"
+
+          if [ -n "${{ github.event.inputs.custom_market_year}}" ]; then
+            YEAR=${{ github.event.inputs.custom_market_year }}
+            echo "Manual Override: Year."
+          else
+            YEAR=$(date +%Y)
+            echo "Resolving year automatically."
           fi
           
           echo "MARKET_WEEK=$M_WEEK" >> $GITHUB_ENV
           echo "ACTUAL_WEEK=$A_WEEK" >> $GITHUB_ENV
+          echo "YEAR=$YEAR" >> $GITHUB_ENV
           
           echo "Resolved MARKET_WEEK: $M_WEEK"
           echo "Resolved ACTUAL_WEEK: $A_WEEK"
+          echo "Resolved YEAR: $YEAR"
 
       - name: Run Dynamic Matrix Market Audit
         run: |
-          python r6_macro_automation.py --market-week ${{ env.MARKET_WEEK }} --actual-week ${{ env.ACTUAL_WEEK }}
+          python r6_macro_automation.py --market-week ${{ env.MARKET_WEEK }} --actual-week ${{ env.ACTUAL_WEEK }} --market-year ${{ env.YEAR }}
 
+      - name: Verify R6 artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          REQUIRED_FILES=("market_snapshot_${{ env.MARKET_WEEK }}.json" "actual_${{ env.YEAR }}-${{ env.ACTUAL_WEEK }}.md")
+
+          for file in $REQUIRED_FILES; do
+            if [ ! -s "$file" ]; then
+              echo "Missing or empty R6 artifact: $file"
+              exit 1
+            fi
+          done
+
+          if grep -RniE '(^|[^a-z])(nan|null|n/a|infinity)([^a-z]|$)' \
+            "market_snapshot_${{ env.MARKET_WEEK }}.json" "actual_${{ env.YEAR }}-${{ env.ACTUAL_WEEK }}.md"; then
+            echo "Invalid value detected in R6 outputs."
+            exit 1
+          fi
+
+          echo "All R6 artifacts exist and passed verification."
+      
       - name: Secure Ledger Artifacts & Route Commit to Active Branch
         run: |
           git config --global user.name "Team2 Data Automation Bot"
           git config --global user.email "bot@team2.financial"
           
-          git add market_snapshot_*.json actual_2026-*.md
+          git add market_snapshot_*.json actual_*-*.md
           
           if git diff --staged --quiet; then
             echo "No data changes detected. Terminating smoothly."

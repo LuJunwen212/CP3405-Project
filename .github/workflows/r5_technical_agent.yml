@@ -98,7 +98,7 @@ jobs:
             --year "$MARKET_YEAR" \
             --output-dir "."
 
-      - name: Verify JSON, Markdown, and charts
+      - name: Verify JSON, Markdown, and charts (Strict Validation)
         shell: bash
         run: |
           set -euo pipefail
@@ -107,6 +107,7 @@ jobs:
           MD_FILE="technical_agent-${MARKET_WEEK}.md"
           CHART_DIR="charts/${MARKET_WEEK}"
 
+          echo "=== 1. Checking file existence and size ==="
           test -s "$JSON_FILE" || { echo "::error::Missing or empty $JSON_FILE"; exit 1; }
           test -s "$MD_FILE" || { echo "::error::Missing or empty $MD_FILE"; exit 1; }
 
@@ -114,28 +115,55 @@ jobs:
             chart="$CHART_DIR/chart_${asset}_${MARKET_WEEK}.png"
             test -s "$chart" || { echo "::error::Missing or empty $chart"; exit 1; }
           done
+          echo "All expected files exist."
 
+          echo "=== 2. Checking Markdown for NaN/Inf text ==="
+          # Grep for literal 'nan' or 'inf' strings to catch formatting leaks
+          if grep -i -E '\bnan\b|\binf\b' "$MD_FILE"; then
+            echo "::error::CRITICAL: Markdown file contains 'NaN' or 'Inf' text. Aborting to prevent bad output."
+            exit 1
+          fi
+          echo "Markdown text is clean."
+
+          echo "=== 3. Deep validating JSON structure and values ==="
           python - <<'PY'
           import json
           import math
           import os
+          import sys
           from pathlib import Path
 
           week = os.environ["MARKET_WEEK"]
           path = Path(f"technical_agent_{week}.json")
-          data = json.loads(path.read_text(encoding="utf-8"))
+          
+          try:
+              data = json.loads(path.read_text(encoding="utf-8"))
+          except json.JSONDecodeError as e:
+              print(f"::error::JSON parsing failed: {e}", file=sys.stderr)
+              sys.exit(1)
 
+          # Validate core assets strictly
           for asset in ("SPX", "NDX", "IWM"):
-              item = data["metrics"].get(asset)
+              item = data.get("metrics", {}).get(asset)
               if not item:
-                  raise SystemExit(f"Missing core asset in JSON: {asset}")
+                  print(f"::error::Missing core asset in JSON: {asset}", file=sys.stderr)
+                  sys.exit(1)
               for field in ("close_price", "ema_8", "ema_21"):
                   value = item.get(field)
                   if not isinstance(value, (int, float)) or not math.isfinite(float(value)):
-                      raise SystemExit(f"Invalid value: {asset}.{field}={value!r}")
-              print(f"{asset}: close={item['close_price']}")
+                      print(f"::error::Invalid core value: {asset}.{field}={value!r}", file=sys.stderr)
+                      sys.exit(1)
 
-          print("Strict JSON and core price validation passed.")
+          # Deep scan all metrics to ensure no NaN/Inf leaked into the JSON
+          for asset_name, item in data.get("metrics", {}).items():
+              if not isinstance(item, dict): 
+                  continue
+              for key, value in item.items():
+                  if isinstance(value, float) and not math.isfinite(value):
+                      print(f"::error::Non-finite value detected in JSON: {asset_name}.{key}={value!r}", file=sys.stderr)
+                      sys.exit(1)
+
+          print("Strict JSON and Markdown validation passed. Data is fully accurate.")
           PY
 
       - name: Commit generated outputs

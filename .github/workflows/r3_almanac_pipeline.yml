@@ -45,17 +45,49 @@ jobs:
     - name: Execute Parameterized R3 Almanac Agent
       working-directory: ./r3_almanac_agent
       run: |
-        # Pass manual override tokens dynamically if they exist.
-        # If blank, Python internally computes the precise T+1 upcoming trading week!
-        python r3_almanac_agent.py "${{ github.event.inputs.custom_market_week }}" "${{ github.event.inputs.custom_market_date }}"
+        set -euo pipefail
+    
+        # Manual values are used when provided.
+        # Blank values allow the Python script to calculate the week automatically.
+        python r3_almanac_agent.py \
+          "${{ github.event.inputs.custom_market_week }}" \
+          "${{ github.event.inputs.custom_market_date }}"
+
+    - name: Verify R3 artifacts
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        WEEK="${{ github.event.inputs.custom_market_week }}"
+
+        if [ -z "$WEEK" ]; then
+          WEEK="W$(date +%V)"
+        fi
+
+        for extension in json csv md; do
+          file="outputs/R3/almanac_agent_${WEEK}.${extension}"
+
+          if [ ! -s "$file" ]; then
+            echo "Missing or empty R3 artifact: $file"
+            exit 1
+          fi
+        done
+
+        if grep -RniE '(^|[^a-z])(nan|null|n/a|infinity)([^a-z]|$)' \
+          "outputs/R3/almanac_agent_${WEEK}."*; then
+          echo "Invalid value detected in R3 outputs."
+          exit 1
+        fi
+
+        echo "All R3 artifacts exist and passed verification."
 
     - name: Secure Ledger Artifacts & Route Commit to Active Branch
       run: |
-        git config --global user.name "Team2 Data Automation Bot"
+        git config --global user.name "Team 2 Almanac Automation Bot"
         git config --global user.email "bot@team2.financial"
         
         # Capture all newly generated artifacts dynamically in the outputs folder
-        git add r3_almanac_agent/outputs/*
+        git add outputs/R3/
         
         if git diff --staged --quiet; then
           echo "No strategic data shifts detected. Terminating smoothly."
