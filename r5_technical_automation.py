@@ -8,6 +8,8 @@ from datetime import datetime, timezone, timedelta
 import numpy as np
 import pandas as pd
 import yfinance as yf
+import matplotlib.pyplot as plt
+import mplfinance as mpf
 
 # ==========================================
 # 🌐 GLOBAL CONSTANTS & ASSET DEFINITIONS
@@ -33,7 +35,7 @@ ASSETS = {
 CORE_ASSETS = ["SPX", "NDX", "IWM"]
 
 # ==========================================
-# 🛠️ HELPER & TECHNICAL CALCULATION FUNCTIONS
+# 🛠️ HELPER FUNCTIONS
 # ==========================================
 
 def normalize_week(week_str: str) -> str:
@@ -77,6 +79,58 @@ def number(value, missing="N/A"):
         raise ValueError(f"CRITICAL: Encountered non-finite number during Markdown formatting: {value}")
     return f"{float(value):,.2f}" if isinstance(value, (int, float)) else str(value)
 
+# ==========================================
+# 📈 CHART GENERATION
+# ==========================================
+
+def generate_chart(df: pd.DataFrame, label: str, name: str, output_file: Path, start_date: str, end_date: str):
+    """
+    Generates candlestick chart with EMA 8, EMA 21, Volume, and custom headers.
+    Saves image using pattern: chart_{ASSET}_{WEEK}.png
+    """
+    try:
+        plot_df = df.tail(120).copy()
+
+        # Compute exponential moving averages for chart overlay
+        plot_df['EMA8'] = plot_df['Close'].ewm(span=8, adjust=False).mean()
+        plot_df['EMA21'] = plot_df['Close'].ewm(span=21, adjust=False).mean()
+
+        add_plots = [
+            mpf.makeaddplot(plot_df['EMA8'], color='#ff7f0e', width=1.2),  # Orange line
+            mpf.makeaddplot(plot_df['EMA21'], color='#1f77b4', width=1.2)  # Blue line
+        ]
+
+        title_text = f"{label} - {name}\nDate: {start_date} to {end_date}"
+
+        # Clean high-contrast chart styling
+        style = mpf.make_mpf_style(
+            base_mpf_style='nightclouds',
+            rc={
+                'font.size': 9,
+                'axes.titlesize': 10,
+                'figure.titlesize': 11
+            }
+        )
+
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+
+        mpf.plot(
+            plot_df,
+            type='candle',
+            style=style,
+            addplot=add_plots,
+            volume=True,
+            title=title_text,
+            savefig=dict(fname=str(output_file), dpi=150, bbox_inches='tight'),
+            figscale=1.1
+        )
+        print(f"📈 Chart successfully generated: {output_file.name}")
+    except Exception as e:
+        print(f"⚠️ Failed to generate chart for [{label}]: {e}", file=sys.stderr)
+
+# ==========================================
+# 📊 TECHNICAL CALCULATIONS
+# ==========================================
 
 def calculate_indicators(df: pd.DataFrame):
     """
@@ -131,7 +185,7 @@ def calculate_indicators(df: pd.DataFrame):
 
 def validate_core(snapshot: dict):
     """
-    Ensures all core assets are present in metrics.
+    Ensures all core assets are present in metrics snapshot.
     """
     missing = [core for core in CORE_ASSETS if core not in snapshot["metrics"]]
     if missing:
@@ -173,7 +227,6 @@ def write_markdown(snapshot: dict, path: Path):
     
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-
 # ==========================================
 # 🚀 PIPELINE EXECUTION
 # ==========================================
@@ -184,6 +237,10 @@ def run(week_str: str, year: int, output_dir: Path):
     """
     week = normalize_week(week_str)
     output_dir.mkdir(parents=True, exist_ok=True)
+    
+    chart_dir = output_dir / "charts" / week
+    chart_dir.mkdir(parents=True, exist_ok=True)
+
     start_date, end_date, final_date = trading_window(week, year)
 
     print(f"📊 Running R5 Technical Pipeline for {week} ({year}) | Date Range: {start_date} to {end_date}")
@@ -215,6 +272,11 @@ def run(week_str: str, year: int, output_dir: Path):
                     df = df.droplevel(1, axis=1)
 
             snapshot["metrics"][label] = calculate_indicators(df)
+            
+            # Save chart following required filename format: chart_{ASSET}_{WEEK}.png
+            chart_file = chart_dir / f"chart_{label}_{week}.png"
+            generate_chart(df, label, name, chart_file, start_date, end_date)
+
             print(f"✅ [{label}] Technical analysis successfully compiled.")
         except Exception as exc:
             snapshot["errors"][label] = f"{type(exc).__name__}: {exc}"
