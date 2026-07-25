@@ -96,8 +96,8 @@ def generate_chart(df: pd.DataFrame, label: str, name: str, metrics: dict, outpu
         plot_df['EMA21'] = plot_df['Close'].ewm(span=21, adjust=False).mean()
 
         add_plots = [
-            mpf.makeaddplot(plot_df['EMA8'], color='#ff8c00', width=1.2),  # Orange line
-            mpf.makeaddplot(plot_df['EMA21'], color='#1e90ff', width=1.2)  # Blue line
+            mpf.make_addplot(plot_df['EMA8'], color='#ff8c00', width=1.2),  # Orange line
+            mpf.make_addplot(plot_df['EMA21'], color='#1e90ff', width=1.2)  # Blue line
         ]
 
         title_text = f"{label} - {name}\nDate: {start_date} to {end_date}"
