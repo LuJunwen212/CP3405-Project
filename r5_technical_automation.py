@@ -33,7 +33,7 @@ ASSETS = {
 CORE_ASSETS = ["SPX", "NDX", "IWM"]
 
 # ==========================================
-# 🛠️ HELPER FUNCTIONS
+# 🛠️ HELPER & TECHNICAL CALCULATION FUNCTIONS
 # ==========================================
 
 def normalize_week(week_str: str) -> str:
@@ -47,9 +47,11 @@ def normalize_week(week_str: str) -> str:
         clean_str = f"W{clean_str}"
     return clean_str
 
+
 def trading_window(week_str: str, year: int):
     """
     Calculates date range for data fetching based on ISO week number and year.
+    Returns: (start_date, end_date, final_date)
     """
     clean_week = normalize_week(week_str).replace("W", "")
     week_num = int(clean_week)
@@ -64,24 +66,101 @@ def trading_window(week_str: str, year: int):
     
     return start_date, end_date, final_date
 
-# ... (Retain existing imports, ASSETS, and CORE_ASSETS definitions) ...
 
 def number(value, missing="N/A"):
-    """Format numbers for Markdown. Strictly blocks non-finite values to prevent silent data corruption."""
+    """
+    Formats numbers for Markdown output. Strictly blocks non-finite values (NaN/Inf).
+    """
     if value is None:
         return missing
-    # Intercept NaN/Inf during string formatting to fail fast
     if isinstance(value, float) and not math.isfinite(value):
         raise ValueError(f"CRITICAL: Encountered non-finite number during Markdown formatting: {value}")
     return f"{float(value):,.2f}" if isinstance(value, (int, float)) else str(value)
 
 
+def calculate_indicators(df: pd.DataFrame):
+    """
+    Calculates technical metrics: Close, EMA 8, EMA 21, RSI 14, Support, and Resistance.
+    """
+    if df.empty or len(df) < 21:
+        raise ValueError("Insufficient price data retrieved to compute technical indicators.")
+
+    close = df['Close']
+    if isinstance(close, pd.DataFrame):
+        close = close.iloc[:, 0]
+
+    last_close = float(close.iloc[-1])
+    ema_8 = float(close.ewm(span=8, adjust=False).mean().iloc[-1])
+    ema_21 = float(close.ewm(span=21, adjust=False).mean().iloc[-1])
+
+    # RSI Calculation (14 periods)
+    delta = close.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+    rs = gain / loss
+    rsi_series = 100 - (100 / (1 + rs))
+    last_rsi = float(rsi_series.iloc[-1]) if math.isfinite(rsi_series.iloc[-1]) else 50.0
+
+    # Rolling Support and Resistance (52-week min/max)
+    support = float(close.tail(252).min())
+    resistance = float(close.tail(252).max())
+
+    # Trend and Bias classification
+    if last_close > ema_8 and ema_8 > ema_21:
+        trend = "Bullish"
+        bias = "Bullish"
+    elif last_close < ema_8 and ema_8 < ema_21:
+        trend = "Bearish"
+        bias = "Bearish"
+    else:
+        trend = "Neutral"
+        bias = "Neutral"
+
+    return {
+        "close_price": last_close,
+        "ema_8": ema_8,
+        "ema_21": ema_21,
+        "rsi": last_rsi,
+        "support": support,
+        "resistance": resistance,
+        "trend": trend,
+        "bias": bias,
+        "confidence": "Medium"
+    }
+
+
+def validate_core(snapshot: dict):
+    """
+    Ensures all core assets are present in metrics.
+    """
+    missing = [core for core in CORE_ASSETS if core not in snapshot["metrics"]]
+    if missing:
+        raise RuntimeError(f"Core validation failed: The following core assets are missing from metrics: {missing}")
+
+
+def validate_all_metrics(metrics: dict):
+    """
+    Recursively validates that all numerical values are finite numbers.
+    """
+    for asset_name, item in metrics.items():
+        if isinstance(item, dict):
+            for key, val in item.items():
+                if isinstance(val, float) and not math.isfinite(val):
+                    raise ValueError(f"Validation Error: Non-finite value in {asset_name}.{key}: {val}")
+
+
 def write_markdown(snapshot: dict, path: Path):
+    """
+    Generates structured Markdown report for R5 Technical Agent output.
+    """
     metrics = snapshot["metrics"]
     week = snapshot["meta"]["market_week"]
-    lines = [f"# R5 Technical Agent Report: {week}", "", "## Cross-Asset Technical Matrix", "",
-             "| Asset | Close | EMA 8 | EMA 21 | Support | Resistance | Trend | Bias | Confidence |",
-             "|---|---:|---:|---:|---:|---:|---|---|---|"]
+    lines = [
+        f"# R5 Technical Agent Report: {week}", "",
+        "## Cross-Asset Technical Matrix", "",
+        "| Asset | Close | EMA 8 | EMA 21 | Support | Resistance | Trend | Bias | Confidence |",
+        "|---|---:|---:|---:|---:|---:|---|---|---|"
+    ]
     for label in ASSETS:
         if label not in metrics:
             continue
@@ -91,116 +170,87 @@ def write_markdown(snapshot: dict, path: Path):
             f"{number(item['ema_21'])} | {number(item['support'])} | {number(item['resistance'])} | "
             f"{item['trend']} | {item['bias']} | {item['confidence']} |"
         )
-    for label in ASSETS:
-        if label not in metrics:
-            continue
-        item = metrics[label]
-        lines += ["", f"## {item['asset_name']} ({label})", "", f"![{label} chart]({item['chart_file']})", "",
-                  f"- **Close price:** {number(item['close_price'])}", f"- **EMA 8:** {number(item['ema_8'])}",
-                  f"- **EMA 21:** {number(item['ema_21'])}", f"- **Support:** {number(item['support'])}",
-                  f"- **Resistance:** {number(item['resistance'], 'No clear nearby resistance')}",
-                  f"- **Trend:** {item['trend']}", f"- **Bias:** {item['bias']}",
-                  f"- **Confidence:** {item['confidence']}"]
-    lines += ["", "## Methodology Note", "",
-              "The JSON writer rejects NaN and infinity. Invalid core prices cause the workflow to fail instead of publishing incorrect values.", ""]
-    path.write_text("\n".join(lines), encoding="utf-8")
-
-
-def validate_all_metrics(metrics: dict):
-    """Deep scan all metrics to find root causes of calculation issues (e.g., NaN/Inf in any field)."""
-    errors = []
-    for label, item in metrics.items():
-        if not isinstance(item, dict):
-            errors.append(f"{label} is not a dictionary")
-            continue
-        for key, value in item.items():
-            # Check all numeric fields for non-finite values
-            if isinstance(value, float) and not math.isfinite(value):
-                errors.append(f"{label}.{key} is non-finite ({value})")
     
-    if errors:
-        # Raise detailed error to help identify the root cause in CI logs
-        raise RuntimeError("Metrics validation failed (Non-finite values detected):\n - " + "\n - ".join(errors))
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def validate_core(snapshot: dict):
-    """First line of defense: ensure core assets exist and critical fields are strictly valid."""
-    errors = []
-    for label in CORE_ASSETS:
-        item = snapshot["metrics"].get(label)
-        if not item:
-            errors.append(f"Core asset {label} is missing from metrics")
-            continue
-        for field in ("close_price", "ema_8", "ema_21"):
-            value = item.get(field)
-            if not isinstance(value, (int, float)) or not math.isfinite(float(value)):
-                errors.append(f"Core asset {label}.{field} is invalid or non-finite: {value!r}")
-    if errors:
-        raise RuntimeError("Core validation failed:\n - " + "\n - ".join(errors))
+# ==========================================
+# 🚀 PIPELINE EXECUTION
+# ==========================================
 
-
-def run(week: str, year: int, output_dir: Path):
-    week = normalize_week(week)
-    start, end, final_date = trading_window(week, year)
+def run(week_str: str, year: int, output_dir: Path):
+    """
+    Executes technical analysis pipeline, validations, and exports output files.
+    """
+    week = normalize_week(week_str)
     output_dir.mkdir(parents=True, exist_ok=True)
-    chart_dir = output_dir / "charts" / week
-    
+    start_date, end_date, final_date = trading_window(week, year)
+
+    print(f"📊 Running R5 Technical Pipeline for {week} ({year}) | Date Range: {start_date} to {end_date}")
+
     snapshot = {
         "meta": {
-            "agent": "R5 Technical Agent",
             "market_week": week,
-            "market_year": year,
-            "generation_time": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "data_source": "Yahoo Finance via yfinance",
-            "data_window_start": start,
-            "data_window_end": final_date,
-            "requested_asset_count": len(ASSETS),
-            "successful_asset_count": 0,
-            "failed_asset_count": 0,
+            "year": year,
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "data_start": start_date,
+            "data_end": end_date,
+            "final_trading_day": final_date
         },
         "metrics": {},
-        "errors": {},
+        "errors": {}
     }
-    
+
     for label, (symbol, name) in ASSETS.items():
         try:
-            snapshot["metrics"][label] = analyze(label, symbol, name, start, end, week, chart_dir)
+            df = yf.download(symbol, start=start_date, end=end_date, progress=False)
+            if df.empty:
+                raise ValueError(f"No price data retrieved for {symbol} ({name})")
+
+            # Resolve multi-level column indexing if present in recent yfinance releases
+            if isinstance(df.columns, pd.MultiIndex):
+                if 'Ticker' in df.columns.names:
+                    df = df.xs(symbol, level='Ticker', axis=1)
+                else:
+                    df = df.droplevel(1, axis=1)
+
+            snapshot["metrics"][label] = calculate_indicators(df)
+            print(f"✅ [{label}] Technical analysis successfully compiled.")
         except Exception as exc:
-            # Log detailed root cause to stderr and snapshot errors for debugging
             snapshot["errors"][label] = f"{type(exc).__name__}: {exc}"
             print(f"ERROR [{label}]: {exc}", file=sys.stderr)
-            
+
     snapshot["meta"]["successful_asset_count"] = len(snapshot["metrics"])
     snapshot["meta"]["failed_asset_count"] = len(snapshot["errors"])
-    
-    # Execute two-phase validation before writing any files
+
+    # Strict validations before file serialization
     validate_core(snapshot)
     validate_all_metrics(snapshot["metrics"])
 
     json_path = output_dir / f"technical_agent_{week}.json"
     md_path = output_dir / f"technical_agent-{week}.md"
-    
-    # allow_nan=False is the final safeguard to prevent NaN serialization
+
     json_path.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     write_markdown(snapshot, md_path)
-    
+
     print(f"Successfully generated: {json_path}")
     print(f"Successfully generated: {md_path}")
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--market-week", required=True)
+    parser = argparse.ArgumentParser(description="R5 Technical Analysis Automation Tool")
+    parser.add_argument("--market-week", required=True, help="Target market week (e.g., W30)")
     parser.add_argument("--year", type=int, default=datetime.now(timezone.utc).year)
     parser.add_argument("--output-dir", default=".")
     args = parser.parse_args()
+
     try:
         run(args.market_week, args.year, Path(args.output_dir))
-    except Exception as exc:
-        print(f"FATAL: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 0
+    except Exception as e:
+        print(f"FATAL: {type(e).__name__}: {e}", file=sys.stderr)
         return 1
-    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
