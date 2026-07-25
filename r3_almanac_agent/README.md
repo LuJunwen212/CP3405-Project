@@ -210,8 +210,8 @@ GitHub Actions cron expressions use UTC.
 
 | Time zone | Run time |
 |---|---|
-| UTC | Saturday at 00:00 |
-| Singapore Time (UTC+8) | Saturday at 08:00 |
+| UTC | Saturday at 01:13 |
+| Singapore Time (UTC+8) | Saturday at 09:13 |
 
 The scheduled run uses automatic values:
 
