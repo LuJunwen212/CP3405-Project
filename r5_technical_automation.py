@@ -4,7 +4,7 @@ import json
 import sys
 import argparse
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # ==========================================
 # 🛠️ HELPER FUNCTIONS
@@ -20,6 +20,23 @@ def normalize_week(week_str: str) -> str:
     if not clean_str.startswith("W"):
         clean_str = f"W{clean_str}"
     return clean_str
+
+def trading_window(week_str: str, year: int):
+    """
+    Calculates date range for data fetching based on ISO week number and year.
+    """
+    clean_week = normalize_week(week_str).replace("W", "")
+    week_num = int(clean_week)
+    
+    monday = datetime.strptime(f"{year}-W{week_num:02d}-1", "%G-W%V-%u").date()
+    friday = monday + timedelta(days=4)
+    saturday = monday + timedelta(days=5)
+    
+    start_date = (monday - timedelta(days=365)).strftime("%Y-%m-%d")
+    end_date = saturday.strftime("%Y-%m-%d")
+    final_date = friday.strftime("%Y-%m-%d")
+    
+    return start_date, end_date, final_date
 
 # ... (Retain existing imports, ASSETS, and CORE_ASSETS definitions) ...
 
