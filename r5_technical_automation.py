@@ -14,20 +14,20 @@ import yfinance as yf
 # ==========================================
 
 ASSETS = {
-    "SPX": "^GSPC",
-    "NDX": "^NDX",
-    "IWM": "IWM",
-    "XLC": "XLC",
-    "XLY": "XLY",
-    "XLP": "XLP",
-    "XLE": "XLE",
-    "XLF": "XLF",
-    "XLV": "XLV",
-    "XLI": "XLI",
-    "XLB": "XLB",
-    "XLRE": "XLRE",
-    "XLK": "XLK",
-    "XLU": "XLU"
+    "SPX": ("^GSPC", "S&P 500 Index"),
+    "NDX": ("^NDX", "Nasdaq 100 Index"),
+    "IWM": ("IWM", "iShares Russell 2000 ETF"),
+    "XLC": ("XLC", "Communication Services Select Sector SPDR Fund"),
+    "XLY": ("XLY", "Consumer Discretionary Select Sector SPDR Fund"),
+    "XLP": ("XLP", "Consumer Staples Select Sector SPDR Fund"),
+    "XLE": ("XLE", "Energy Select Sector SPDR Fund"),
+    "XLF": ("XLF", "Financial Select Sector SPDR Fund"),
+    "XLV": ("XLV", "Health Care Select Sector SPDR Fund"),
+    "XLI": ("XLI", "Industrial Select Sector SPDR Fund"),
+    "XLB": ("XLB", "Materials Select Sector SPDR Fund"),
+    "XLRE": ("XLRE", "Real Estate Select Sector SPDR Fund"),
+    "XLK": ("XLK", "Technology Select Sector SPDR Fund"),
+    "XLU": ("XLU", "Utilities Select Sector SPDR Fund")
 }
 
 CORE_ASSETS = ["SPX", "NDX", "IWM"]
