@@ -11,9 +11,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
-# ==========================================
-# 🌐 GLOBAL CONSTANTS & ASSET DEFINITIONS
-# ==========================================
+# GLOBAL CONSTANTS & ASSET DEFINITIONS
 
 ASSETS = {
     "SPX": ("^GSPC", "S&P 500 Index"),
@@ -34,9 +32,7 @@ ASSETS = {
 
 CORE_ASSETS = ["SPX", "NDX", "IWM"]
 
-# ==========================================
-# 🛠️ HELPER FUNCTIONS
-# ==========================================
+# HELPER FUNCTIONS
 
 def normalize_week(week_str: str) -> str:
     """
@@ -79,9 +75,7 @@ def number(value, missing="N/A"):
         raise ValueError(f"CRITICAL: Encountered non-finite number during Markdown formatting: {value}")
     return f"{float(value):,.2f}" if isinstance(value, (int, float)) else str(value)
 
-# ==========================================
-# 📈 CHART & EMBEDDED TABLE GENERATION
-# ==========================================
+# CHART & EMBEDDED TABLE GENERATION
 
 def generate_chart(df: pd.DataFrame, label: str, name: str, metrics: dict, output_file: Path, start_date: str, end_date: str):
     """
@@ -161,10 +155,9 @@ def generate_chart(df: pd.DataFrame, label: str, name: str, metrics: dict, outpu
         print(f"📈 Successfully generated chart: {output_file.name}")
     except Exception as e:
         print(f"⚠️ Failed to generate chart for [{label}]: {e}", file=sys.stderr)
+        sys.exit(1)
 
-# ==========================================
-# 📊 TECHNICAL INDICATORS
-# ==========================================
+# TECHNICAL INDICATORS
 
 def calculate_indicators(df: pd.DataFrame):
     """
