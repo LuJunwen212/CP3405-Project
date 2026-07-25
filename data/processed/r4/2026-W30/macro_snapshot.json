@@ -5,7 +5,7 @@
     "iso_week": "W30",
     "as_of_sgt": "2026-07-25",
     "target_period_sgt": "2026-07-20 to 2026-07-25",
-    "generated_at_utc": "2026-07-25T07:50:08+00:00",
+    "generated_at_utc": "2026-07-25T08:01:59+00:00",
     "schedule": "Saturday"
   },
   "treasury": {
@@ -658,16 +658,6 @@
       "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOcHJXNWRHeWp6RkEzRDhsM283eGhMSGw1ckNwaHVGbllRaDBNMm9WWjZwVHU1VFNPemVBT0Zycmw2WWprS2pvTGw1RjBtUzc0N0hJa3JPNXpOU09RRjdKQzhvay0tdDdad1NKM0o4SkVhaVhjZXdzdlFGdXZJcGVKajJreXhPOGEzeXUwTW9wdDg5bVFwdXpDcDJ6ZWVMcVRPcWR2UGM3bTZhVEhhdUtV?oc=5"
     },
     {
-      "published_sgt": "2026-07-23T13:45+08:00",
-      "title": "‘Nice hairstyle': Russian foreign minister quips at reporter after Rubio meeting - AP News",
-      "publisher": "AP News",
-      "feed": "Google News AP-only search",
-      "categories": [
-        "geopolitical"
-      ],
-      "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQeUdpSlRsNnVOQVo4YVN6Tzk1blJfbmJWYk02RFVvb1BibzlvSWdfZTFIcHRlaVZ4OXptbFdzcHlxa3JKc3FyeG55VHVjR3d6UlVENFo0OHJKUXQ3a21pbzgxc1pIMmxYbm9TNTIwSGoxa1UwSTFCWnY4M3JJRFFPbTFZZFZDenA2bDc0UkxYOVl3eE01TFpUUUc3NmE1dDhPOXNNZmlKeG5JQmFhcGN6YVlGSm5QdWVNT3VFUUdBczF4bjF3WkFycFk5UWt6Z25M?oc=5"
-    },
-    {
       "published_sgt": "2026-07-23T06:54+08:00",
       "title": "House Republicans adopt $95 billion package for the Iran war and Trump’s priorities - AP News",
       "publisher": "AP News",
@@ -686,6 +676,16 @@
         "oil_energy"
       ],
       "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNRGU4c1pFU21KSHRpZmVmNU1GVG1MRUFxalNiakVTVHVXZV9qdVR2Q05FUk1IemZ6bXc3ZkVQd1kwcWNtdFJvOWNUSFhMSmJvRWp0OUZUcEFpcFJTeHdTUjNmdDhISlZ4ajNnT3lDaV9tTm44VW14Q3dncUt3b1c4SzV0dExhckhWamdzU2JaNjQ5Zw?oc=5"
+    },
+    {
+      "published_sgt": "2026-07-22T23:24+08:00",
+      "title": "Germany has deported a Uyghur man to China, his mother says - AP News",
+      "publisher": "AP News",
+      "feed": "Google News AP-only search",
+      "categories": [
+        "geopolitical"
+      ],
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONHBQRnkxeVNKYUhNY0poOGZHOV8ySVI5bS1FamJ6RFExSlJVaXdYVEdYV2VmbHdON210SzVrcVhiV05PS3c5MlhZdjVidWFXcDctT29HNTBfQWU0OElETl9jTV9uenJxSjZyVzJheHFOYjhaT2FjNGk1dWRlSnAwdmQtc25Udl9YZThQbGQ1TTBxcTNaeWVXa3ZRNGhvR0h6NzNR?oc=5"
     }
   ],
   "source_status": [
@@ -694,35 +694,35 @@
       "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv",
       "status": "ok",
       "detail": "collection and parsing succeeded",
-      "elapsed_seconds": 0.25
+      "elapsed_seconds": 0.15
     },
     {
       "source": "BLS public timeseries API",
       "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
       "status": "ok",
       "detail": "collection and parsing succeeded",
-      "elapsed_seconds": 0.74
+      "elapsed_seconds": 0.76
     },
     {
       "source": "U.S. Department of Labor weekly claims",
       "url": "https://oui.doleta.gov/unemploy/DataDashboard.asp",
       "status": "ok",
       "detail": "collection and parsing succeeded",
-      "elapsed_seconds": 0.37
+      "elapsed_seconds": 0.48
     },
     {
       "source": "Yahoo Finance via yfinance (batch + per-ticker retry)",
       "url": "https://finance.yahoo.com/",
       "status": "ok",
       "detail": "collection and parsing succeeded",
-      "elapsed_seconds": 2.77
+      "elapsed_seconds": 3.45
     },
     {
       "source": "BLS official release calendar",
       "url": "https://www.bls.gov/schedule/news_release/bls.ics",
       "status": "ok",
       "detail": "160 key events parsed before date filtering",
-      "elapsed_seconds": 0.24
+      "elapsed_seconds": 0.2
     },
     {
       "source": "BEA official release schedule",
@@ -736,7 +736,7 @@
       "url": "https://www.federalreserve.gov/newsevents/2026-july.htm",
       "status": "ok",
       "detail": "9 key events parsed from 2 month page(s)",
-      "elapsed_seconds": 0.32
+      "elapsed_seconds": 0.29
     },
     {
       "source": "DOL weekly claims release cadence",
@@ -750,35 +750,35 @@
       "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
       "status": "ok",
       "detail": "3 key U.S. events parsed; used only to fill official-calendar gaps",
-      "elapsed_seconds": 0.06
+      "elapsed_seconds": 0.31
     },
     {
       "source": "Federal Reserve press releases",
       "url": "https://www.federalreserve.gov/feeds/press_all.xml",
       "status": "ok",
       "detail": "0 relevant dated headlines",
-      "elapsed_seconds": 0.11
+      "elapsed_seconds": 0.1
     },
     {
       "source": "Federal Reserve speeches",
       "url": "https://www.federalreserve.gov/feeds/speeches.xml",
       "status": "ok",
       "detail": "0 relevant dated headlines",
-      "elapsed_seconds": 0.04
+      "elapsed_seconds": 0.13
     },
     {
       "source": "Google News AP-only search",
       "url": "https://news.google.com/rss/search?q=site%3Aapnews.com+%28Federal+Reserve+OR+inflation+OR+oil+OR+economy+OR+geopolitical%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen",
       "status": "ok",
-      "detail": "22 relevant dated headlines",
-      "elapsed_seconds": 0.48
+      "detail": "21 relevant dated headlines",
+      "elapsed_seconds": 0.51
     },
     {
       "source": "Google News macro search",
       "url": "https://news.google.com/rss/search?q=%28Federal+Reserve+OR+inflation+OR+jobless+claims+OR+oil+OR+geopolitical%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen",
       "status": "ok",
       "detail": "99 relevant dated headlines",
-      "elapsed_seconds": 0.47
+      "elapsed_seconds": 0.43
     },
     {
       "source": "CME FedWatch",

@@ -137,9 +137,9 @@ These are headline-level leads only. A headline is not evidence of the article's
 | 2026-07-24T05:07+08:00 | labor | Reuters | [US weekly jobless claims plunge to lowest since 1969 - Reuters](https://news.google.com/rss/articles/CBMimgFBVV95cUxQaDVZUF9PZTBpQ1NWcl9oY3hCNTVKTmMzLWoyNnE3VzlXQUZRa1NfX1Rpc2Y5dDU3Z0FDbjlPRVBYdTJwRHFKSFBEUjVETDZmdXhqQ2QxZVFadXJaRkpCNkxSTmF0bkRkNzUxS2xjYmZkdU5NdTFkaGtJVkR2a3BOQV84dE5TTkxxTXR2d1JIa0YyMGpIZXE1Y3lR?oc=5) |
 | 2026-07-24T04:38+08:00 | oil_energy | AP News | [Brent oil tops $100 per barrel, as tumbles for Tesla and Alphabet yank Wall Street lower - AP News](https://news.google.com/rss/articles/CBMinwFBVV95cUxOdzJSMEdwQVV6RGMtWDMxcGFBci0xMURsa2hYWnpiTk81azZpVk9IS1gyWDlLM2xoM2xBcUVpUDFiN01tekpWUUNKcWNDZWtmbDk4RDBCbW5ZNjlQdEJLNjlTYnRERDZfVmxYNWtfamNGWjZJMkxwaDV0U0wtSnBtTDJnblFjYmxqRWoxYmFGd2JOUng0Q3JBUUpMcGxWa3M?oc=5) |
 | 2026-07-24T00:36+08:00 | labor | AP News | [US filings for unemployment aid fall to 187,000 last week, fewest since 1969 - AP News](https://news.google.com/rss/articles/CBMirwFBVV95cUxOcHJXNWRHeWp6RkEzRDhsM283eGhMSGw1ckNwaHVGbllRaDBNMm9WWjZwVHU1VFNPemVBT0Zycmw2WWprS2pvTGw1RjBtUzc0N0hJa3JPNXpOU09RRjdKQzhvay0tdDdad1NKM0o4SkVhaVhjZXdzdlFGdXZJcGVKajJreXhPOGEzeXUwTW9wdDg5bVFwdXpDcDJ6ZWVMcVRPcWR2UGM3bTZhVEhhdUtV?oc=5) |
-| 2026-07-23T13:45+08:00 | geopolitical | AP News | [‘Nice hairstyle': Russian foreign minister quips at reporter after Rubio meeting - AP News](https://news.google.com/rss/articles/CBMi0AFBVV95cUxQeUdpSlRsNnVOQVo4YVN6Tzk1blJfbmJWYk02RFVvb1BibzlvSWdfZTFIcHRlaVZ4OXptbFdzcHlxa3JKc3FyeG55VHVjR3d6UlVENFo0OHJKUXQ3a21pbzgxc1pIMmxYbm9TNTIwSGoxa1UwSTFCWnY4M3JJRFFPbTFZZFZDenA2bDc0UkxYOVl3eE01TFpUUUc3NmE1dDhPOXNNZmlKeG5JQmFhcGN6YVlGSm5QdWVNT3VFUUdBczF4bjF3WkFycFk5UWt6Z25M?oc=5) |
 | 2026-07-23T06:54+08:00 | geopolitical | AP News | [House Republicans adopt $95 billion package for the Iran war and Trump’s priorities - AP News](https://news.google.com/rss/articles/CBMingFBVV95cUxQRnJzMFNDX1hzNm1GaDlqcDE1Y0U3a0Q5U09JRkpnZjBkWlNDYnM0eFNtYzRmOWVJU3RMazB3YkJYcjNTendTZFczZExNaE1WREJkcGFNenpYMVhPQ1g0LVh2NXc3eFdTbVpVb3A1S3hDZUhHckFkYnJKeWY0bkdjbjdMamQtMEdVSTRwTmJxNkRwcTFGeWZqV2VXNzhoUQ?oc=5) |
 | 2026-07-23T05:14+08:00 | oil_energy | AP News | [Oil prices rise another 3%, while Wall Street drifts in mixed trading - AP News](https://news.google.com/rss/articles/CBMikgFBVV95cUxNRGU4c1pFU21KSHRpZmVmNU1GVG1MRUFxalNiakVTVHVXZV9qdVR2Q05FUk1IemZ6bXc3ZkVQd1kwcWNtdFJvOWNUSFhMSmJvRWp0OUZUcEFpcFJTeHdTUjNmdDhISlZ4ajNnT3lDaV9tTm44VW14Q3dncUt3b1c4SzV0dExhckhWamdzU2JaNjQ5Zw?oc=5) |
+| 2026-07-22T23:24+08:00 | geopolitical | AP News | [Germany has deported a Uyghur man to China, his mother says - AP News](https://news.google.com/rss/articles/CBMiowFBVV95cUxONHBQRnkxeVNKYUhNY0poOGZHOV8ySVI5bS1FamJ6RFExSlJVaXdYVEdYV2VmbHdON210SzVrcVhiV05PS3c5MlhZdjVidWFXcDctT29HNTBfQWU0OElETl9jTV9uenJxSjZyVzJheHFOYjhaT2FjNGk1dWRlSnAwdmQtc25Udl9YZThQbGQ1TTBxcTNaeWVXa3ZRNGhvR0h6NzNR?oc=5) |
 
 ## R4 Manual Interpretation Checklist
 
@@ -166,7 +166,7 @@ These are headline-level leads only. A headline is not evidence of the article's
 | Free public weekly economic-calendar fallback | ok | 3 key U.S. events parsed; used only to fill official-calendar gaps |
 | Federal Reserve press releases | ok | 0 relevant dated headlines |
 | Federal Reserve speeches | ok | 0 relevant dated headlines |
-| Google News AP-only search | ok | 22 relevant dated headlines |
+| Google News AP-only search | ok | 21 relevant dated headlines |
 | Google News macro search | ok | 99 relevant dated headlines |
 | CME FedWatch | skipped | No stable free public FedWatch API; dynamic dashboard remains a manual R4 check. |
 | Trading Economics calendar API | skipped | Reliable API access requires credentials; guest endpoint returns HTTP 410. |

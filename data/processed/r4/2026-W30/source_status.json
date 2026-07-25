@@ -4,35 +4,35 @@
     "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv",
     "status": "ok",
     "detail": "collection and parsing succeeded",
-    "elapsed_seconds": 0.25
+    "elapsed_seconds": 0.15
   },
   {
     "source": "BLS public timeseries API",
     "url": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
     "status": "ok",
     "detail": "collection and parsing succeeded",
-    "elapsed_seconds": 0.74
+    "elapsed_seconds": 0.76
   },
   {
     "source": "U.S. Department of Labor weekly claims",
     "url": "https://oui.doleta.gov/unemploy/DataDashboard.asp",
     "status": "ok",
     "detail": "collection and parsing succeeded",
-    "elapsed_seconds": 0.37
+    "elapsed_seconds": 0.48
   },
   {
     "source": "Yahoo Finance via yfinance (batch + per-ticker retry)",
     "url": "https://finance.yahoo.com/",
     "status": "ok",
     "detail": "collection and parsing succeeded",
-    "elapsed_seconds": 2.77
+    "elapsed_seconds": 3.45
   },
   {
     "source": "BLS official release calendar",
     "url": "https://www.bls.gov/schedule/news_release/bls.ics",
     "status": "ok",
     "detail": "160 key events parsed before date filtering",
-    "elapsed_seconds": 0.24
+    "elapsed_seconds": 0.2
   },
   {
     "source": "BEA official release schedule",
@@ -46,7 +46,7 @@
     "url": "https://www.federalreserve.gov/newsevents/2026-july.htm",
     "status": "ok",
     "detail": "9 key events parsed from 2 month page(s)",
-    "elapsed_seconds": 0.32
+    "elapsed_seconds": 0.29
   },
   {
     "source": "DOL weekly claims release cadence",
@@ -60,35 +60,35 @@
     "url": "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
     "status": "ok",
     "detail": "3 key U.S. events parsed; used only to fill official-calendar gaps",
-    "elapsed_seconds": 0.06
+    "elapsed_seconds": 0.31
   },
   {
     "source": "Federal Reserve press releases",
     "url": "https://www.federalreserve.gov/feeds/press_all.xml",
     "status": "ok",
     "detail": "0 relevant dated headlines",
-    "elapsed_seconds": 0.11
+    "elapsed_seconds": 0.1
   },
   {
     "source": "Federal Reserve speeches",
     "url": "https://www.federalreserve.gov/feeds/speeches.xml",
     "status": "ok",
     "detail": "0 relevant dated headlines",
-    "elapsed_seconds": 0.04
+    "elapsed_seconds": 0.13
   },
   {
     "source": "Google News AP-only search",
     "url": "https://news.google.com/rss/search?q=site%3Aapnews.com+%28Federal+Reserve+OR+inflation+OR+oil+OR+economy+OR+geopolitical%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen",
     "status": "ok",
-    "detail": "22 relevant dated headlines",
-    "elapsed_seconds": 0.48
+    "detail": "21 relevant dated headlines",
+    "elapsed_seconds": 0.51
   },
   {
     "source": "Google News macro search",
     "url": "https://news.google.com/rss/search?q=%28Federal+Reserve+OR+inflation+OR+jobless+claims+OR+oil+OR+geopolitical%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen",
     "status": "ok",
     "detail": "99 relevant dated headlines",
-    "elapsed_seconds": 0.47
+    "elapsed_seconds": 0.43
   },
   {
     "source": "CME FedWatch",
