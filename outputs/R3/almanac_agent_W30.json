@@ -2,7 +2,7 @@
   "agent": "R3 Almanac Agent",
   "week": "W30",
   "date_range": "2026-07-27 to 2026-07-31",
-  "generated_at": "2026-07-20T10:06:15",
+  "generated_at": "2026-07-25T01:40:33",
   "source_file": "Stock Trader's Almanac 2026_L.pdf",
   "automation_level": "Fully optimized parameterized pipeline output via Cloud Workflow infrastructure.",
   "cycle_context": {
