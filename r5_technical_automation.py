@@ -80,56 +80,90 @@ def number(value, missing="N/A"):
     return f"{float(value):,.2f}" if isinstance(value, (int, float)) else str(value)
 
 # ==========================================
-# 📈 CHART GENERATION
+# 📈 CHART & EMBEDDED TABLE GENERATION
 # ==========================================
 
-def generate_chart(df: pd.DataFrame, label: str, name: str, output_file: Path, start_date: str, end_date: str):
+def generate_chart(df: pd.DataFrame, label: str, name: str, metrics: dict, output_file: Path, start_date: str, end_date: str):
     """
-    Generates candlestick chart with EMA 8, EMA 21, Volume, and custom headers.
-    Saves image using pattern: chart_{ASSET}_{WEEK}.png
+    Generates candlestick chart with EMA 8, EMA 21, Volume panel, and an 
+    embedded 4-column summary metric table matching target chart_SPX_W30 layout.
     """
     try:
         plot_df = df.tail(120).copy()
 
-        # Compute exponential moving averages for chart overlay
+        # Exponential Moving Averages
         plot_df['EMA8'] = plot_df['Close'].ewm(span=8, adjust=False).mean()
         plot_df['EMA21'] = plot_df['Close'].ewm(span=21, adjust=False).mean()
 
         add_plots = [
-            mpf.makeaddplot(plot_df['EMA8'], color='#ff7f0e', width=1.2),  # Orange line
-            mpf.makeaddplot(plot_df['EMA21'], color='#1f77b4', width=1.2)  # Blue line
+            mpf.makeaddplot(plot_df['EMA8'], color='#ff8c00', width=1.2),  # Orange line
+            mpf.makeaddplot(plot_df['EMA21'], color='#1e90ff', width=1.2)  # Blue line
         ]
 
         title_text = f"{label} - {name}\nDate: {start_date} to {end_date}"
 
-        # Clean high-contrast chart styling
         style = mpf.make_mpf_style(
             base_mpf_style='nightclouds',
             rc={
-                'font.size': 9,
+                'font.size': 8,
                 'axes.titlesize': 10,
                 'figure.titlesize': 11
             }
         )
 
-        output_file.parent.mkdir(parents=True, exist_ok=True)
-
-        mpf.plot(
+        # Plot candlestick and volume with figure reference
+        fig, axlist = mpf.plot(
             plot_df,
             type='candle',
             style=style,
             addplot=add_plots,
             volume=True,
             title=title_text,
-            savefig=dict(fname=str(output_file), dpi=150, bbox_inches='tight'),
+            returnfig=True,
             figscale=1.1
         )
-        print(f"📈 Chart successfully generated: {output_file.name}")
+
+        # Reserve space at bottom for summary table
+        fig.subplots_adjust(bottom=0.28)
+
+        # Structure 4x4 metric grid matching target images
+        table_data = [
+            ["Close", f"{metrics['close_price']:,.2f}", "Trend", metrics['trend']],
+            ["EMA 8", f"{metrics['ema_8']:,.2f}", "Bias", metrics['bias']],
+            ["EMA 21", f"{metrics['ema_21']:,.2f}", "RSI (14)", f"{metrics['rsi']:.2f}"],
+            ["Support", f"{metrics['support']:,.2f}", "Resistance", f"{metrics['resistance']:,.2f}"]
+        ]
+
+        # Embedded table axis position
+        table_ax = fig.add_axes([0.15, 0.03, 0.72, 0.18])
+        table_ax.axis('off')
+
+        table = table_ax.table(
+            cellText=table_data,
+            loc='center',
+            cellLoc='center'
+        )
+
+        table.auto_set_font_size(False)
+        table.set_fontsize(8)
+        table.scale(1.0, 1.25)
+
+        # Cell styling matching dark aesthetic
+        for key, cell in table.get_celld().items():
+            cell.set_edgecolor('#444444')
+            cell.set_facecolor('#1a1a1a')
+            cell.get_text().set_color('#ffffff')
+
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(str(output_file), dpi=150, bbox_inches='tight')
+        plt.close(fig)
+
+        print(f"📈 Successfully generated chart: {output_file.name}")
     except Exception as e:
         print(f"⚠️ Failed to generate chart for [{label}]: {e}", file=sys.stderr)
 
 # ==========================================
-# 📊 TECHNICAL CALCULATIONS
+# 📊 TECHNICAL INDICATORS
 # ==========================================
 
 def calculate_indicators(df: pd.DataFrame):
@@ -185,16 +219,16 @@ def calculate_indicators(df: pd.DataFrame):
 
 def validate_core(snapshot: dict):
     """
-    Ensures all core assets are present in metrics snapshot.
+    Ensures core indices (SPX, NDX, IWM) are present in calculation output.
     """
     missing = [core for core in CORE_ASSETS if core not in snapshot["metrics"]]
     if missing:
-        raise RuntimeError(f"Core validation failed: The following core assets are missing from metrics: {missing}")
+        raise RuntimeError(f"Core validation failed: Missing core assets: {missing}")
 
 
 def validate_all_metrics(metrics: dict):
     """
-    Recursively validates that all numerical values are finite numbers.
+    Recursively validates that all metrics values are finite numbers.
     """
     for asset_name, item in metrics.items():
         if isinstance(item, dict):
@@ -205,7 +239,7 @@ def validate_all_metrics(metrics: dict):
 
 def write_markdown(snapshot: dict, path: Path):
     """
-    Generates structured Markdown report for R5 Technical Agent output.
+    Generates technical_agent-{WEEK}.md report file.
     """
     metrics = snapshot["metrics"]
     week = snapshot["meta"]["market_week"]
@@ -233,11 +267,12 @@ def write_markdown(snapshot: dict, path: Path):
 
 def run(week_str: str, year: int, output_dir: Path):
     """
-    Executes technical analysis pipeline, validations, and exports output files.
+    Executes technical analysis, generates charts, JSON, and Markdown files.
     """
     week = normalize_week(week_str)
     output_dir.mkdir(parents=True, exist_ok=True)
     
+    # Directory path: charts/{WEEK}/chart_{ASSET}_{WEEK}.png
     chart_dir = output_dir / "charts" / week
     chart_dir.mkdir(parents=True, exist_ok=True)
 
@@ -264,20 +299,21 @@ def run(week_str: str, year: int, output_dir: Path):
             if df.empty:
                 raise ValueError(f"No price data retrieved for {symbol} ({name})")
 
-            # Resolve multi-level column indexing if present in recent yfinance releases
+            # Handle multi-index columns from yfinance
             if isinstance(df.columns, pd.MultiIndex):
                 if 'Ticker' in df.columns.names:
                     df = df.xs(symbol, level='Ticker', axis=1)
                 else:
                     df = df.droplevel(1, axis=1)
 
-            snapshot["metrics"][label] = calculate_indicators(df)
+            metric_data = calculate_indicators(df)
+            snapshot["metrics"][label] = metric_data
             
-            # Save chart following required filename format: chart_{ASSET}_{WEEK}.png
+            # File naming scheme: chart_{ASSET}_{WEEK}.png
             chart_file = chart_dir / f"chart_{label}_{week}.png"
-            generate_chart(df, label, name, chart_file, start_date, end_date)
+            generate_chart(df, label, name, metric_data, chart_file, start_date, end_date)
 
-            print(f"✅ [{label}] Technical analysis successfully compiled.")
+            print(f"✅ [{label}] Compiled successfully.")
         except Exception as exc:
             snapshot["errors"][label] = f"{type(exc).__name__}: {exc}"
             print(f"ERROR [{label}]: {exc}", file=sys.stderr)
@@ -285,18 +321,19 @@ def run(week_str: str, year: int, output_dir: Path):
     snapshot["meta"]["successful_asset_count"] = len(snapshot["metrics"])
     snapshot["meta"]["failed_asset_count"] = len(snapshot["errors"])
 
-    # Strict validations before file serialization
+    # Strict validations
     validate_core(snapshot)
     validate_all_metrics(snapshot["metrics"])
 
+    # Export output files
     json_path = output_dir / f"technical_agent_{week}.json"
     md_path = output_dir / f"technical_agent-{week}.md"
 
     json_path.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     write_markdown(snapshot, md_path)
 
-    print(f"Successfully generated: {json_path}")
-    print(f"Successfully generated: {md_path}")
+    print(f"🎉 Generated JSON: {json_path}")
+    print(f"🎉 Generated Markdown: {md_path}")
 
 
 def main() -> int:
