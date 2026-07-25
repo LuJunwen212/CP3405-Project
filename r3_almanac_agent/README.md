@@ -203,15 +203,15 @@ The current cron configuration is:
 
 ```yaml
 schedule:
-  - cron: '0 0 * * 6'
+  - cron: '20 1 * * 6'
 ```
 
 GitHub Actions cron expressions use UTC.
 
 | Time zone | Run time |
 |---|---|
-| UTC | Saturday at 01:13 |
-| Singapore Time (UTC+8) | Saturday at 09:13 |
+| UTC | Saturday at 09:20 |
+| Singapore Time (UTC+8) | Saturday at 09:20 |
 
 The scheduled run uses automatic values:
 
