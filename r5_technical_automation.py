@@ -1,9 +1,25 @@
+import os
 import math
 import json
 import sys
 import argparse
 from pathlib import Path
 from datetime import datetime, timezone
+
+# ==========================================
+# 🛠️ HELPER FUNCTIONS
+# ==========================================
+
+def normalize_week(week_str: str) -> str:
+    """
+    Standardizes week string format to 'WXX' (e.g., '30' -> 'W30', 'w30' -> 'W30').
+    """
+    if not week_str:
+        return ""
+    clean_str = str(week_str).strip().upper()
+    if not clean_str.startswith("W"):
+        clean_str = f"W{clean_str}"
+    return clean_str
 
 # ... (Retain existing imports, ASSETS, and CORE_ASSETS definitions) ...
 
