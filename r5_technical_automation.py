@@ -5,6 +5,32 @@ import sys
 import argparse
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import numpy as np
+import pandas as pd
+import yfinance as yf
+
+# ==========================================
+# 🌐 GLOBAL CONSTANTS & ASSET DEFINITIONS
+# ==========================================
+
+ASSETS = {
+    "SPX": "^GSPC",
+    "NDX": "^NDX",
+    "IWM": "IWM",
+    "XLC": "XLC",
+    "XLY": "XLY",
+    "XLP": "XLP",
+    "XLE": "XLE",
+    "XLF": "XLF",
+    "XLV": "XLV",
+    "XLI": "XLI",
+    "XLB": "XLB",
+    "XLRE": "XLRE",
+    "XLK": "XLK",
+    "XLU": "XLU"
+}
+
+CORE_ASSETS = ["SPX", "NDX", "IWM"]
 
 # ==========================================
 # 🛠️ HELPER FUNCTIONS
