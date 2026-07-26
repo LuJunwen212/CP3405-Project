@@ -68,15 +68,14 @@ By actively watching the execution on Saturday morning, the team caught the R5 `
 
 ## 8. Sprint 9 Improvement Actions (Demo Prep)
 
-### Priority 1 — Eliminate the Local-to-Production Discrepancy
-
+### Priority 1 — Ensure weekend automated output on main, following successful automated tests on week9.
 Code that runs successfully on Tuesday night on week9 branch must be proven to run in the automated GitHub Actions environment *before* the weekend.
 
 **Owner:** All Agent Operators.
 
 **Checkpoint:** Ensure test runs mirror the exact production environment.
 
-### Priority 2 — Finalize Demo Day Role Assignments
+### Priority 2 — Finalize Demo Day task Assignments
 
 As Sprint 9 is the final sprint, every team member must have their presentation segments assigned and rehearsed.
 
