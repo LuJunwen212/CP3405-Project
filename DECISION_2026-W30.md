@@ -49,7 +49,7 @@ The W30 forecasting pipeline evaluates 14 core market proxies across broad indic
 | **R4** | Macroeconomic Drivers | **Partial Automation** | Macro economic data fetching and yield curve metrics are automated; final macro commentary relies on partial manual synthesis due to API/data limitations. |
 | **R5** | Technical Analysis | **Full Automation** | Fully automated yfinance fetch, EMA 8/21 calculation, support/resistance detection, chart generation, and strict non-finite value validation. |
 | **R6** | Market Data Pipeline | **Full Automation** | Automated market close ingestion, sector performance ranking, and structured output generation. |
-| **R7** | Human Scoring & Alignment | **Full Automation Support / Human Governance** | Structured Human Score calculation (-5 total score), cross-agent conflict resolution, and qualitative adjustment. |
+| **R7** | Human Scoring & Alignment | **Human Governance** | Structured Human Score calculation (-5 total score), cross-agent conflict resolution, and qualitative adjustment. |
 | **R8** | Multi-LLM Synthesis | **Full Automation** | Multi-LLM API invocation with unified output templating and standardized plain-text formatting. |
 
 ---
