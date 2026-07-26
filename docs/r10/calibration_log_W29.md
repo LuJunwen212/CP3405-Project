@@ -27,20 +27,20 @@ The same scoring method from W22 is reused for consistency.
 
 | Target | Team Prediction | Predicted Direction | Predicted Range | Confidence | Actual Result | Actual Direction | Hit / Miss | Range Check | Score |
 |---|---|---|---:|---|---:|---|---|---|---:|
-| SPX | Neutral → Down | down | -1.0% to +0.3% | Medium | +0.69% | up | MISS | Outside range | +0 |
-| NDX | Down | down | -1.8% to +0.2% | Medium | +1.97% | up | MISS | Outside range | +0 |
-| IWM | Neutral → Down | down | -1.3% to +0.3% | Medium | +0.85% | up | MISS | Outside range | +0 |
-| XLK Technology | Down | down | -2.0% to +0.3% | Medium | +2.96% | up | MISS | Outside range | +0 |
-| XLC Communication Services | Neutral-Bearish | down | N/A | Medium | -0.56% | down | HIT | N/A | +2 |
-| XLY Consumer Discretionary | Bearish | down | N/A | Medium | -0.49% | down | HIT | N/A | +2 |
-| XLP Consumer Staples | Neutral-Bullish | up | N/A | Medium | -1.33% | down | MISS | N/A | +0 |
-| XLE Energy | Up | up | +0.5% to +2.5% | Medium | +1.42% | up | HIT | Inside range | +2 |
-| XLF Financials | Neutral | neutral | -0.5% to +1.0% | Medium | -0.27% | down | MISS | Inside range | +0 |
-| XLV Health Care | Neutral | neutral | N/A | Medium | -0.52% | down | MISS | N/A | +0 |
-| XLI Industrials | Neutral-Bearish | down | N/A | Medium | -0.42% | down | HIT | N/A | +2 |
-| XLB Materials | Neutral → Down | down | -1.0% to +0.5% | Medium | -0.85% | down | HIT | Inside range | +2 |
-| XLRE Real Estate | Neutral-Bullish | up | N/A | Medium | -0.48% | down | MISS | N/A | +0 |
-| XLU Utilities | Neutral | neutral | -0.4% to +0.8% | Medium | -0.55% | down | MISS | Outside range | +0 |
+| SPX | Neutral → Down | down | -1.0% to +0.3% | Medium | +0.55% | up | MISS | Outside range | +0 |
+| NDX | Down | down | -1.8% to +0.2% | Medium | +1.42% | up | MISS | Outside range | +0 |
+| IWM | Neutral → Down | down | -1.3% to +0.3% | Medium | -0.09% | down | HIT | Inside range | +2 |
+| XLK Technology | Down | down | -2.0% to +0.3% | Medium | +2.67% | up | MISS | Outside range | +0 |
+| XLC Communication Services | Neutral-Bearish | down | N/A | Medium | -1.31% | down | HIT | N/A | +2 |
+| XLY Consumer Discretionary | Bearish | down | N/A | Medium | -1.23% | down | HIT | N/A | +2 |
+| XLP Consumer Staples | Neutral-Bullish | up | N/A | Medium | -0.95% | down | MISS | N/A | +0 |
+| XLE Energy | Up | up | +0.5% to +2.5% | Medium | +2.64% | up | HIT | Outside range | +2 |
+| XLF Financials | Neutral | neutral | -0.5% to +1.0% | Medium | -0.37% | down | MISS | Inside range | +0 |
+| XLV Health Care | Neutral | neutral | N/A | Medium | -1.03% | down | MISS | N/A | +0 |
+| XLI Industrials | Neutral-Bearish | down | N/A | Medium | -0.31% | down | HIT | N/A | +2 |
+| XLB Materials | Neutral → Down | down | -1.0% to +0.5% | Medium | +0.57% | up | MISS | Outside range | +0 |
+| XLRE Real Estate | Neutral-Bullish | up | N/A | Medium | -0.90% | down | MISS | N/A | +0 |
+| XLU Utilities | Neutral | neutral | -0.4% to +0.8% | Medium | +1.68% | up | MISS | Outside range | +0 |
 
 ---
 
@@ -57,4 +57,4 @@ The same scoring method from W22 is reused for consistency.
 
 This calibration measures directional accuracy with confidence weighting. The range check is reported separately and does not change the official W22-style score.
 
-Generated automatically at: 2026-07-22 10:44:53
+Generated automatically at: 2026-07-26 07:39:28
