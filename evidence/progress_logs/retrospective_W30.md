@@ -1,11 +1,8 @@
 # Team 2 — Sprint 8 Retrospective (W30)
 
-**Date:** Sunday, 26 July 2026
-
-**Prepared by:** R2 — Scrum Master (Guanyu Lu)
-
-**Sprint:** Sprint 8 / `vW30`
-
+**Date:** Sunday, 26 July 2026  
+**Prepared by:** R2 — Scrum Master  
+**Sprint:** Sprint 8 / `vW30`  
 **Related evidence:** `standup_midweek_W30.md`
 
 ## 1. Retrospective Summary
@@ -35,17 +32,11 @@ The hardest **unplanned** dependency was the sudden failure of the R5 Technical 
 ## 4. What Went Well
 
 * All roles were checked individually by Wednesday, and everyone was highly cooperative.
-
 * R3 completed all tasks ahead of schedule, including standardizing file generation locations, adding strict report validation, and updating documentation.
-
 * R4 successfully implemented its script to collect data from public macroeconomic, market, Treasury, labour, and news sources, complete with retry handling and structured error handling.
-
 * R5 accomplished fixing and validating its code and forced workflow failures on `NaN` values, effectively fulfilling its W30 Sprint Goal tasks.
-
 * R6 successfully updated the GitHub Actions workflow, integrating the role number into the workflow name and adding support for manual year overrides alongside minor optimizations. These updates were tested and functioned exactly as expected.
-
 * R8 standardizes the output format for all large language models, automatically converts the output results into plain text, and successfully generated reports automatically on Saturday.
-
 
 * **Incident Response:** When the R2 detected R5 automation failed on Saturday at 9:30 AM, R1 and R2 caught the error instantly, debugged it, and restored the automated pipeline by 11:10 AM.
 
@@ -58,14 +49,13 @@ The hardest **unplanned** dependency was the sudden failure of the R5 Technical 
 
 ## 6. Blockers Timeline (Sprint 7 Comparison)
 
-* **When did blockers surface this sprint?**
+**When did blockers surface this sprint?**
 * *Planned/Integration Blockers:* Surfaced on **Wednesday** (e.g., R8's output standardization and R4's unstable data sources).
 
+* *Technical/Execution Blockers:* Surfaced on **Saturday** (R5 `NameError`).
 
-* *Technical/Execution Blockers:* Surfaced on **Saturday** at 9:30 AM (R5 `NameError`).
+**How many days earlier than Sprint 7?**
 
-
-* **How many days earlier than Sprint 7?**
 In Sprint 7, major schedule and integration risks were successfully pulled forward to Wednesday (four days earlier than Sprint 6). In Sprint 8, we maintained this Wednesday visibility for planned work. However, the unexpected R5 execution bug surfaced on Saturday. The critical difference this sprint was the *resolution speed*. Instead of an issue lingering until Sunday, the Saturday blocker was detected and fixed in **100 minutes**, proving the team is actively monitoring the automated runs.
 
 
