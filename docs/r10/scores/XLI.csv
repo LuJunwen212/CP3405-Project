@@ -3,3 +3,4 @@ W28,Neutral-Bullish,up,N/A,Medium,Medium,-1.38,down,False,N/A,0,sector_call_fall
 W28,Neutral-Bullish,up,N/A,Medium,Medium,-1.38,down,False,N/A,0,sector_call_fallback
 W29,Neutral-Bearish,down,N/A,Medium,Medium,-0.42,down,True,N/A,2,sector_call_fallback
 W29,Neutral-Bearish,down,N/A,Medium,Medium,-0.42,down,True,N/A,2,sector_call_fallback
+W29,Neutral-Bearish,down,N/A,Medium,Medium,1.81,up,False,N/A,0,sector_call_fallback
