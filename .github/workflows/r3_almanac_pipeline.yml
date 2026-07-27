@@ -2,7 +2,7 @@ name: R3 Almanac Agent Multi-Week Automation Pipeline
 
 on:
   schedule:
-    - cron: '20 1 * * 6'
+    - cron: '0 11 * * 1'
   workflow_dispatch:
     inputs:
       custom_market_week:
