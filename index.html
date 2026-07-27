@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team 2 - Product Showcase Dashboard (Sprint 9)</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 40px; }
+        .container { max-width: 950px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h1 { color: #38bdf8; font-size: 32px; margin-bottom: 10px; }
+        p { color: #9ca3af; font-size: 16px; line-height: 1.6; }
+        .badge { display: inline-block; background: #4f46e5; color: white; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
+        .card { background: #1f2937; padding: 25px; border-radius: 8px; margin-top: 25px; border: 1px solid #374151; }
+        .card h2 { color: #e5e7eb; margin-top: 0; font-size: 20px; }
+        /* Styles: Perfectly render charts in the charts folder */
+        img { width: 100%; border-radius: 6px; margin-top: 15px; border: 1px solid #4b5563; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="badge">Team 2 · Sprint 9 Product Showcase</span>
+        <h1>Automated Market Forecasting Dashboard</h1>
+        <p>A strict-validated, multi-LLM synchronized market forecasting engine. This frontend directly renders repository assets for Demo Day.</p>
+        
+        <div class="card">
+            <h2>Live Repository Asset: SPX Technical Chart (W30)</h2>
+            <p>Loaded from path: <code>charts/W30/chart_SPX_W30.png</code></p>
+            <img src="charts/W30/chart_SPX_W30.png" alt="SPX Technical Chart W30">
+        </div>
+
+        <div class="card">
+            <h2>Project Architecture & Status</h2>
+            <p>Covering SPX, NDX, IWM, and sector ETFs. Integrating automated R3-R8 pipelines and human-AI governance for reliable weekly predictions.</p>
+        </div>
+    </div>
+</body>
+</html>
