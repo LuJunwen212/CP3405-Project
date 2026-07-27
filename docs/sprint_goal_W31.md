@@ -6,8 +6,7 @@ Building on Sprint 8 lessons, the team will complete the following key tasks for
 
 1. **Verify Code and Report Reproducibility**: Every role (R3 to R10) must independently re-run their scripts and check generated reports to ensure all outputs are error-free, up-to-date, and fully reproducible from scratch.
 2. **Enforce Strict Validation & Clean State**: Eliminate any potential warnings, stale cache, or unhandled data states in local and automated workflows before final submission.
-3. **Streamline Repository and Release Automation**: Ensure R9 repository integration, tagging (`vW31`), and release packaging are fully synchronized and tested without manual friction.
-4. **Prepare Final Presentations**: Consolidate role evidence, calibration findings, and technical reports into a polished, professional presentation ready for Sprint Day 8 delivery.
+3. **Prepare Final Presentations**: Consolidate role evidence, calibration findings, and technical reports into a polished, professional presentation ready for Sprint Day 8 delivery.
 
 The team should automate as much of the workflow as possible. Where full automation cannot be achieved, each responsible role must implement partial automation where feasible and manually complete the remaining work before the required deadline. Technical limitations or automation failures must not result in missing deliverables.
 
