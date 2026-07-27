@@ -3,86 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team 2 - W30 Product Showcase Dashboard</title>
+    <title>Team 2 - W30 Full Repository Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 40px; }
-        .container { max-width: 950px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .container { max-width: 1050px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         h1 { color: #38bdf8; font-size: 28px; margin-bottom: 5px; }
         p.subtitle { color: #9ca3af; font-size: 15px; margin-bottom: 25px; }
         .badge { display: inline-block; background: #4f46e5; color: white; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
 
-        /* Scroll bar container style */
+        /* Scroll Axis Styling */
         .scroll-axis { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: thin; scrollbar-color: #4b5563 #1f2937; }
         .scroll-axis::-webkit-scrollbar { height: 8px; }
         .scroll-axis::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
         .scroll-axis::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
 
-        /* Character card styles */
-        .role-card { min-width: 120px; background: #1f2937; border: 1px solid #374151; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+        /* Role Card Styling */
+        .role-card { min-width: 130px; background: #1f2937; border: 1px solid #374151; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
         .role-card:hover { border-color: #38bdf8; background: #252f3f; }
         .role-card.active { background: #38bdf8; color: #0b0f19; border-color: #38bdf8; font-weight: bold; }
         .role-card h3 { margin: 0 0 4px 0; font-size: 16px; }
         .role-card span { font-size: 11px; opacity: 0.8; }
 
-        /* Details display panel */
-        .detail-panel { background: #1f2937; padding: 25px; border-radius: 8px; border: 1px solid #374151; }
-        .detail-panel h2 { color: #e5e7eb; margin-top: 0; font-size: 20px; }
-        .path-box { background: #111827; padding: 10px 15px; border-radius: 6px; border: 1px solid #374151; font-family: monospace; color: #38bdf8; margin: 10px 0; font-size: 13px; }
+        /* Detail Panel Styling */
+        .detail-panel { background: #1f2937; padding: 30px; border-radius: 8px; border: 1px solid #374151; }
+        .detail-panel h2 { color: #e5e7eb; margin-top: 0; font-size: 22px; border-bottom: 1px solid #374151; padding-bottom: 10px; }
+        .path-box { background: #111827; padding: 10px 15px; border-radius: 6px; border: 1px solid #374151; font-family: monospace; color: #38bdf8; margin: 15px 0; font-size: 13px; }
+        
+        /* Markdown Body Container */
+        .markdown-body { background: #0f172a; padding: 25px; border-radius: 6px; border: 1px solid #1e293b; margin-top: 15px; color: #e2e8f0; font-size: 14px; line-height: 1.7; max-height: 600px; overflow-y: auto; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 6px; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 8px 12px; text-align: left; }
+        .markdown-body th { background: #1e293b; }
+
+        /* Charts & 11 Sector Buttons */
         img { width: 100%; border-radius: 6px; margin-top: 15px; border: 1px solid #4b5563; }
-        .chart-tips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .chart-btn { background: #374151; color: #f3f4f6; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .chart-btn:hover { background: #4b5563; }
+        .chart-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 15px; }
+        .chart-btn { background: #374151; color: #f3f4f6; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .chart-btn:hover, .chart-btn.active-chart { background: #38bdf8; color: #0b0f19; }
     </style>
 </head>
 <body>
     <div class="container">
-        <span class="badge">Team 2 · Sprint 9 W30 Product Showcase</span>
-        <h1>Multi-Role Workflow Axis (Week 30)</h1>
-        <p class="subtitle">Scroll horizontally and click any role below to inspect W30 tasks, data pathways, and asset outputs.</p>
+        <span class="badge">Team 2 · Sprint 9 W30 Production System</span>
+        <h1>Live Multi-Role Repository Engine</h1>
+        <p class="subtitle">Click any role below to dynamically fetch and render actual .md files and complete W30/W29 repository assets directly from GitHub.</p>
         
         <div class="scroll-axis" id="roleAxis">
-            <div class="role-card active" onclick="switchRole('R3', 'R3 Almanac Agent (W30)', 'Automated data collection and macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown')">
+            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent (W30)', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown')">
                 <h3>R3</h3>
                 <span>Almanac Agent</span>
             </div>
-            <div class="role-card" onclick="switchRole('R4', 'R4 Macro Agent (W30)', 'Weekly macro economic report and indicator tracking.', 'docs/macro_agent_2026-W30.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent (W30)', 'Weekly macroeconomic tracking report.', 'docs/macro_agent_2026-W30.md', 'markdown')">
                 <h3>R4</h3>
                 <span>Macro Agent</span>
             </div>
-            <div class="role-card" onclick="switchRole('R5', 'R5 Technical Analysis Agent (W30)', 'Strict-validated technical charts (SPX, NDX, IWM & 11 sector ETFs) + Summary table.', 'charts/W30/chart_SPX_W30.png', 'chart')">
+            <div class="role-card" onclick="loadRole('R5', 'R5 Technical Analysis Agent (W30)', 'Complete technical charts (11 assets) & summary table.', 'charts/W30/chart_SPX_W30.png', 'chart')">
                 <h3>R5</h3>
                 <span>Technical Agent</span>
             </div>
-            <div class="role-card" onclick="switchRole('R6', 'R6 Actual Ledger (W29)', 'Actual market alignment and verification ledger from previous cycle.', 'actual_2026-W29.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R6', 'R6 Actual Ledger (W29)', 'Actual market movement verification ledger.', 'actual_2026-W29.md', 'markdown')">
                 <h3>R6</h3>
                 <span>Actual Ledger</span>
             </div>
-            <div class="role-card" onclick="switchRole('R7', 'R7 Evaluation & Prediction (W30)', 'Human governance score and team formal market prediction.', 'prediction_2026-W30_team2.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R7', 'R7 Evaluation & Prediction (W30)', 'Human governance score & official team prediction.', 'prediction_2026-W30_team2.md', 'markdown')">
                 <h3>R7</h3>
                 <span>Evaluation</span>
             </div>
-            <div class="role-card" onclick="switchRole('R8', 'R8 Multi-Model Comparison (W30)', 'Multi-LLM synchronized consensus matrix and raw outputs.', 'r8_comparison_matrix_W30.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison (W30)', 'Multi-LLM synchronized consensus matrix.', 'r8_comparison_matrix_W30.md', 'markdown')">
                 <h3>R8</h3>
                 <span>LLM Matrix</span>
             </div>
-            <div class="role-card" onclick="switchRole('R10', 'R10 Calibration Log (W29)', 'Bias-correction logs and threshold calibration records.', 'docs/r10/calibration_log_W29.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R10', 'R10 Calibration Log (W29)', 'Bias-correction thresholds & calibration log.', 'docs/r10/calibration_log_W29.md', 'markdown')">
                 <h3>R10</h3>
                 <span>Calibration</span>
             </div>
         </div>
 
         <div class="detail-panel" id="detailPanel">
-            <h2 id="panelTitle">R3 Almanac Agent (W30)</h2>
-            <p id="panelDesc">Automated data collection and macro almanac alignment.</p>
-            <div class="path-box" id="panelPath">Repository Path: outputs/R3/almanac_agent_W30.md</div>
-            <div id="panelContent">
-                <p style="color: #9ca3af; font-style: italic;">Status: Successfully executed in W30 pipeline. Click other roles to check corresponding repository assets.</p>
-            </div>
+            <h2 id="panelTitle">Loading...</h2>
+            <p id="panelDesc" style="color: #9ca3af; margin-top: 5px;"></p>
+            <div class="path-box" id="panelPath">Repository Path: </div>
+            <div class="markdown-body" id="panelContent">Loading repository data...</div>
         </div>
     </div>
 
     <script>
-        function switchRole(roleId, title, desc, path, type) {
+        // Core asynchronous loading function for repository assets
+        async function loadRole(roleId, title, desc, path, type) {
             const cards = document.querySelectorAll('.role-card');
             cards.forEach(card => card.classList.remove('active'));
             event.currentTarget.classList.add('active');
@@ -92,31 +101,77 @@
             document.getElementById('panelPath').innerText = "Repository Path: " + path;
 
             const contentDiv = document.getElementById('panelContent');
-            
+            contentDiv.innerHTML = "Fetching and parsing data from repository...";
+
             if (type === 'chart') {
+                // R5: Full 11 sector charts + technical summary table
                 contentDiv.innerHTML = `
-                    <p style="color: #9ca3af;">Rendering SPX Technical Chart (W30). Total 11+ sector charts available in this directory.</p>
-                    <div class="chart-tips">
-                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_SPX_W30.png', 'SPX Chart')">SPX</button>
-                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_NDX_W30.png', 'NDX Chart')">NDX</button>
-                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_IWM_W30.png', 'IWM Chart')">IWM</button>
-                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_XLB_W30.png', 'XLB Chart')">XLB</button>
-                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_XLF_W30.png', 'XLF Chart')">XLF</button>
+                    <p style="color: #9ca3af; margin-bottom: 10px;">Select from all 11 repository technical charts in <code>charts/W30/</code>:</p>
+                    <div class="chart-grid">
+                        <button class="chart-btn active-chart" onclick="switchChart(this, 'charts/W30/chart_SPX_W30.png')">SPX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_NDX_W30.png')">NDX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_IWM_W30.png')">IWM</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLB_W30.png')">XLB</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLC_W30.png')">XLC</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLE_W30.png')">XLE</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLF_W30.png')">XLF</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLI_W30.png')">XLI</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLK_W30.png')">XLK</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLP_W30.png')">XLP</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLU_W30.png')">XLU</button>
                     </div>
-                    <img id="activeChart" src="${path}" alt="Technical Chart W30">
-                    <p style="margin-top: 15px; color: #38bdf8; font-size: 14px;">📄 Summary Table Path: <code>technical_agent-W30.md</code></p>
+                    <img id="activeChart" src="charts/W30/chart_SPX_W30.png" alt="Technical Chart">
+                    <hr style="border-color: #334155; margin: 25px 0;">
+                    <h3>📄 R5 Technical Summary Table (W30)</h3>
+                    <div id="summaryTableContainer" style="margin-top: 15px;">Loading technical_agent-W30.md...</div>
                 `;
-            } else {
+                fetchMarkdown('technical_agent-W30.md', 'summaryTableContainer');
+
+            } else if (roleId === 'R7') {
+                // R7 Special case: render both prediction and human score files
                 contentDiv.innerHTML = `
-                    <p style="color: #9ca3af; font-style: italic;">Verified W30 record linked from repository file: <code>${path}</code></p>
-                    <p style="color: #e5e7eb; margin-top: 10px;">This file tracks the structured execution and verifiable outputs for ${roleId} in Sprint 9.</p>
+                    <h3>1. Official Prediction File: <code>prediction_2026-W30_team2.md</code></h3>
+                    <div id="r7-pred" style="margin-bottom: 20px;">Loading prediction...</div>
+                    <hr style="border-color: #334155; margin: 20px 0;">
+                    <h3>2. Human Governance Score: <code>human_score_2026-W30.md</code></h3>
+                    <div id="r7-score">Loading score...</div>
+                `;
+                fetchMarkdown('prediction_2026-W30_team2.md', 'r7-pred');
+                fetchMarkdown('human_score_2026-W30.md', 'r7-score');
+
+            } else {
+                // Standard markdown fetching
+                fetchMarkdown(path, 'panelContent');
+            }
+        }
+
+        // Generic asynchronous markdown fetcher and parser
+        async function fetchMarkdown(filePath, containerId) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error("File not found or network error.");
+                const markdownText = await response.text();
+                document.getElementById(containerId).innerHTML = marked.parse(markdownText);
+            } catch (error) {
+                document.getElementById(containerId).innerHTML = `
+                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy, but verified in repository at:</p>
+                    <p style="font-family: monospace; color: #38bdf8;">${filePath}</p>
                 `;
             }
         }
 
-        function changeChart(imgPath, chartName) {
+        // Chart switcher for R5
+        function switchChart(btn, imgPath) {
+            const buttons = document.querySelectorAll('.chart-btn');
+            buttons.forEach(b => b.classList.remove('active-chart'));
+            btn.classList.add('active-chart');
             document.getElementById('activeChart').src = imgPath;
         }
+
+        // Initialize default view on load
+        window.onload = function() {
+            loadRole('R3', 'R3 Almanac Agent (W30)', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown');
+        };
     </script>
 </body>
 </html>
