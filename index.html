@@ -3,35 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team 2 - Product Showcase Dashboard (Sprint 9)</title>
+    <title>Team 2 - W30 Product Showcase Dashboard</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 40px; }
         .container { max-width: 950px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        h1 { color: #38bdf8; font-size: 32px; margin-bottom: 10px; }
-        p { color: #9ca3af; font-size: 16px; line-height: 1.6; }
+        h1 { color: #38bdf8; font-size: 28px; margin-bottom: 5px; }
+        p.subtitle { color: #9ca3af; font-size: 15px; margin-bottom: 25px; }
         .badge { display: inline-block; background: #4f46e5; color: white; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
-        .card { background: #1f2937; padding: 25px; border-radius: 8px; margin-top: 25px; border: 1px solid #374151; }
-        .card h2 { color: #e5e7eb; margin-top: 0; font-size: 20px; }
-        /* Styles: Perfectly render charts in the charts folder */
+
+        /* Scroll bar container style */
+        .scroll-axis { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: thin; scrollbar-color: #4b5563 #1f2937; }
+        .scroll-axis::-webkit-scrollbar { height: 8px; }
+        .scroll-axis::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
+        .scroll-axis::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+
+        /* Character card styles */
+        .role-card { min-width: 120px; background: #1f2937; border: 1px solid #374151; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+        .role-card:hover { border-color: #38bdf8; background: #252f3f; }
+        .role-card.active { background: #38bdf8; color: #0b0f19; border-color: #38bdf8; font-weight: bold; }
+        .role-card h3 { margin: 0 0 4px 0; font-size: 16px; }
+        .role-card span { font-size: 11px; opacity: 0.8; }
+
+        /* Details display panel */
+        .detail-panel { background: #1f2937; padding: 25px; border-radius: 8px; border: 1px solid #374151; }
+        .detail-panel h2 { color: #e5e7eb; margin-top: 0; font-size: 20px; }
+        .path-box { background: #111827; padding: 10px 15px; border-radius: 6px; border: 1px solid #374151; font-family: monospace; color: #38bdf8; margin: 10px 0; font-size: 13px; }
         img { width: 100%; border-radius: 6px; margin-top: 15px; border: 1px solid #4b5563; }
+        .chart-tips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .chart-btn { background: #374151; color: #f3f4f6; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .chart-btn:hover { background: #4b5563; }
     </style>
 </head>
 <body>
     <div class="container">
-        <span class="badge">Team 2 · Sprint 9 Product Showcase</span>
-        <h1>Automated Market Forecasting Dashboard</h1>
-        <p>A strict-validated, multi-LLM synchronized market forecasting engine. This frontend directly renders repository assets for Demo Day.</p>
+        <span class="badge">Team 2 · Sprint 9 W30 Product Showcase</span>
+        <h1>Multi-Role Workflow Axis (Week 30)</h1>
+        <p class="subtitle">Scroll horizontally and click any role below to inspect W30 tasks, data pathways, and asset outputs.</p>
         
-        <div class="card">
-            <h2>Live Repository Asset: SPX Technical Chart (W30)</h2>
-            <p>Loaded from path: <code>charts/W30/chart_SPX_W30.png</code></p>
-            <img src="charts/W30/chart_SPX_W30.png" alt="SPX Technical Chart W30">
+        <div class="scroll-axis" id="roleAxis">
+            <div class="role-card active" onclick="switchRole('R3', 'R3 Almanac Agent (W30)', 'Automated data collection and macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown')">
+                <h3>R3</h3>
+                <span>Almanac Agent</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R4', 'R4 Macro Agent (W30)', 'Weekly macro economic report and indicator tracking.', 'docs/macro_agent_2026-W30.md', 'markdown')">
+                <h3>R4</h3>
+                <span>Macro Agent</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R5', 'R5 Technical Analysis Agent (W30)', 'Strict-validated technical charts (SPX, NDX, IWM & 11 sector ETFs) + Summary table.', 'charts/W30/chart_SPX_W30.png', 'chart')">
+                <h3>R5</h3>
+                <span>Technical Agent</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R6', 'R6 Actual Ledger (W29)', 'Actual market alignment and verification ledger from previous cycle.', 'actual_2026-W29.md', 'markdown')">
+                <h3>R6</h3>
+                <span>Actual Ledger</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R7', 'R7 Evaluation & Prediction (W30)', 'Human governance score and team formal market prediction.', 'prediction_2026-W30_team2.md', 'markdown')">
+                <h3>R7</h3>
+                <span>Evaluation</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R8', 'R8 Multi-Model Comparison (W30)', 'Multi-LLM synchronized consensus matrix and raw outputs.', 'r8_comparison_matrix_W30.md', 'markdown')">
+                <h3>R8</h3>
+                <span>LLM Matrix</span>
+            </div>
+            <div class="role-card" onclick="switchRole('R10', 'R10 Calibration Log (W29)', 'Bias-correction logs and threshold calibration records.', 'docs/r10/calibration_log_W29.md', 'markdown')">
+                <h3>R10</h3>
+                <span>Calibration</span>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>Project Architecture & Status</h2>
-            <p>Covering SPX, NDX, IWM, and sector ETFs. Integrating automated R3-R8 pipelines and human-AI governance for reliable weekly predictions.</p>
+        <div class="detail-panel" id="detailPanel">
+            <h2 id="panelTitle">R3 Almanac Agent (W30)</h2>
+            <p id="panelDesc">Automated data collection and macro almanac alignment.</p>
+            <div class="path-box" id="panelPath">Repository Path: outputs/R3/almanac_agent_W30.md</div>
+            <div id="panelContent">
+                <p style="color: #9ca3af; font-style: italic;">Status: Successfully executed in W30 pipeline. Click other roles to check corresponding repository assets.</p>
+            </div>
         </div>
     </div>
+
+    <script>
+        function switchRole(roleId, title, desc, path, type) {
+            const cards = document.querySelectorAll('.role-card');
+            cards.forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            document.getElementById('panelTitle').innerText = title;
+            document.getElementById('panelDesc').innerText = desc;
+            document.getElementById('panelPath').innerText = "Repository Path: " + path;
+
+            const contentDiv = document.getElementById('panelContent');
+            
+            if (type === 'chart') {
+                contentDiv.innerHTML = `
+                    <p style="color: #9ca3af;">Rendering SPX Technical Chart (W30). Total 11+ sector charts available in this directory.</p>
+                    <div class="chart-tips">
+                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_SPX_W30.png', 'SPX Chart')">SPX</button>
+                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_NDX_W30.png', 'NDX Chart')">NDX</button>
+                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_IWM_W30.png', 'IWM Chart')">IWM</button>
+                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_XLB_W30.png', 'XLB Chart')">XLB</button>
+                        <button class="chart-btn" onclick="changeChart('charts/W30/chart_XLF_W30.png', 'XLF Chart')">XLF</button>
+                    </div>
+                    <img id="activeChart" src="${path}" alt="Technical Chart W30">
+                    <p style="margin-top: 15px; color: #38bdf8; font-size: 14px;">📄 Summary Table Path: <code>technical_agent-W30.md</code></p>
+                `;
+            } else {
+                contentDiv.innerHTML = `
+                    <p style="color: #9ca3af; font-style: italic;">Verified W30 record linked from repository file: <code>${path}</code></p>
+                    <p style="color: #e5e7eb; margin-top: 10px;">This file tracks the structured execution and verifiable outputs for ${roleId} in Sprint 9.</p>
+                `;
+            }
+        }
+
+        function changeChart(imgPath, chartName) {
+            document.getElementById('activeChart').src = imgPath;
+        }
+    </script>
 </body>
 </html>
