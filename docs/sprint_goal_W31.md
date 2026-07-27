@@ -1,6 +1,6 @@
 # Sprint 9 Goal — W31
 
-Ensure complete code and report reproducibility, streamline deliverables with a clean and efficient documentation structure, and prepare comprehensive presentations for Sprint Day 9.
+Ensure complete code and report reproducibility, streamline deliverables with a clean and efficient documentation structure, and prepare comprehensive presentations for Sprint 9.
 
 Building on Sprint 8 lessons and current timeline constraints, the team will complete the following key tasks for W31:
 
