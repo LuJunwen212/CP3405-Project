@@ -1,19 +1,25 @@
-name: Team 2 Weekly Production Pipeline
+name: Team 2 Webpage & Dashboard Automation Pipeline
 
 on:
-  # push:
-  #   branches:
-  #     - week-9
-  # Trigger automatically every Sunday at 16:00 UTC (Right after R9 release & final DoD check)
   schedule:
+    # Runs every Sunday at 16:00 UTC
     - cron: '0 16 * * 0'
   
-  # Allow manual trigger anytime from the GitHub Actions dashboard
   workflow_dispatch:
+    inputs:
+      custom_market_week:
+        description: 'Target MARKET week override (Leave BLANK for automated current week calculation)'
+        required: false
+        type: string
 
 jobs:
-  run-pipeline-and-deploy:
+  build-and-deploy-dashboard:
     runs-on: ubuntu-latest
+    
+    # REQUIRED: GitHub Pages deployment environment configuration
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     permissions:
       contents: write
@@ -21,43 +27,75 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository Branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          persist-credentials: true
 
-      - name: Set up Python
+      - name: Initialize Python Core Environment
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Install Workflow Dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Execute Multi-Agent Scripts
+      - name: Dynamically Calculate Sprints and Update Dashboard
+        shell: bash
         run: |
-          echo "=== Executing Weekly Agent Scripts ==="
-          # Add your weekly agent execution commands here if applicable
-          # python r3_almanac_agent.py
-          # python r4_macro_automation.py
-          # python r5_technical_automation.py
-          echo "=== Agent Execution Completed ==="
+          set -euo pipefail
 
-      - name: Auto Commit and Push Generated Assets
+          # 1. Determine active market week (Manual input override or automatic ISO week calculation)
+          TARGET_WEEK="${{ github.event.inputs.custom_market_week }}"
+          if [ -z "$TARGET_WEEK" ]; then
+            TARGET_WEEK="W$(date +%V)"
+          fi
+
+          # 2. Calculate previous week (Current week minus 1) for R6 Ledger and R10 Calibration log
+          WEEK_NUM=$(echo "$TARGET_WEEK" | sed 's/[^0-9]*//g')
+          PREV_NUM=$((WEEK_NUM - 1))
+          PREV_WEEK="W${PREV_NUM}"
+
+          echo "Active Sprint Target: $TARGET_WEEK"
+          echo "Verification Sprint Target (Previous): $PREV_WEEK"
+
+          # 3. Optional: Automatically inject or update active sprint variables in index.html if needed
+          # You can also let index.html dynamically compute it using JS.
+          
+      - name: Execute Multi-Agent Pipeline Scripts
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add charts/ outputs/ docs/ *.md *.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(auto): weekly automated output synchronization [skip ci]" && git push)
+          echo "=== Executing Automated Multi-Agent Generation Scripts ==="
+          # Add your automated pipeline script execution commands here:
+          # python main_pipeline.py
+          echo "=== Multi-Agent Pipeline Completed ==="
 
-      - name: Setup Pages
+      - name: Auto Commit and Synchronize Dashboard & Repository Assets
+        run: |
+          git config --global user.name "Team 2 Webpage Automation Bot"
+          git config --global user.email "bot@team2.financial"
+          
+          # Stage all generated and tracked directory assets
+          git add index.html charts/ outputs/ docs/ *.md *.json
+          
+          if git diff --staged --quiet; then
+            echo "No repository changes detected. Terminating smoothly."
+          else
+            git commit -m "chore(auto): synchronized dashboard and multi-role assets for current active sprint [skip ci]"
+            git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
+      - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
         
-      - name: Upload Artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
           
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages Ecosystem
         id: deployment
         uses: actions/deploy-pages@v4
