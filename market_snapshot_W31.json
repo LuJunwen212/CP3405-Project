@@ -2,7 +2,7 @@
     "meta": {
         "market_year": 2026,
         "market_week": "W31",
-        "generation_time_utc": "2026-07-28T05:07:19+00:00",
+        "generation_time_utc": "2026-07-28T05:09:09+00:00",
         "target_week": "2026-07-27 to 2026-07-31",
         "baseline_target": "2026-07-24",
         "download_window": "2026-07-10 to 2026-08-01 (end exclusive)",
@@ -15,19 +15,19 @@
     "metrics": {
         "SPX": {
             "ticker": "^GSPC",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 7408.2998,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 7411.98,
             "final_date": "2026-07-27",
             "close_price": 7413.1802,
-            "weekly_delta_pct": 0.07
+            "weekly_delta_pct": 0.02
         },
         "NDX": {
             "ticker": "^NDX",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 28454.8105,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 28128.3398,
             "final_date": "2026-07-27",
             "close_price": 28039.2109,
-            "weekly_delta_pct": -1.46
+            "weekly_delta_pct": -0.32
         },
         "IWM": {
             "ticker": "IWM",
@@ -42,24 +42,24 @@
             "baseline_date": "2026-07-24",
             "baseline_close": 4067.6001,
             "final_date": "2026-07-28",
-            "close_price": 4042.3999,
-            "weekly_delta_pct": -0.62
+            "close_price": 4042.6001,
+            "weekly_delta_pct": -0.61
         },
         "OIL": {
             "ticker": "CL=F",
             "baseline_date": "2026-07-24",
             "baseline_close": 89.31,
             "final_date": "2026-07-28",
-            "close_price": 81.65,
-            "weekly_delta_pct": -8.58
+            "close_price": 81.63,
+            "weekly_delta_pct": -8.6
         },
         "US10Y": {
             "ticker": "^TNX",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 4.703,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 4.679,
             "final_date": "2026-07-27",
             "close_price": 4.641,
-            "weekly_delta_pct": -1.32
+            "weekly_delta_pct": -0.81
         },
         "TLT": {
             "ticker": "TLT",
@@ -74,8 +74,8 @@
             "baseline_date": "2026-07-24",
             "baseline_close": 64098.4961,
             "final_date": "2026-07-28",
-            "close_price": 63397.5,
-            "weekly_delta_pct": -1.09
+            "close_price": 63380.9883,
+            "weekly_delta_pct": -1.12
         },
         "XLK": {
             "ticker": "XLK",
@@ -87,19 +87,19 @@
         },
         "XLC": {
             "ticker": "XLC",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 105.38,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 106.3,
             "final_date": "2026-07-27",
             "close_price": 107.66,
-            "weekly_delta_pct": 2.16
+            "weekly_delta_pct": 1.28
         },
         "XLY": {
             "ticker": "XLY",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 108.76,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 109.41,
             "final_date": "2026-07-27",
             "close_price": 110.84,
-            "weekly_delta_pct": 1.91
+            "weekly_delta_pct": 1.31
         },
         "XLF": {
             "ticker": "XLF",
@@ -119,11 +119,11 @@
         },
         "XLP": {
             "ticker": "XLP",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 83.21,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 84.13,
             "final_date": "2026-07-27",
             "close_price": 85.36,
-            "weekly_delta_pct": 2.58
+            "weekly_delta_pct": 1.46
         },
         "XLE": {
             "ticker": "XLE",
@@ -159,11 +159,11 @@
         },
         "XLRE": {
             "ticker": "XLRE",
-            "baseline_date": "2026-07-23",
-            "baseline_close": 44.95,
+            "baseline_date": "2026-07-24",
+            "baseline_close": 45.95,
             "final_date": "2026-07-27",
             "close_price": 45.76,
-            "weekly_delta_pct": 1.8
+            "weekly_delta_pct": -0.41
         }
     }
 }
