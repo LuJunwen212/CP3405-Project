@@ -1,9 +1,9 @@
 name: Automated R8 LLM Operator
 
 on:
-  # push:
-  #   branches:
-  #     - week--8
+  push:
+    branches:
+      - week-9
   schedule:
     # Configured for execution every Saturday at 16:00 Singapore time
     - cron: '0 8 * * 6'
