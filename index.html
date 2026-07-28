@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team 2 - W30 Full Repository Dashboard</title>
+    <title>Team 2 - Production Dashboard & Repository Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 40px; }
         .container { max-width: 1050px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        h1 { color: #38bdf8; font-size: 28px; margin-bottom: 5px; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        h1 { color: #38bdf8; font-size: 28px; margin: 0; }
+        .sprint-badge-box { background: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px; color: #38bdf8; font-weight: bold; font-family: monospace; font-size: 14px; }
         p.subtitle { color: #9ca3af; font-size: 15px; margin-bottom: 25px; }
         .badge { display: inline-block; background: #4f46e5; color: white; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
 
@@ -47,35 +49,38 @@
 <body>
     <div class="container">
         <span class="badge">Team 2 · Sprint Production System</span>
-        <h1>Live Multi-Role Repository Engine</h1>
-        <p class="subtitle">Click any role below to dynamically fetch and render actual .md files and complete W30 repository assets directly from GitHub.</p>
+        <div class="header-flex">
+            <h1>Live Multi-Role Repository Engine</h1>
+            <div class="sprint-badge-box" id="currentSprintBadge">Active Sprint: Loading...</div>
+        </div>
+        <p class="subtitle">Dynamically fetching time-sequenced repository assets and verification records.</p>
         
         <div class="scroll-axis" id="roleAxis">
-            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent (W30)', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown')">
+            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_', 'markdown')">
                 <h3>R3</h3>
                 <span>Almanac Agent</span>
             </div>
-            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent (W30)', 'Weekly macroeconomic tracking report.', 'docs/macro_agent_2026-W30.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent', 'Weekly macroeconomic tracking report.', 'docs/macro_agent_', 'markdown')">
                 <h3>R4</h3>
                 <span>Macro Agent</span>
             </div>
-            <div class="role-card" onclick="loadRole('R5', 'R5 Technical Analysis Agent (W30)', 'Complete technical charts (11 assets) & summary table.', 'charts/W30/chart_SPX_W30.png', 'chart')">
+            <div class="role-card" onclick="loadRole('R5', 'R5 Technical Analysis Agent', 'Complete technical charts (11 assets) & summary table.', 'charts/', 'chart')">
                 <h3>R5</h3>
                 <span>Technical Agent</span>
             </div>
-            <div class="role-card" onclick="loadRole('R6', 'R6 Actual Ledger (W29 Verified in W30)', 'Actual market movement verification ledger.', 'actual_2026-W29.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R6', 'R6 Actual Ledger', 'Actual market movement verification ledger (Evaluates previous week).', 'actual_', 'ledger')">
                 <h3>R6</h3>
                 <span>Actual Ledger</span>
             </div>
-            <div class="role-card" onclick="loadRole('R7', 'R7 Evaluation & Prediction (W30)', 'Human governance score & official team prediction.', 'prediction_2026-W30_team2.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R7', 'R7 Evaluation & Prediction', 'Human governance score & official team prediction.', 'prediction_', 'prediction')">
                 <h3>R7</h3>
                 <span>Evaluation</span>
             </div>
-            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison (W30)', 'Multi-LLM synchronized consensus matrix.', 'r8_comparison_matrix_W30.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison', 'Multi-LLM synchronized consensus matrix.', 'r8_comparison_matrix_', 'markdown')">
                 <h3>R8</h3>
                 <span>LLM Matrix</span>
             </div>
-            <div class="role-card" onclick="loadRole('R10', 'R10 Calibration Log (W29 Evaluated in W30)', 'Bias-correction thresholds & calibration log.', 'docs/r10/calibration_log_W29.md', 'markdown')">
+            <div class="role-card" onclick="loadRole('R10', 'R10 Calibration Log', 'Bias-correction thresholds & calibration log (Evaluates previous week).', 'docs/r10/calibration_log_', 'calibration')">
                 <h3>R10</h3>
                 <span>Calibration</span>
             </div>
@@ -90,58 +95,98 @@
     </div>
 
     <script>
-        // Core asynchronous loading function for repository assets
-        async function loadRole(roleId, title, desc, path, type) {
+        // Define Active Sprint (e.g., W30. When automated to W31, this can be automatically updated or detected)
+        function getActiveSprint() {
+            return "W30"; 
+        }
+
+        const activeSprint = getActiveSprint();
+        
+        // Automatically calculate previous week (e.g., if active is W30, previous is W29. If active is W31, previous is W30)
+        function getPreviousSprint(currentSprint) {
+            const match = currentSprint.match(/W(\d+)/);
+            if (match) {
+                const prevNum = parseInt(match[1]) - 1;
+                return "W" + prevNum;
+            }
+            return "W29";
+        }
+
+        const previousSprint = getPreviousSprint(activeSprint);
+
+        document.getElementById('currentSprintBadge').innerText = "Active Sprint: " + activeSprint + " | Verifying Ledger: " + previousSprint;
+
+        // Core asynchronous loading function for dynamic repository assets
+        async function loadRole(roleId, title, desc, pathPrefix, type) {
             const cards = document.querySelectorAll('.role-card');
             cards.forEach(card => card.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
-            document.getElementById('panelTitle').innerText = title;
+            let targetPath = "";
+            document.getElementById('panelTitle').innerText = title + " (" + activeSprint + "; Ledger: " + previousSprint + ")";
             document.getElementById('panelDesc').innerText = desc;
-            document.getElementById('panelPath').innerText = "Repository Path: " + path;
 
             const contentDiv = document.getElementById('panelContent');
             contentDiv.innerHTML = "Fetching and parsing data from repository...";
 
             if (type === 'chart') {
-                // R5: Full 11 sector charts + technical summary table
+                // R5: Dynamic charts folder e.g., charts/W30/ or charts/W31/
+                targetPath = `${pathPrefix}${activeSprint}/chart_SPX_${activeSprint}.png`;
+                document.getElementById('panelPath').innerText = "Repository Path: charts/" + activeSprint + "/";
+                
                 contentDiv.innerHTML = `
-                    <p style="color: #9ca3af; margin-bottom: 10px;">Select from all 11 repository technical charts in <code>charts/W30/</code>:</p>
+                    <p style="color: #9ca3af; margin-bottom: 10px;">Select from all 11 repository technical charts in <code>charts/${activeSprint}/</code>:</p>
                     <div class="chart-grid">
-                        <button class="chart-btn active-chart" onclick="switchChart(this, 'charts/W30/chart_SPX_W30.png')">SPX</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_NDX_W30.png')">NDX</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_IWM_W30.png')">IWM</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLB_W30.png')">XLB</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLC_W30.png')">XLC</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLE_W30.png')">XLE</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLF_W30.png')">XLF</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLI_W30.png')">XLI</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLK_W30.png')">XLK</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLP_W30.png')">XLP</button>
-                        <button class="chart-btn" onclick="switchChart(this, 'charts/W30/chart_XLU_W30.png')">XLU</button>
+                        <button class="chart-btn active-chart" onclick="switchChart(this, 'charts/${activeSprint}/chart_SPX_${activeSprint}.png')">SPX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_NDX_${activeSprint}.png')">NDX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_IWM_${activeSprint}.png')">IWM</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLB_${activeSprint}.png')">XLB</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLC_${activeSprint}.png')">XLC</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLE_${activeSprint}.png')">XLE</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLF_${activeSprint}.png')">XLF</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLI_${activeSprint}.png')">XLI</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLK_${activeSprint}.png')">XLK</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLP_${activeSprint}.png')">XLP</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLU_${activeSprint}.png')">XLU</button>
                     </div>
-                    <img id="activeChart" src="charts/W30/chart_SPX_W30.png" alt="Technical Chart">
+                    <img id="activeChart" src="charts/${activeSprint}/chart_SPX_${activeSprint}.png" alt="Technical Chart">
                     <hr style="border-color: #334155; margin: 25px 0;">
-                    <h3>📄 R5 Technical Summary Table (W30)</h3>
-                    <div id="summaryTableContainer" style="margin-top: 15px;">Loading technical_agent-W30.md...</div>
+                    <h3>📄 R5 Technical Summary Table (${activeSprint})</h3>
+                    <div id="summaryTableContainer" style="margin-top: 15px;">Loading technical_agent-${activeSprint}.md...</div>
                 `;
-                fetchMarkdown('technical_agent-W30.md', 'summaryTableContainer');
+                fetchMarkdown(`technical_agent-${activeSprint}.md`, 'summaryTableContainer');
 
-            } else if (roleId === 'R7') {
-                // R7 Special case: render both prediction and human score files
+            } else if (type === 'ledger') {
+                // R6 Actual Ledger automatically targets previous week (e.g., W29 in W30, W30 in W31)
+                targetPath = `${pathPrefix}2026-${previousSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'prediction') {
+                // R7 Prediction & Human score files for current active sprint
+                targetPath = `${pathPrefix}2026-${activeSprint}_team2.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
                 contentDiv.innerHTML = `
-                    <h3>1. Official Prediction File: <code>prediction_2026-W30_team2.md</code></h3>
+                    <h3>1. Official Prediction File: <code>prediction_2026-${activeSprint}_team2.md</code></h3>
                     <div id="r7-pred" style="margin-bottom: 20px;">Loading prediction...</div>
                     <hr style="border-color: #334155; margin: 20px 0;">
-                    <h3>2. Human Governance Score: <code>human_score_2026-W30.md</code></h3>
+                    <h3>2. Human Governance Score: <code>human_score_2026-${activeSprint}.md</code></h3>
                     <div id="r7-score">Loading score...</div>
                 `;
-                fetchMarkdown('prediction_2026-W30_team2.md', 'r7-pred');
-                fetchMarkdown('human_score_2026-W30.md', 'r7-score');
+                fetchMarkdown(`prediction_2026-${activeSprint}_team2.md`, 'r7-pred');
+                fetchMarkdown(`human_score_2026-${activeSprint}.md`, 'r7-score');
+
+            } else if (type === 'calibration') {
+                // R10 Calibration log automatically targets previous week (e.g., W29 in W30, W30 in W31)
+                targetPath = `${pathPrefix}${previousSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
 
             } else {
-                // Standard markdown fetching
-                fetchMarkdown(path, 'panelContent');
+                // Standard markdown (R3, R4, R8) for current active sprint
+                targetPath = `${pathPrefix}${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
             }
         }
 
@@ -154,7 +199,7 @@
                 document.getElementById(containerId).innerHTML = marked.parse(markdownText);
             } catch (error) {
                 document.getElementById(containerId).innerHTML = `
-                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy, but verified in repository at:</p>
+                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy or file transitioning to <code>${activeSprint}</code>:</p>
                     <p style="font-family: monospace; color: #38bdf8;">${filePath}</p>
                 `;
             }
@@ -170,7 +215,7 @@
 
         // Initialize default view on load
         window.onload = function() {
-            loadRole('R3', 'R3 Almanac Agent (W30)', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_W30.md', 'markdown');
+            loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_', 'markdown');
         };
     </script>
 </body>
