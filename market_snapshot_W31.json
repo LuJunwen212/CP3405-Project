@@ -2,7 +2,7 @@
     "meta": {
         "market_year": 2026,
         "market_week": "W31",
-        "generation_time_utc": "2026-07-28T05:17:10+00:00",
+        "generation_time_utc": "2026-07-28T05:21:56+00:00",
         "target_week": "2026-07-27 to 2026-07-31",
         "baseline_target": "2026-07-24",
         "download_window": "2026-07-10 to 2026-08-01 (end exclusive)",
@@ -42,7 +42,7 @@
             "baseline_date": "2026-07-24",
             "baseline_close": 4067.6001,
             "final_date": "2026-07-28",
-            "close_price": 4042.0,
+            "close_price": 4041.8999,
             "weekly_delta_pct": -0.63
         },
         "OIL": {
@@ -50,8 +50,8 @@
             "baseline_date": "2026-07-24",
             "baseline_close": 89.31,
             "final_date": "2026-07-28",
-            "close_price": 81.64,
-            "weekly_delta_pct": -8.59
+            "close_price": 81.63,
+            "weekly_delta_pct": -8.6
         },
         "US10Y": {
             "ticker": "^TNX",
@@ -74,8 +74,8 @@
             "baseline_date": "2026-07-24",
             "baseline_close": 64098.4961,
             "final_date": "2026-07-28",
-            "close_price": 63433.8789,
-            "weekly_delta_pct": -1.04
+            "close_price": 63514.8203,
+            "weekly_delta_pct": -0.91
         },
         "XLK": {
             "ticker": "XLK",
