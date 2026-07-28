@@ -29,9 +29,9 @@ CP3405-Project/
 │
 └── outputs/
     └── R3/
-        ├── almanac_agent_W30.json
-        ├── almanac_agent_W30.csv
-        └── almanac_agent_W30.md
+        ├── almanac_agent_W31.json
+        ├── almanac_agent_W31.csv
+        └── almanac_agent_W31.md
 ```
 
 The source PDF must remain inside `r3_almanac_agent/`. The script searches for a PDF whose filename begins with:
@@ -105,21 +105,21 @@ When no command-line arguments or workflow inputs are supplied, the script calcu
 Example:
 
 ```text
-Workflow execution week: W30
+Workflow execution week: W31
 Forecast target: following Monday to Friday
 ```
 
 Generated filenames use the execution week:
 
 ```text
-outputs/R3/almanac_agent_W30.json
-outputs/R3/almanac_agent_W30.csv
-outputs/R3/almanac_agent_W30.md
+outputs/R3/almanac_agent_W31.json
+outputs/R3/almanac_agent_W31.csv
+outputs/R3/almanac_agent_W31.md
 ```
 
 The week identifier and date range have different purposes:
 
-- `W30` identifies the week when the report was generated.
+- `W31` identifies the week when the report was generated.
 - The date range identifies the future market week being forecast.
 
 Command-line values take priority over automatic values.
@@ -141,18 +141,18 @@ The script automatically determines the current ISO week and the following Monda
 ### Manual Run
 
 ```bash
-python r3_almanac_agent/r3_almanac_agent.py W30 "2026-07-27 to 2026-07-31"
+python r3_almanac_agent/r3_almanac_agent.py W31 "2026-08-03 to 2026-08-07"
 ```
 
 On Windows PowerShell, the same command can be used:
 
 ```powershell
-python r3_almanac_agent/r3_almanac_agent.py W30 "2026-07-27 to 2026-07-31"
+python r3_almanac_agent/r3_almanac_agent.py W31 "2026-08-03 to 2026-08-07"
 ```
 
 Manual input requirements:
 
-- Week format: `W` followed by two digits, such as `W30`
+- Week format: `W` followed by two digits, such as `W31`
 - Date format: `YYYY-MM-DD to YYYY-MM-DD`
 - Start date: Monday
 - End date: Friday
@@ -184,7 +184,7 @@ The workflow performs these stages:
 6. Searches the generated outputs for invalid values.
 7. Stages changed files from `outputs/R3/`.
 8. Commits and pushes changed outputs to the active branch.
-9. Creates no commit when the generated files are unchanged.
+9. Creates no commit only when the generated files are byte-for-byte unchanged.
 
 The workflow has:
 
@@ -203,15 +203,15 @@ The current cron configuration is:
 
 ```yaml
 schedule:
-  - cron: '20 1 * * 6'
+  - cron: '13 20 * * 5'
 ```
 
 GitHub Actions cron expressions use UTC.
 
 | Time zone | Run time |
 |---|---|
-| UTC | Saturday at 09:20 |
-| Singapore Time (UTC+8) | Saturday at 09:20 |
+| UTC | Friday at 20:13 |
+| Singapore Time (UTC+8) | Saturday at 04:13 |
 
 The scheduled run uses automatic values:
 
@@ -221,6 +221,8 @@ The scheduled run uses automatic values:
 No manual input is required for the scheduled run.
 
 Scheduled GitHub Actions workflows run from the repository's default branch. Therefore, the production workflow file must be present on the default branch for the Saturday schedule to execute.
+
+GitHub Actions scheduled runs can be delayed by queueing. The early Saturday schedule provides additional time for the output to be generated before downstream roles begin their work.
 
 ---
 
@@ -247,7 +249,7 @@ Manual output week override.
 Example:
 
 ```text
-W30
+W31
 ```
 
 #### `custom_market_date`
@@ -257,7 +259,7 @@ Manual forecast date-range override.
 Example:
 
 ```text
-2026-07-27 to 2026-07-31
+2026-08-03 to 2026-08-07
 ```
 
 Both fields can be left blank. Blank values cause the Python script to use its automatic week and next-week date calculations.
@@ -275,7 +277,7 @@ outputs/R3/
 ### JSON
 
 ```text
-outputs/R3/almanac_agent_W30.json
+outputs/R3/almanac_agent_W31.json
 ```
 
 Contains the full structured report:
@@ -287,7 +289,7 @@ Contains the full structured report:
 - Source PDF
 - Midterm election cycle context
 - Monthly index statistics
-- Weekly Almanac evidence
+- Forecast-month planner context
 - Sector seasonality signals
 - Evidence page numbers
 - Extraction methods
@@ -306,7 +308,7 @@ This prevents Python from publishing non-standard NaN or infinity values.
 ### CSV
 
 ```text
-outputs/R3/almanac_agent_W30.csv
+outputs/R3/almanac_agent_W31.csv
 ```
 
 Contains flattened records for downstream processing.
@@ -320,20 +322,66 @@ Record categories:
 ### Markdown
 
 ```text
-outputs/R3/almanac_agent_W30.md
+outputs/R3/almanac_agent_W31.md
 ```
 
 Contains a human-readable report with:
 
 - Execution and forecast context
 - Monthly index statistics
-- Weekly calendar evidence
+- Forecast-month planner context
 - Complete 11-sector seasonality matrix
 - Almanac bias
 - Confidence
 - Tactical thesis
 
 All three files are generated from the same validated report object.
+
+---
+
+## Latest Verified Output — W31
+
+The W31 scheduled workflow completed successfully and generated all three output formats.
+
+| Field | Verified value |
+|---|---|
+| Report week | `W31` |
+| Forecast period | `2026-08-03 to 2026-08-07` |
+| Forecast month | August 2026 |
+| Four-year cycle | U.S. midterm election year |
+| Almanac bias | Bearish |
+| Confidence | High |
+| Index coverage | SPX, NDX proxy, IWM |
+| Sector coverage | All 11 required sector ETFs |
+| Source PDF | `Stock Trader's Almanac 2026_L.pdf` |
+
+### August Index Evidence
+
+| Project ticker | Almanac series | August rank | Normal August average | Midterm August average | Source page |
+|---|---|:---:|---:|---:|:---:|
+| `SPX` | S&P 500 | 10 | +0.02% | -0.4% | 103 |
+| `NDX` | NASDAQ Composite, used as the NDX seasonal proxy | 11 | +0.3% | -1.4% | 103 |
+| `IWM` | Russell 2000 | 10 | +0.1% | -1.4% | 103 |
+
+The average midterm-year August return across the three project indices is approximately **-1.07%**, which satisfies the script's Bearish threshold. All three midterm returns are negative, producing **High** directional confidence.
+
+### Sector Seasonality Evidence
+
+| Project ETF | Sector | Signal | Seasonal window | 25-year average return | Source page |
+|---|---|:---:|---|---:|:---:|
+| `XLK` | Technology | Long | Mid March to Mid July | +10.87% | 130 |
+| `XLU` | Utilities | Long | Mid March to Early October | +9.32% | 130 |
+| `XLF` | Financials | Short | Early May to Early July | -6.30% | 130 |
+| `XLE` | Energy | Short | Early June to Late August | -5.67% | 130 |
+| `XLB` | Materials | Short | Mid May to Mid October | -5.10% | 130 |
+| `XLY` | Consumer Discretionary | Long | Early October to Early June | +13.11% | 131 |
+| `XLP` | Consumer Staples | Long | Early October to Early June | +8.47% | 131 |
+| `XLV` | Health Care | Long | Early October to Early May | +8.74% | 131 |
+| `XLI` | Industrials | Long | Late October to Mid May | +11.30% | 131 |
+| `XLC` | Communication Services | Long | Mid October to Late December | +5.13% | 131 |
+| `XLRE` | Real Estate | Long | Late October to Early May | +10.66% | 131 |
+
+The W31 `week_specific_pattern` field confirms that the August 2026 planner page was located on page 104. It provides forecast-month planner context; it is not presented as a separately calculated quantitative weekly trading rule.
 
 ---
 
@@ -519,6 +567,8 @@ and does not create an empty commit.
 
 The workflow pushes to the branch on which it is running.
 
+Because `generated_at` is refreshed on every execution, a normal rerun usually changes the JSON and Markdown files and therefore creates a new commit even when the underlying Almanac evidence is unchanged.
+
 ---
 
 ## Testing
@@ -526,7 +576,7 @@ The workflow pushes to the branch on which it is running.
 ### Valid Local Test
 
 ```bash
-python r3_almanac_agent/r3_almanac_agent.py W30 "2026-07-27 to 2026-07-31"
+python r3_almanac_agent/r3_almanac_agent.py W31 "2026-08-03 to 2026-08-07"
 ```
 
 Expected messages include:
@@ -541,8 +591,8 @@ Successfully compiled all unified artifacts
 Run the workflow manually with:
 
 ```text
-W30
-2026-07-27 to 2026-07-31
+W31
+2026-08-03 to 2026-08-07
 ```
 
 Confirm:
@@ -551,7 +601,7 @@ Confirm:
 - All three output files are generated.
 - Verification succeeds.
 - Changed outputs are committed automatically.
-- No unnecessary commit is created when the files are unchanged.
+- The automated commit is pushed to the branch used for the workflow run.
 
 ### NaN Failure Test
 
@@ -619,7 +669,7 @@ The date range must start on Monday and end on Friday.
 
 ### Workflow Succeeds but No Commit Appears
 
-This is expected when the new outputs are identical to the existing repository files.
+This occurs only when the regenerated outputs are byte-for-byte identical to the existing repository files. With the current `generated_at` field, this is uncommon.
 
 Check the workflow log for:
 
