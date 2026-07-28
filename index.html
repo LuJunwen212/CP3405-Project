@@ -56,11 +56,11 @@
         <p class="subtitle">Dynamically fetching time-sequenced repository assets and verification records.</p>
         
         <div class="scroll-axis" id="roleAxis">
-            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_', 'markdown')">
+            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', '', 'R3')">
                 <h3>R3</h3>
                 <span>Almanac Agent</span>
             </div>
-            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent', 'Weekly macroeconomic tracking report.', 'docs/macro_agent_', 'markdown')">
+            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent', 'Weekly macroeconomic tracking report.', '', 'R4')">
                 <h3>R4</h3>
                 <span>Macro Agent</span>
             </div>
@@ -76,7 +76,7 @@
                 <h3>R7</h3>
                 <span>Evaluation</span>
             </div>
-            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison', 'Multi-LLM synchronized consensus matrix.', 'r8_comparison_matrix_', 'markdown')">
+            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison', 'Multi-LLM synchronized consensus matrix.', '', 'R8')">
                 <h3>R8</h3>
                 <span>LLM Matrix</span>
             </div>
@@ -95,14 +95,12 @@
     </div>
 
     <script>
-        // Define Active Sprint (e.g., W30. When automated to W31, this can be automatically updated or detected)
         function getActiveSprint() {
             return "W30"; 
         }
 
         const activeSprint = getActiveSprint();
         
-        // Automatically calculate previous week (e.g., if active is W30, previous is W29. If active is W31, previous is W30)
         function getPreviousSprint(currentSprint) {
             const match = currentSprint.match(/W(\d+)/);
             if (match) {
@@ -114,24 +112,33 @@
 
         const previousSprint = getPreviousSprint(activeSprint);
 
-        document.getElementById('currentSprintBadge').innerText = "Active Sprint: " + activeSprint + " | Verifying Ledger: " + previousSprint;
+        document.getElementById('currentSprintBadge').innerText = "Active Sprint: " + activeSprint + " | Verification (Prev): " + previousSprint;
 
-        // Core asynchronous loading function for dynamic repository assets
         async function loadRole(roleId, title, desc, pathPrefix, type) {
             const cards = document.querySelectorAll('.role-card');
             cards.forEach(card => card.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
             let targetPath = "";
-            document.getElementById('panelTitle').innerText = title + " (" + activeSprint + "; Ledger: " + previousSprint + ")";
+            const displayWeek = (type === 'ledger' || type === 'calibration') ? previousSprint : activeSprint;
+            document.getElementById('panelTitle').innerText = title + " (" + displayWeek + ")";
             document.getElementById('panelDesc').innerText = desc;
 
             const contentDiv = document.getElementById('panelContent');
             contentDiv.innerHTML = "Fetching and parsing data from repository...";
 
-            if (type === 'chart') {
-                // R5: Dynamic charts folder e.g., charts/W30/ or charts/W31/
-                targetPath = `${pathPrefix}${activeSprint}/chart_SPX_${activeSprint}.png`;
+            if (type === 'R3') {
+                targetPath = `outputs/R3/almanac_agent_${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'R4') {
+                targetPath = `docs/macro_agent_2026-${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'chart') {
+                targetPath = `charts/${activeSprint}/chart_SPX_${activeSprint}.png`;
                 document.getElementById('panelPath').innerText = "Repository Path: charts/" + activeSprint + "/";
                 
                 contentDiv.innerHTML = `
@@ -157,15 +164,13 @@
                 fetchMarkdown(`technical_agent-${activeSprint}.md`, 'summaryTableContainer');
 
             } else if (type === 'ledger') {
-                // R6 Actual Ledger automatically targets previous week (e.g., W29 in W30, W30 in W31)
-                targetPath = `${pathPrefix}2026-${previousSprint}.md`;
+                targetPath = `actual_2026-${previousSprint}.md`;
                 document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
                 fetchMarkdown(targetPath, 'panelContent');
 
             } else if (type === 'prediction') {
-                // R7 Prediction & Human score files for current active sprint
-                targetPath = `${pathPrefix}2026-${activeSprint}_team2.md`;
-                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                targetPath = `prediction_2026-${activeSprint}_team2.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: prediction_2026-" + activeSprint + "_team2.md & human_score_2026-" + activeSprint + ".md";
                 contentDiv.innerHTML = `
                     <h3>1. Official Prediction File: <code>prediction_2026-${activeSprint}_team2.md</code></h3>
                     <div id="r7-pred" style="margin-bottom: 20px;">Loading prediction...</div>
@@ -176,21 +181,18 @@
                 fetchMarkdown(`prediction_2026-${activeSprint}_team2.md`, 'r7-pred');
                 fetchMarkdown(`human_score_2026-${activeSprint}.md`, 'r7-score');
 
-            } else if (type === 'calibration') {
-                // R10 Calibration log automatically targets previous week (e.g., W29 in W30, W30 in W31)
-                targetPath = `${pathPrefix}${previousSprint}.md`;
+            } else if (type === 'R8') {
+                targetPath = `r8_comparison_matrix_${activeSprint}.md`;
                 document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
                 fetchMarkdown(targetPath, 'panelContent');
 
-            } else {
-                // Standard markdown (R3, R4, R8) for current active sprint
-                targetPath = `${pathPrefix}${activeSprint}.md`;
+            } else if (type === 'calibration') {
+                targetPath = `docs/r10/calibration_log_${previousSprint}.md`;
                 document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
                 fetchMarkdown(targetPath, 'panelContent');
             }
         }
 
-        // Generic asynchronous markdown fetcher and parser
         async function fetchMarkdown(filePath, containerId) {
             try {
                 const response = await fetch(filePath);
@@ -199,13 +201,12 @@
                 document.getElementById(containerId).innerHTML = marked.parse(markdownText);
             } catch (error) {
                 document.getElementById(containerId).innerHTML = `
-                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy or file transitioning to <code>${activeSprint}</code>:</p>
+                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy or file transitioning:</p>
                     <p style="font-family: monospace; color: #38bdf8;">${filePath}</p>
                 `;
             }
         }
 
-        // Chart switcher for R5
         function switchChart(btn, imgPath) {
             const buttons = document.querySelectorAll('.chart-btn');
             buttons.forEach(b => b.classList.remove('active-chart'));
@@ -213,9 +214,8 @@
             document.getElementById('activeChart').src = imgPath;
         }
 
-        // Initialize default view on load
         window.onload = function() {
-            loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', 'outputs/R3/almanac_agent_', 'markdown');
+            loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', '', 'R3');
         };
     </script>
 </body>
