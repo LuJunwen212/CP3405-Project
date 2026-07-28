@@ -15,6 +15,6 @@
 | XLV | 163.40 | 161.43 | 159.75 | 126.80 | 164.44 | Bullish | Bullish | Medium |
 | XLI | 183.20 | 181.21 | 180.56 | 146.55 | 185.56 | Bullish | Bullish | Medium |
 | XLB | 51.39 | 50.82 | 50.84 | 41.67 | 53.18 | Neutral | Neutral | Medium |
-| XLRE | 45.76 | 45.16 | 44.83 | 39.28 | 45.76 | Bullish | Bullish | Medium |
+| XLRE | 45.76 | 45.33 | 44.93 | 39.28 | 45.95 | Bullish | Bullish | Medium |
 | XLK | 174.30 | 177.73 | 180.17 | 127.35 | 197.97 | Bearish | Bearish | Medium |
 | XLU | 45.68 | 45.71 | 45.45 | 40.19 | 47.10 | Neutral | Neutral | Medium |
