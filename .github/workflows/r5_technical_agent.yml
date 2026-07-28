@@ -1,6 +1,9 @@
 name: Automated Technical Agent
 
 on:
+  push:
+    branches:
+      - week-9
   workflow_dispatch:
     inputs:
       custom_market_week:
