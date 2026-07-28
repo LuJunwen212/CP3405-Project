@@ -4,7 +4,7 @@
 
 **Prediction Week Evaluated:** 2026-W30  
 **Market Data Week Used:** 2026-W31  
-**Generated At (UTC):** 2026-07-28T05:12:46+00:00  
+**Generated At (UTC):** 2026-07-28T05:14:40+00:00  
 **Target Week:** 2026-07-27 to 2026-07-31  
 **Return Method:** Previous Friday close (or nearest earlier trading-day close) to final available close in the target ISO week  
 **Price Basis:** Raw Close (auto_adjust=False)  
@@ -19,11 +19,11 @@
 | S&P 500 | ^GSPC | 7413.1802 | +0.02% | 2026-07-24 | 2026-07-27 |
 | Nasdaq 100 | ^NDX | 28039.2109 | -0.32% | 2026-07-24 | 2026-07-27 |
 | Russell 2000 | IWM | 292.9100 | +0.60% | 2026-07-24 | 2026-07-27 |
-| Gold | GC=F | 4041.3000 | -0.65% | 2026-07-24 | 2026-07-28 |
-| Crude Oil | CL=F | 81.6700 | -8.55% | 2026-07-24 | 2026-07-28 |
+| Gold | GC=F | 4041.8999 | -0.63% | 2026-07-24 | 2026-07-28 |
+| Crude Oil | CL=F | 81.5700 | -8.67% | 2026-07-24 | 2026-07-28 |
 | 10Y Treasury Yield | ^TNX | 4.6410 | -0.81% | 2026-07-24 | 2026-07-27 |
 | TLT | TLT | 83.7500 | +0.60% | 2026-07-24 | 2026-07-27 |
-| Bitcoin | BTC-USD | 63389.4414 | -1.11% | 2026-07-24 | 2026-07-28 |
+| Bitcoin | BTC-USD | 63381.1406 | -1.12% | 2026-07-24 | 2026-07-28 |
 
 ---
 
