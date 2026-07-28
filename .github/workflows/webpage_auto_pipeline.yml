@@ -1,9 +1,9 @@
 name: Team 2 Weekly Production Pipeline
 
 on:
-  # push:
-  #   branches:
-  #     - week-9
+  push:
+    branches:
+      - week-9
   # Trigger automatically every Sunday at 16:00 UTC (Right after R9 release & final DoD check)
   schedule:
     - cron: '0 16 * * 0'
