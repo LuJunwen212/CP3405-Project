@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - week-9
+      - main
   schedule:
     - cron: '0 16 * * 0'
   
@@ -46,10 +47,12 @@ jobs:
 
       - name: Dynamically Detect Current Week and Update Dashboard
         shell: bash
+        env:
+          INPUT_CUSTOM_WEEK: ${{ github.event.inputs.custom_market_week }}
         run: |
           set -euo pipefail
 
-          TARGET_WEEK="${{ github.event.inputs.custom_market_week }}"
+          TARGET_WEEK="$INPUT_CUSTOM_WEEK"
           if [ -z "$TARGET_WEEK" ]; then
             TARGET_WEEK="W$(date +%V)"
           fi
@@ -63,17 +66,26 @@ jobs:
           echo "Verification Sprint Target (Previous): $PREV_WEEK"
           echo "=================================================="
 
-          python3 -c "
+          python3 - "$TARGET_WEEK" << 'EOF'
+          import sys
+          import re
+
+          target_week = sys.argv[1]
+
           with open('index.html', 'r', encoding='utf-8') as f:
               content = f.read()
-          
-          import re
-          new_content = re.sub(r'function getActiveSprint\(\)\s*\{\s*return\s*\"[^\"]+\";', f'function getActiveSprint() {{\n            return \"{TARGET_WEEK}\";', content)
-          
+
+          new_content = re.sub(
+              r'function getActiveSprint\(\)\s*\{\s*return\s*"[^"]+";',
+              f'function getActiveSprint() {{\n            return "{target_week}";',
+              content
+          )
+
           with open('index.html', 'w', encoding='utf-8') as f:
               f.write(new_content)
-          print('Successfully injected active sprint $TARGET_WEEK into index.html')
-          "
+
+          print(f"Successfully injected active sprint {target_week} into index.html")
+          EOF
 
       - name: Execute Multi-Agent Pipeline Scripts
         run: |
