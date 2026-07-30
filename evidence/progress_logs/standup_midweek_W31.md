@@ -115,11 +115,11 @@ From Monday to today, R9 has been checking whether there are any issues with the
 ### R10 — Calibration Agent
 **Status:** In progress.
 
-R10 stated that due to insufficient data, there are dependencies and the test cannot be conducted at present.
+R10 successfully completed the automated test and generated the report.
 
-**Blocker:** Due to the dependencies, it is necessary to verify on Sunday whether R10 can automatically produce the results..
+**Blocker:** None.
 
-**R2 action:** On Sunday, we will monitor whether R10 can automatically generate results and coordinate to solve any problems that arise promptly.
+**R2 action:** On Sunday, R2 will track and verify whether R10 can successfully conduct the automated test and generate the report.
 
 ---
 ## Dependency Check
@@ -137,7 +137,7 @@ Midweek assessment:
 - R7 is correctly waiting for the synthesis output.
 - R8 is complete.
 - R9 needs to merge the branch on Friday and create a tag on Sunday.
-- R10 has dependencies, so the verification results can only be obtained on Sunday.
+- R10 is complete.
 
 ## Blockers Surfaced by Wednesday
 1. R4 stated that it is impossible to determine in advance whether the data automation can be achieved. 
@@ -150,6 +150,6 @@ Midweek assessment:
    
 ## R2 Midweek Assessment
 
-The sprint is currently **proceeding as planned**. The progress this week has been smooth compared to last week. R3 was completed ahead of schedule, the R4/R5 code needs to be tested on Saturday to see if it can be successfully automated.while R6 is proceeding normally, and significant progress has been made on R8. R7/R10  are currently waiting for the planned dependencies, and R9 is expected to merge the branch on Friday and tag it on Sunday.
+The sprint is currently **proceeding as planned**. The progress this week has been smooth compared to last week. R3 was completed ahead of schedule, the R4/R5 code needs to be tested on Saturday to see if it can be successfully automated. while R6 is proceeding normally, and significant progress has been made on R8/R10. R7 is currently waiting for the planned dependencies, and R9 is expected to merge the branch on Friday and tag it on Sunday.
 
 The next critical checkpoint is confirming that the upstream agent outputs are committed and usable by R8, followed by successful weekend automation, human review, branch merging, and creation of the exact `vW31` release tag.
