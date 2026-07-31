@@ -44,6 +44,66 @@
         .chart-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 15px; }
         .chart-btn { background: #374151; color: #f3f4f6; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
         .chart-btn:hover, .chart-btn.active-chart { background: #38bdf8; color: #0b0f19; }
+
+        #actual-grid {
+            display: grid;
+            grid-template-columns: 20% 20% 20% 20% 20%;
+        }
+        .actual-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 1em;
+            margin: 1em;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .actual-box-name {
+            margin-bottom: 1em;
+        }
+
+        .actual-box h1 {
+            color: #f3f4f6;
+            font-size: 1.5em;
+            padding: 0;
+            margin: 0;
+        }
+
+        .actual-box h2 {
+            color: #9ca3af;
+            font-size: 0.7em;
+            font-weight: normal;
+            padding: 0;
+            margin: 0;
+        }
+
+        .actual-change {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .actual-change::after {
+            content: "%";
+        }
+
+        .actual-up {
+            color: #64e75b;
+        }
+
+        .actual-up::before {
+            content: "+";
+        }
+
+        .actual-down {
+            color: #ff7b7b;
+        }
+
+        .actual-neutral {
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -165,8 +225,19 @@
 
             } else if (type === 'ledger') {
                 targetPath = `actual_2026-${previousSprint}.md`;
+                JSONPath = `market_snapshot_${activeSprint}.json`;
+                JSONData = await fetchJSONData(JSONPath);
                 document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
-                fetchMarkdown(targetPath, 'panelContent');
+                contentDiv.innerHTML = `
+                    <p style="margin-bottom: 10px;">Market changes for this week:</p>
+                    <div id="actual-grid">
+                    </div>
+                    <hr style="border-color: #334155; margin: 25px 0;">
+                    <h3>📄 R6 Actual Ledger Table (${activeSprint})</h3>
+                    <div id="markdownContainer" style="margin-top: 15px;">Loading technical_agent-${activeSprint}.md...</div>
+                `;
+                actualResults(JSONData, 'actual-grid');
+                fetchMarkdown(targetPath, 'markdownContainer');
 
             } else if (type === 'prediction') {
                 targetPath = `prediction_2026-${activeSprint}_team2.md`;
@@ -205,6 +276,53 @@
                     <p style="font-family: monospace; color: #38bdf8;">${filePath}</p>
                 `;
             }
+        }
+
+        async function fetchJSONData(filePath) {
+            let response = await fetch(filePath);
+            let responseJSON = await response.json();
+            let JSONString = JSON.stringify(responseJSON);
+            let JSONData = JSON.parse(JSONString);
+
+            return JSONData;
+        };
+
+        async function actualResults(JSONData, containerId) {
+            const markets = ["SPX", "NDX", "IWM", "XLK", "XLC", "XLY", "XLF", "XLV", "XLP", "XLE", "XLU", "XLI", "XLB", "XLRE"]
+            const marketFullNames = ["S&P 500", "NASDAQ 100", "Russell 2000", "Technology", "Communication Services", "Consumer Discretionary", "Financials", "Healthcare", "Consumer Staples", "Energy", "Utilities", "Industrials", "Materials", "Real Estate"]
+            for (var market in markets) {
+                marketName = markets[market];
+                marketFullName = marketFullNames[market];
+                marketChange = JSONData["metrics"][marketName]["weekly_delta_pct"];
+                marketChangeDirection = "neutral"
+                marketChangeClass = "actual-change actual-" + marketChangeDirection;
+                actualBox = document.createElement("div");
+                actualBox.classList.add('actual-box');
+                actualBoxName = document.createElement("div");
+                actualBoxName.classList.add('actual-box-name');
+                actualName = document.createElement("h1");
+                actualName.innerText = marketName;
+                actualFullName = document.createElement("h2");
+                actualFullName.innerText = marketFullName;
+                actualChange = document.createElement("p");
+                actualChange.innerText = marketChange;
+                actualChange.classList.add('actual-change');
+                if (marketChange < 0) {
+                    actualChange.classList.add('actual-down');
+                }
+                else if (marketChange > 0) {
+                    actualChange.classList.add('actual-up');
+                }
+                else {
+                    actualChange.classList.add('actual-neutral');
+                }
+                actualBoxName.appendChild(actualName);
+                actualBoxName.appendChild(actualFullName);
+                actualBox.appendChild(actualBoxName);
+                actualBox.appendChild(actualChange);
+
+                document.getElementById(containerId).appendChild(actualBox);
+            } 
         }
 
         function switchChart(btn, imgPath) {
