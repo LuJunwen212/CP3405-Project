@@ -56,11 +56,11 @@
             padding: 1em;
             margin: 1em;
             line-height: 1;
+            display: flex;
+            flex-direction: column;
             text-align: center;
-        }
-
-        .actual-box-name {
-            margin-bottom: 1em;
+            align-items: center;
+            justify-content: center;
         }
 
         .actual-box h1 {
@@ -81,7 +81,7 @@
         .actual-change {
             font-size: 1.5em;
             font-weight: bold;
-            margin: 0;
+            margin: 1em 0 0 0;
         }
 
         .actual-change::after {
@@ -102,6 +102,12 @@
 
         .actual-neutral {
             color: white;
+        }
+
+        .actual-box h3 {
+            font-size: 1em;
+            padding: 0;
+            margin: 0 0 1em 0;
         }
 
     </style>
@@ -290,11 +296,13 @@
         async function actualResults(JSONData, containerId) {
             const markets = ["SPX", "NDX", "IWM", "XLK", "XLC", "XLY", "XLF", "XLV", "XLP", "XLE", "XLU", "XLI", "XLB", "XLRE"]
             const marketFullNames = ["S&P 500", "NASDAQ 100", "Russell 2000", "Technology", "Communication Services", "Consumer Discretionary", "Financials", "Healthcare", "Consumer Staples", "Energy", "Utilities", "Industrials", "Materials", "Real Estate"]
+            marketChanges = [];
             for (var market in markets) {
                 marketName = markets[market];
                 marketFullName = marketFullNames[market];
                 marketChange = JSONData["metrics"][marketName]["weekly_delta_pct"];
-                marketChangeDirection = "neutral"
+                marketChanges.push(marketChange);
+                marketChangeDirection = "neutral";
                 marketChangeClass = "actual-change actual-" + marketChangeDirection;
                 actualBox = document.createElement("div");
                 actualBox.classList.add('actual-box');
@@ -320,10 +328,46 @@
                 actualBoxName.appendChild(actualFullName);
                 actualBox.appendChild(actualBoxName);
                 actualBox.appendChild(actualChange);
-
                 document.getElementById(containerId).appendChild(actualBox);
-            } 
+            }
+            strongestMarketName = markets[indexOfMax(marketChanges)];
+            strongestMarketFullName = marketFullNames[indexOfMax(marketChanges)];
+            actualBox = document.createElement("div");
+            actualBox.classList.add('actual-box');
+            actualBoxName = document.createElement("div");
+            actualBoxName.classList.add('actual-box-name');
+            actualStrongestHeader = document.createElement("h3");
+            actualStrongestHeader.innerText = "Strongest Index:";
+            actualStrongestHeader.classList.add('actual-strongest-header');
+            actualName = document.createElement("h1");
+            actualName.innerText = strongestMarketName;
+            actualFullName = document.createElement("h2");
+            actualFullName.innerText = strongestMarketFullName;
+            actualBox.appendChild(actualStrongestHeader);
+            actualBoxName.appendChild(actualName);
+            actualBoxName.appendChild(actualFullName);
+            actualBox.appendChild(actualBoxName);
+            document.getElementById(containerId).appendChild(actualBox);
         }
+
+        function indexOfMax(arr) {
+            if (arr.length === 0) {
+                return -1;
+            }
+
+            var max = arr[0];
+            var maxIndex = 0;
+
+            for (var i = 1; i < arr.length; i++) {
+                if (arr[i] > max) {
+                    maxIndex = i;
+                    max = arr[i];
+                }
+            }
+
+            return maxIndex;
+        }
+
 
         function switchChart(btn, imgPath) {
             const buttons = document.querySelectorAll('.chart-btn');
