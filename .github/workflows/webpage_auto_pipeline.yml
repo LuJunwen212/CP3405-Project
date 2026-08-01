@@ -1,9 +1,9 @@
 name: Team 2 Webpage & Dashboard Automation Pipeline
 
 on:
-  # push:
-  #   branches:
-  #     - week-9
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 16 * * 0'
   
