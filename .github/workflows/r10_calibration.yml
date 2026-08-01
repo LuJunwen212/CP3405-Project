@@ -1,6 +1,9 @@
 name: R10 Calibration Automation
 
 on:
+  # push:
+  #   branches:
+  #     - week-9
   workflow_dispatch:
     inputs:
       week:

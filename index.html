@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team 2 - Production Dashboard & Repository Engine</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0b0f19; color: #f3f4f6; margin: 0; padding: 40px; }
+        .container { max-width: 1050px; margin: 0 auto; background: #111827; padding: 40px; border-radius: 12px; border: 1px solid #1f2937; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        h1 { color: #38bdf8; font-size: 28px; margin: 0; }
+        .sprint-badge-box { background: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 6px; color: #38bdf8; font-weight: bold; font-family: monospace; font-size: 14px; }
+        p.subtitle { color: #9ca3af; font-size: 15px; margin-bottom: 25px; }
+        .badge { display: inline-block; background: #4f46e5; color: white; padding: 4px 12px; border-radius: 6px; font-weight: bold; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
+
+        /* Scroll Axis Styling */
+        .scroll-axis { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; scrollbar-width: thin; scrollbar-color: #4b5563 #1f2937; }
+        .scroll-axis::-webkit-scrollbar { height: 8px; }
+        .scroll-axis::-webkit-scrollbar-track { background: #1f2937; border-radius: 4px; }
+        .scroll-axis::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+
+        /* Role Card Styling */
+        .role-card { min-width: 130px; background: #1f2937; border: 1px solid #374151; padding: 12px; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; }
+        .role-card:hover { border-color: #38bdf8; background: #252f3f; }
+        .role-card.active { background: #38bdf8; color: #0b0f19; border-color: #38bdf8; font-weight: bold; }
+        .role-card h3 { margin: 0 0 4px 0; font-size: 16px; }
+        .role-card span { font-size: 11px; opacity: 0.8; }
+
+        /* Detail Panel Styling */
+        .detail-panel { background: #1f2937; padding: 30px; border-radius: 8px; border: 1px solid #374151; }
+        .detail-panel h2 { color: #e5e7eb; margin-top: 0; font-size: 22px; border-bottom: 1px solid #374151; padding-bottom: 10px; }
+        .path-box { background: #111827; padding: 10px 15px; border-radius: 6px; border: 1px solid #374151; font-family: monospace; color: #38bdf8; margin: 15px 0; font-size: 13px; }
+        
+        /* Markdown Body Container */
+        .markdown-body { background: #0f172a; padding: 25px; border-radius: 6px; border: 1px solid #1e293b; margin-top: 15px; color: #e2e8f0; font-size: 14px; line-height: 1.7; max-height: 600px; overflow-y: auto; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #38bdf8; border-bottom: 1px solid #1e293b; padding-bottom: 6px; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 8px 12px; text-align: left; }
+        .markdown-body th { background: #1e293b; }
+
+        /* Charts & 11 Sector Buttons */
+        img { width: 100%; border-radius: 6px; margin-top: 15px; border: 1px solid #4b5563; }
+        .chart-grid { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 15px; }
+        .chart-btn { background: #374151; color: #f3f4f6; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .chart-btn:hover, .chart-btn.active-chart { background: #38bdf8; color: #0b0f19; }
+
+        #actual-grid {
+            display: grid;
+            grid-template-columns: 20% 20% 20% 20% 20%;
+        }
+        .actual-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 1em;
+            margin: 1em;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .actual-box-name {
+            margin-bottom: 1em;
+        }
+
+        .actual-box h1 {
+            color: #f3f4f6;
+            font-size: 1.5em;
+            padding: 0;
+            margin: 0;
+        }
+
+        .actual-box h2 {
+            color: #9ca3af;
+            font-size: 0.7em;
+            font-weight: normal;
+            padding: 0;
+            margin: 0;
+        }
+
+        .actual-change {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .actual-change::after {
+            content: "%";
+        }
+
+        .actual-up {
+            color: #64e75b;
+        }
+
+        .actual-up::before {
+            content: "+";
+        }
+
+        .actual-down {
+            color: #ff7b7b;
+        }
+
+        .actual-neutral {
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="badge">Team 2 · Sprint Production System</span>
+        <div class="header-flex">
+            <h1>Live Multi-Role Repository Engine</h1>
+            <div class="sprint-badge-box" id="currentSprintBadge">Active Sprint: Loading...</div>
+        </div>
+        <p class="subtitle">Dynamically fetching time-sequenced repository assets and verification records.</p>
+        
+        <div class="scroll-axis" id="roleAxis">
+            <div class="role-card active" onclick="loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', '', 'R3')">
+                <h3>R3</h3>
+                <span>Almanac Agent</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R4', 'R4 Macro Agent', 'Weekly macroeconomic tracking report.', '', 'R4')">
+                <h3>R4</h3>
+                <span>Macro Agent</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R5', 'R5 Technical Analysis Agent', 'Complete technical charts (11 assets) & summary table.', 'charts/', 'chart')">
+                <h3>R5</h3>
+                <span>Technical Agent</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R6', 'R6 Actual Ledger', 'Actual market movement verification ledger (Evaluates previous week).', 'actual_', 'ledger')">
+                <h3>R6</h3>
+                <span>Actual Ledger</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R7', 'R7 Evaluation & Prediction', 'Human governance score & official team prediction.', 'prediction_', 'prediction')">
+                <h3>R7</h3>
+                <span>Evaluation</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R8', 'R8 Multi-Model Comparison', 'Multi-LLM synchronized consensus matrix.', '', 'R8')">
+                <h3>R8</h3>
+                <span>LLM Matrix</span>
+            </div>
+            <div class="role-card" onclick="loadRole('R10', 'R10 Calibration Log', 'Bias-correction thresholds & calibration log (Evaluates previous week).', 'docs/r10/calibration_log_', 'calibration')">
+                <h3>R10</h3>
+                <span>Calibration</span>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <h2 id="panelTitle">Loading...</h2>
+            <p id="panelDesc" style="color: #9ca3af; margin-top: 5px;"></p>
+            <div class="path-box" id="panelPath">Repository Path: </div>
+            <div class="markdown-body" id="panelContent">Loading repository data...</div>
+        </div>
+    </div>
+
+    <script>
+        function getActiveSprint() {
+            return "W31"; 
+        }
+
+        const activeSprint = getActiveSprint();
+        
+        function getPreviousSprint(currentSprint) {
+            const match = currentSprint.match(/W(\d+)/);
+            if (match) {
+                const prevNum = parseInt(match[1]) - 1;
+                return "W" + prevNum;
+            }
+            return "W29";
+        }
+
+        const previousSprint = getPreviousSprint(activeSprint);
+
+        document.getElementById('currentSprintBadge').innerText = "Active Sprint: " + activeSprint + " | Verification (Prev): " + previousSprint;
+
+        async function loadRole(roleId, title, desc, pathPrefix, type) {
+            const cards = document.querySelectorAll('.role-card');
+            cards.forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            let targetPath = "";
+            const displayWeek = (type === 'ledger' || type === 'calibration') ? previousSprint : activeSprint;
+            document.getElementById('panelTitle').innerText = title + " (" + displayWeek + ")";
+            document.getElementById('panelDesc').innerText = desc;
+
+            const contentDiv = document.getElementById('panelContent');
+            contentDiv.innerHTML = "Fetching and parsing data from repository...";
+
+            if (type === 'R3') {
+                targetPath = `outputs/R3/almanac_agent_${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'R4') {
+                targetPath = `docs/macro_agent_2026-${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'chart') {
+                targetPath = `charts/${activeSprint}/chart_SPX_${activeSprint}.png`;
+                document.getElementById('panelPath').innerText = "Repository Path: charts/" + activeSprint + "/";
+                
+                contentDiv.innerHTML = `
+                    <p style="color: #9ca3af; margin-bottom: 10px;">Select from all 11 repository technical charts in <code>charts/${activeSprint}/</code>:</p>
+                    <div class="chart-grid">
+                        <button class="chart-btn active-chart" onclick="switchChart(this, 'charts/${activeSprint}/chart_SPX_${activeSprint}.png')">SPX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_NDX_${activeSprint}.png')">NDX</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_IWM_${activeSprint}.png')">IWM</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLB_${activeSprint}.png')">XLB</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLC_${activeSprint}.png')">XLC</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLE_${activeSprint}.png')">XLE</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLF_${activeSprint}.png')">XLF</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLI_${activeSprint}.png')">XLI</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLK_${activeSprint}.png')">XLK</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLP_${activeSprint}.png')">XLP</button>
+                        <button class="chart-btn" onclick="switchChart(this, 'charts/${activeSprint}/chart_XLU_${activeSprint}.png')">XLU</button>
+                    </div>
+                    <img id="activeChart" src="charts/${activeSprint}/chart_SPX_${activeSprint}.png" alt="Technical Chart">
+                    <hr style="border-color: #334155; margin: 25px 0;">
+                    <h3>📄 R5 Technical Summary Table (${activeSprint})</h3>
+                    <div id="summaryTableContainer" style="margin-top: 15px;">Loading technical_agent-${activeSprint}.md...</div>
+                `;
+                fetchMarkdown(`technical_agent-${activeSprint}.md`, 'summaryTableContainer');
+
+            } else if (type === 'ledger') {
+                targetPath = `actual_2026-${previousSprint}.md`;
+                JSONPath = `market_snapshot_${activeSprint}.json`;
+                JSONData = await fetchJSONData(JSONPath);
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                contentDiv.innerHTML = `
+                    <p style="margin-bottom: 10px;">Market changes for this week:</p>
+                    <div id="actual-grid">
+                    </div>
+                    <hr style="border-color: #334155; margin: 25px 0;">
+                    <h3>📄 R6 Actual Ledger Table (${activeSprint})</h3>
+                    <div id="markdownContainer" style="margin-top: 15px;">Loading technical_agent-${activeSprint}.md...</div>
+                `;
+                actualResults(JSONData, 'actual-grid');
+                fetchMarkdown(targetPath, 'markdownContainer');
+
+            } else if (type === 'prediction') {
+                targetPath = `prediction_2026-${activeSprint}_team2.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: prediction_2026-" + activeSprint + "_team2.md & human_score_2026-" + activeSprint + ".md";
+                contentDiv.innerHTML = `
+                    <h3>1. Official Prediction File: <code>prediction_2026-${activeSprint}_team2.md</code></h3>
+                    <div id="r7-pred" style="margin-bottom: 20px;">Loading prediction...</div>
+                    <hr style="border-color: #334155; margin: 20px 0;">
+                    <h3>2. Human Governance Score: <code>human_score_2026-${activeSprint}.md</code></h3>
+                    <div id="r7-score">Loading score...</div>
+                `;
+                fetchMarkdown(`prediction_2026-${activeSprint}_team2.md`, 'r7-pred');
+                fetchMarkdown(`human_score_2026-${activeSprint}.md`, 'r7-score');
+
+            } else if (type === 'R8') {
+                targetPath = `r8_comparison_matrix_${activeSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+
+            } else if (type === 'calibration') {
+                targetPath = `docs/r10/calibration_log_${previousSprint}.md`;
+                document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
+                fetchMarkdown(targetPath, 'panelContent');
+            }
+        }
+
+        async function fetchMarkdown(filePath, containerId) {
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error("File not found or network error.");
+                const markdownText = await response.text();
+                document.getElementById(containerId).innerHTML = marked.parse(markdownText);
+            } catch (error) {
+                document.getElementById(containerId).innerHTML = `
+                    <p style="color: #f87171;">⚠️ Note: Direct browser fetch restricted by local CORS policy or file transitioning:</p>
+                    <p style="font-family: monospace; color: #38bdf8;">${filePath}</p>
+                `;
+            }
+        }
+
+        async function fetchJSONData(filePath) {
+            let response = await fetch(filePath);
+            let responseJSON = await response.json();
+            let JSONString = JSON.stringify(responseJSON);
+            let JSONData = JSON.parse(JSONString);
+
+            return JSONData;
+        };
+
+        async function actualResults(JSONData, containerId) {
+            const markets = ["SPX", "NDX", "IWM", "XLK", "XLC", "XLY", "XLF", "XLV", "XLP", "XLE", "XLU", "XLI", "XLB", "XLRE"]
+            const marketFullNames = ["S&P 500", "NASDAQ 100", "Russell 2000", "Technology", "Communication Services", "Consumer Discretionary", "Financials", "Healthcare", "Consumer Staples", "Energy", "Utilities", "Industrials", "Materials", "Real Estate"]
+            for (var market in markets) {
+                marketName = markets[market];
+                marketFullName = marketFullNames[market];
+                marketChange = JSONData["metrics"][marketName]["weekly_delta_pct"];
+                marketChangeDirection = "neutral"
+                marketChangeClass = "actual-change actual-" + marketChangeDirection;
+                actualBox = document.createElement("div");
+                actualBox.classList.add('actual-box');
+                actualBoxName = document.createElement("div");
+                actualBoxName.classList.add('actual-box-name');
+                actualName = document.createElement("h1");
+                actualName.innerText = marketName;
+                actualFullName = document.createElement("h2");
+                actualFullName.innerText = marketFullName;
+                actualChange = document.createElement("p");
+                actualChange.innerText = marketChange;
+                actualChange.classList.add('actual-change');
+                if (marketChange < 0) {
+                    actualChange.classList.add('actual-down');
+                }
+                else if (marketChange > 0) {
+                    actualChange.classList.add('actual-up');
+                }
+                else {
+                    actualChange.classList.add('actual-neutral');
+                }
+                actualBoxName.appendChild(actualName);
+                actualBoxName.appendChild(actualFullName);
+                actualBox.appendChild(actualBoxName);
+                actualBox.appendChild(actualChange);
+
+                document.getElementById(containerId).appendChild(actualBox);
+            } 
+        }
+
+        function switchChart(btn, imgPath) {
+            const buttons = document.querySelectorAll('.chart-btn');
+            buttons.forEach(b => b.classList.remove('active-chart'));
+            btn.classList.add('active-chart');
+            document.getElementById('activeChart').src = imgPath;
+        }
+
+        window.onload = function() {
+            loadRole('R3', 'R3 Almanac Agent', 'Automated calendar & macro almanac alignment.', '', 'R3');
+        };
+    </script>
+</body>
+</html>

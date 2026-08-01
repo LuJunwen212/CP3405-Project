@@ -4,3 +4,4 @@ W28,Neutral → Up,up,+0.2% to +1.3%,Medium,Medium,-4.13,down,False,Outside rang
 W29,Down,down,-1.8% to +0.2%,Medium,Medium,1.97,up,False,Outside range,0,primary_prediction_section
 W29,Down,down,-1.8% to +0.2%,Medium,Medium,1.97,up,False,Outside range,0,primary_prediction_section
 W29,Down,down,-1.8% to +0.2%,Medium,Medium,-1.62,down,True,Inside range,2,primary_prediction_section
+W30,** Down **Expected,down,** -2.5% to +0.2% **,Medium,Medium,-0.32,down,True,Inside range,2,primary_prediction_section
