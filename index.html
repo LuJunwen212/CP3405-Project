@@ -225,8 +225,6 @@
 
             } else if (type === 'ledger') {
                 targetPath = `actual_2026-${previousSprint}.md`;
-                JSONPath = `market_snapshot_${activeSprint}.json`;
-                JSONData = await fetchJSONData(JSONPath);
                 document.getElementById('panelPath').innerText = "Repository Path: " + targetPath;
                 contentDiv.innerHTML = `
                     <p style="margin-bottom: 10px;">Market changes for this week:</p>
@@ -236,6 +234,8 @@
                     <h3>📄 R6 Actual Ledger Table (${activeSprint})</h3>
                     <div id="markdownContainer" style="margin-top: 15px;">Loading technical_agent-${activeSprint}.md...</div>
                 `;
+                JSONPath = `market_snapshot_${activeSprint}.json`;
+                JSONData = await fetchJSONData(JSONPath);
                 actualResults(JSONData, 'actual-grid');
                 fetchMarkdown(targetPath, 'markdownContainer');
 
