@@ -46,8 +46,8 @@ A thorough verification of role scripts and outputs confirmed:
 
 # 5. Final Decision
 
-Team 2 will proceed with the Sprint 8 W31 forecasting workflow for R3–R8. Full automation is accepted for R3, R5, R6, and the structured support used by R7. Partial automation is maintained for R4 and R8 due to external paid data dependencies.
+Team 2 will proceed with the Sprint 9 W31 forecasting workflow for R3–R8. Full automation is accepted for R3, R5, R6, and the structured support used by R7. Partial automation is maintained for R4 and R8 due to external paid data dependencies.
 
 The approved final team view balances easing inflation prints against midterm seasonal headwinds. The final market call remains under human control, with R7 providing the Human Score and R1 reviewing and approving the locked prediction.
 
-> **Approved outcome:** Sprint 8 successfully integrated automated CI/CD workflows and visual dashboards, verified all R3–R8 agent codes, maintained transparent asset routing, and delivered a human-reviewed, locked final forecast.
+> **Approved outcome:** Sprint 9 successfully integrated automated CI/CD workflows and visual dashboards, verified all R3–R8 agent codes, maintained transparent asset routing, and delivered a human-reviewed, locked final forecast.
