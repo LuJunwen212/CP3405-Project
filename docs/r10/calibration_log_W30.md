@@ -52,4 +52,4 @@ Missing predictions: XLK, XLC, XLY, XLP, XLE, XLF, XLV, XLI, XLB, XLRE, XLU
 
 This calibration measures directional accuracy with confidence weighting. The range check is reported separately and does not change the official W22-style score.
 
-Generated automatically at: 2026-08-02 07:00:03
+Generated automatically at: 2026-08-02 07:27:10

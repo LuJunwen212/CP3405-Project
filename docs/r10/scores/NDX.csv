@@ -6,3 +6,4 @@ W29,Down,down,-1.8% to +0.2%,Medium,Medium,1.97,up,False,Outside range,0,primary
 W29,Down,down,-1.8% to +0.2%,Medium,Medium,-1.62,down,True,Inside range,2,primary_prediction_section
 W30,** Down **Expected,down,** -2.5% to +0.2% **,Medium,Medium,-0.32,down,True,Inside range,2,primary_prediction_section
 W30,** Down **Expected,down,** -2.5% to +0.2% **,Medium,Medium,0.52,up,False,Outside range,0,primary_prediction_section
+W30,** Down **Expected,down,** -2.5% to +0.2% **,Medium,Medium,0.52,up,False,Outside range,0,primary_prediction_section
