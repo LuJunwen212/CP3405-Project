@@ -1,4 +1,4 @@
-# Sprint 8 Automation Decision – W31
+# Sprint 9 Automation Decision – W31
 
 Reliable, dependency-controlled forecasting with human-governed final judgement and automated presentation workflows
 
@@ -10,7 +10,7 @@ Reliable, dependency-controlled forecasting with human-governed final judgement 
 
 # 1. Decision Summary
 
-For Sprint 8 (W31), Team 2 maintained a reliable and dependency-controlled forecasting pipeline covering SPX, NDX, IWM, and all 11 S&P 500 sector ETFs. This week's sprint significantly advanced the operational framework by introducing a fully automated presentation dashboard and continuous integration workflows.
+For Sprint 9 (W31), Team 2 maintained a reliable and dependency-controlled forecasting pipeline covering SPX, NDX, IWM, and all 11 S&P 500 sector ETFs. This week's sprint significantly advanced the operational framework by introducing a fully automated presentation dashboard and continuous integration workflows.
 
 The core updates and operational improvements for W31 include:
 1. **Automated Presentation Dashboard:** Implemented a unified `.html` display interface integrated with automated `.yml` CI/CD workflows to streamline pipeline execution and real-time review.
