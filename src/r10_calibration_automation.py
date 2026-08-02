@@ -146,6 +146,12 @@ def clean_spaces(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def strip_markdown(text: str) -> str:
+    """Remove simple inline Markdown formatting from a parsed value."""
+    text = text.replace("**", "").replace("__", "").replace("`", "")
+    return clean_spaces(text)
+
+
 def normalize_confidence(confidence: str) -> str:
     """Normalize confidence string."""
     text = confidence.lower().strip()
@@ -189,9 +195,9 @@ def actual_direction_from_pct(pct: float, neutral_band: float = 0.05) -> str:
     """
     # We use the absolute value of the neutral band just in case a negative value gets passed in
     neutral_band_magnitude = abs(neutral_band)
-    if pct > neutral_band_magnitude:  # pct > positive neutral band magnitude: up
+    if pct > neutral_band_magnitude:
         return "up"
-    if pct < neutral_band_magnitude:  # pct < positive neutral band magnitude: down
+    if pct < -neutral_band_magnitude:
         return "down"
     return "neutral"
 
@@ -235,20 +241,21 @@ def range_status(predicted_range, actual_pct: float) -> str:
 
 def parse_explicit_prediction_section(text: str, target: str):
     """
-    Parses sections like:
-    ### SPX
-    Direction: Up
-    % Range: +0.4% to +1.4%
-    Confidence: Medium
+    Parse explicit sections such as:
 
-    Also works when the Markdown has been compressed onto one line.
+    ### SPX
+    **Direction:** Down
+    **Expected range:** -1.8% to +0.3%
+    **Confidence:** Medium
+
+    The parser preserves line structure and supports Markdown bold labels.
     """
     target_pattern = re.escape(target)
 
     pattern = re.compile(
-        rf"###\s*{target_pattern}(?:\s*\([^)]+\))?\s+"
-        rf"(.*?)(?=\s+###\s+[A-Z]{{2,4}}\b|\s+---|\s+##\s+|$)",
-        re.IGNORECASE | re.DOTALL,
+        rf"^###\s*{target_pattern}(?:\s*\([^)]+\))?\s*$"
+        rf"(.*?)(?=^###\s+|^##\s+|^---\s*$|\Z)",
+        re.IGNORECASE | re.DOTALL | re.MULTILINE,
     )
 
     match = pattern.search(text)
@@ -258,29 +265,27 @@ def parse_explicit_prediction_section(text: str, target: str):
     section = match.group(1)
 
     direction_match = re.search(
-        r"Direction:\s*(.*?)(?=\s*%?\s*Range:|\s*Confidence:|$)",
+        r"^\s*(?:\*\*)?Direction:(?:\*\*)?\s*(.+?)\s*$",
         section,
-        re.IGNORECASE | re.DOTALL,
+        re.IGNORECASE | re.MULTILINE,
     )
-
     range_match = re.search(
-        r"%?\s*Range:\s*(.*?)(?=\s*Confidence:|$)",
+        r"^\s*(?:\*\*)?(?:Expected\s+range|%?\s*Range):(?:\*\*)?\s*(.+?)\s*$",
         section,
-        re.IGNORECASE | re.DOTALL,
+        re.IGNORECASE | re.MULTILINE,
     )
-
     confidence_match = re.search(
-        r"Confidence:\s*([A-Za-z /\-]+)",
+        r"^\s*(?:\*\*)?Confidence:(?:\*\*)?\s*(.+?)\s*$",
         section,
-        re.IGNORECASE,
+        re.IGNORECASE | re.MULTILINE,
     )
 
     if not direction_match:
         return None
 
-    direction_text = clean_spaces(direction_match.group(1))
-    range_text = clean_spaces(range_match.group(1)) if range_match else "N/A"
-    confidence_text = clean_spaces(confidence_match.group(1)) if confidence_match else "Medium"
+    direction_text = strip_markdown(direction_match.group(1))
+    range_text = strip_markdown(range_match.group(1)) if range_match else "N/A"
+    confidence_text = strip_markdown(confidence_match.group(1)) if confidence_match else "Medium"
 
     return {
         "target": target,
@@ -293,6 +298,43 @@ def parse_explicit_prediction_section(text: str, target: str):
         "source": "primary_prediction_section"
     }
 
+
+def parse_sector_prediction_table(text: str, target: str):
+    """
+    Parse rows from the W30 Sector Predictions Markdown table:
+
+    | XLK | Technology | Down | -2.5% to +0.3% | Medium-High |
+    """
+    target_pattern = re.escape(target)
+    pattern = re.compile(
+        rf"^\|\s*{target_pattern}\s*"
+        rf"\|\s*([^|]+?)\s*"
+        rf"\|\s*([^|]+?)\s*"
+        rf"\|\s*([^|]+?)\s*"
+        rf"\|\s*([^|]+?)\s*\|$",
+        re.IGNORECASE | re.MULTILINE,
+    )
+
+    match = pattern.search(text)
+    if not match:
+        return None
+
+    sector_name, direction_raw, range_raw, confidence_raw = match.groups()
+    direction_text = strip_markdown(direction_raw)
+    range_text = strip_markdown(range_raw)
+    confidence_text = strip_markdown(confidence_raw)
+
+    return {
+        "target": target,
+        "prediction_text": direction_text,
+        "predicted_direction": normalize_prediction_direction(direction_text),
+        "predicted_range_text": range_text,
+        "predicted_range": parse_range(range_text),
+        "confidence_raw": confidence_text,
+        "confidence": normalize_confidence(confidence_text),
+        "source": "sector_prediction_table",
+        "sector": strip_markdown(sector_name),
+    }
 
 def parse_sector_fallback(text: str, target: str):
     """
@@ -337,12 +379,14 @@ def parse_sector_fallback(text: str, target: str):
 
 
 def parse_predictions(prediction_text: str) -> dict:
-    """Parse prediction file."""
-    prediction_text = clean_spaces(prediction_text)
+    """Parse index sections and the sector prediction table."""
     results = {}
 
     for target in TARGETS:
         parsed = parse_explicit_prediction_section(prediction_text, target)
+
+        if parsed is None:
+            parsed = parse_sector_prediction_table(prediction_text, target)
 
         if parsed is None:
             parsed = parse_sector_fallback(prediction_text, target)
@@ -540,21 +584,42 @@ def generate_markdown(week, scored_items, missing_predictions, missing_actuals, 
 
 
 def write_scores_to_csv(result, week, output_dir):
-    """Write scores to .csv files in output_dir."""
+    """
+    Write one score row per target and week.
+
+    If the same week is rerun, replace the existing row instead of appending
+    a duplicate W30 entry.
+    """
     csv_folder = output_dir / "scores"
     csv_folder.mkdir(parents=True, exist_ok=True)
+
     for item in result["items_scored"]:
         target = item["target"]
         csv_filename = csv_folder / f"{target}.csv"
-        file_exists = csv_filename.is_file()
-        fields = ["week"] + list(item.keys())[2:]  # skip the first two items
-        row = [week] + list(item.values())[2:]
-        with open(csv_filename, "a", newline="") as csv_file:
-            csv_writer = csv.writer(csv_file)
-            if not file_exists:
-                csv_writer.writerow(fields)
-            csv_writer.writerow(row)
+        fields = ["week"] + list(item.keys())[2:]
+        new_row = [week] + list(item.values())[2:]
 
+        existing_rows = []
+        if csv_filename.is_file():
+            with csv_filename.open("r", newline="", encoding="utf-8") as csv_file:
+                reader = csv.reader(csv_file)
+                rows = list(reader)
+
+            if rows:
+                existing_header = rows[0]
+                existing_rows = [
+                    row for row in rows[1:]
+                    if row and row[0].strip().upper() != week.upper()
+                ]
+                # Keep the current schema even if an older file used a different header.
+                if existing_header == fields:
+                    fields = existing_header
+
+        with csv_filename.open("w", newline="", encoding="utf-8") as csv_file:
+            csv_writer = csv.writer(csv_file)
+            csv_writer.writerow(fields)
+            csv_writer.writerows(existing_rows)
+            csv_writer.writerow(new_row)
 
 def main():
     parser = argparse.ArgumentParser(description="R10 calibration automation using prediction and actual files.")
