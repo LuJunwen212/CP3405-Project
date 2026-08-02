@@ -1,180 +1,320 @@
-# CP3405-Project
+# CP3405 Project – Team 2
 
 ## Project Overview
 
-This repository contains the project materials, documentation, evidence, and development resources for the CP3405 group project.
+This repository contains the project materials, automated workflows, evidence, weekly forecasts, evaluation results, presentations, and development resources for the CP3405 group project.
 
-The repository is used to organise project work, track progress, store evidence, and facilitate collaboration among team members throughout the project lifecycle.
+The project develops a weekly market forecasting pipeline covering:
 
----
+- S&P 500 Index (SPX)
+- Nasdaq-100 Index (NDX)
+- Russell 2000 Index (IWM)
+- All 11 S&P 500 sector ETFs
+
+The forecasting pipeline combines market data collection, almanac analysis, macroeconomic analysis, technical analysis, multi-model LLM evaluation, human scoring, calibration, and final team decisions.
+
+## Project Dashboard
+
+The live project dashboard provides access to the latest sprint outputs, forecasting evidence, verification records, and role-based deliverables.
+
+**Live Dashboard:**  
+[https://lujunwen212.github.io/CP3405-Project/](https://lujunwen212.github.io/CP3405-Project/)
+
+**GitHub Repository:**  
+[https://github.com/LuJunwen212/CP3405-Project](https://github.com/LuJunwen212/CP3405-Project)
 
 ## Team Members
 
-| Role    | Member(s)                                |
-| ------- | ---------------------------------------- |
-| Role 1  |  Zaikun Zheng                                 |
-| Role 2  | Guanyu Lu, Qinyang Wu                                   |
-| Role 3  | The Bao Le                       |
-| Role 4  | Wenhan Hu                      |
-| Role 5  | Yu-Chu Lin                                    |
-| Role 6  | Hamzah Nutt (Opal)                   |
-| Role 7  | Viral Stock                            |
-| Role 8  | Yijie Kan                               |
-| Role 9  | Junwen Lu |
-| Role 10 | Hao Wang                     |
+| Role | Member(s) |
+|---|---|
+| Role 1 | Zaikun Zheng |
+| Role 2 | Guanyu Lu, Qinyang Wu |
+| Role 3 | The Bao Le |
+| Role 4 | Wenhan Hu |
+| Role 5 | Yu-Chu Lin |
+| Role 6 | Hamzah Nutt (Opal) |
+| Role 7 | Viral Stock |
+| Role 8 | Yijie Kan |
+| Role 9 | Junwen Lu |
+| Role 10 | Hao Wang |
 
----
+## Role Responsibilities
+
+| Role | Main Responsibility |
+|---|---|
+| R1 | Project ownership, final review, and approval |
+| R2 | Scrum coordination and progress monitoring |
+| R3 | Almanac and seasonal market analysis |
+| R4 | Macroeconomic and news analysis |
+| R5 | Technical market analysis |
+| R6 | Market data collection and actual-results ledger |
+| R7 | Human evaluation and scoring |
+| R8 | Multi-model LLM analysis and comparison |
+| R9 | GitHub administration, integration, deployment, and releases |
+| R10 | Prediction verification and calibration |
+
+## Forecasting Pipeline
+
+The weekly forecasting process follows this general dependency order:
+
+1. R6 collects and validates the latest market data.
+2. R3 produces the almanac and seasonal analysis.
+3. R4 produces the macroeconomic and news analysis.
+4. R5 produces the technical analysis.
+5. R8 collects and compares forecasts from multiple LLMs.
+6. R10 evaluates previous predictions and updates calibration evidence.
+7. R7 reviews the available evidence and completes human scoring.
+8. R1 reviews the completed outputs and confirms the final decision.
+9. R9 merges approved work, verifies the repository, deploys the dashboard, and publishes the weekly release tag.
 
 ## Repository Structure
 
 ```text
-CP3405-Project
+CP3405-Project/
+├── .github/
+│   └── workflows/
+│       ├── r3_almanac_pipeline.yml
+│       ├── r4_macro_agent.yml
+│       ├── r5_technical_agent.yml
+│       ├── r6_data_pipeline.yml
+│       ├── r8_llm_job.yml
+│       └── webpage_auto_pipeline.yml
 │
-├── README.md
+├── charts/
+│   ├── W29/
+│   ├── W30/
+│   └── W31/
 │
-├── docs/
-│
-├── evidence/
-│   ├── screenshots/
-│   ├── meeting_notes/
-│   └── progress_logs/
+├── config/
+│   └── scoring_rules.json
 │
 ├── data/
-│   ├── raw/
-│   └── processed/
 │
-├── notebooks/
+├── docs/
+│   ├── process/
+│   ├── r10/
+│   ├── acceptance_criteria_*.md
+│   ├── macro_agent_*.md
+│   └── sprint_goal_*.md
 │
+├── evidence/
+│   ├── design/
+│   ├── llm_responses_*/
+│   ├── meeting-minutes/
+│   ├── meeting_notes/
+│   ├── progress_logs/
+│   ├── screenshots/
+│   └── testing/
+│
+├── outputs/
+│   └── R3/
+│
+├── r3_almanac_agent/
 ├── src/
 │
-└── references/
+├── DECISION_2026-W*.md
+├── actual_2026-W*.md
+├── human_score_2026-W*.md
+├── market_snapshot_W*.json
+├── prediction_2026-W*_team2.md
+├── presentation_2026-W*_Group2.pptx
+├── r8_comparison_matrix_W*.md
+├── r8_raw_responses_W*.json
+├── technical_agent_W*.json
+└── README.md
 ```
-
----
 
 ## Folder Description
 
-### docs/
+### `.github/workflows/`
 
-Contains project documentation, reports, presentations, and supporting materials.
+Contains GitHub Actions workflows used to automate market data collection, analysis, LLM processing, calibration, dashboard generation, deployment, and repository management.
 
-### evidence/
+### `charts/`
 
-Contains evidence of project activities and progress.
+Contains weekly charts and market visualisations for SPX, NDX, IWM, and the 11 S&P 500 sector ETFs.
 
-#### screenshots/
+### `config/`
 
-Stores screenshots of project work, GitHub activity, and supporting evidence.
+Contains shared project configuration files, including scoring and evaluation rules.
 
-#### meeting_notes/
+### `data/`
 
-Stores meeting records and discussion summaries.
+Contains market datasets collected and processed by the forecasting pipeline.
 
-#### progress_logs/
+### `docs/`
 
-Stores weekly progress updates and task completion records.
+Contains sprint goals, acceptance criteria, process documentation, macro analysis, calibration documentation, and other supporting materials.
 
-### data/
+### `evidence/`
 
-Contains project datasets.
+Contains evidence of project activities, including meeting records, progress logs, screenshots, testing results, design evidence, technical evidence, human scores, and LLM responses.
 
-#### raw/
+### `outputs/`
 
-Original collected data.
+Contains structured outputs generated by project roles and automated agents.
 
-#### processed/
+### `r3_almanac_agent/`
 
-Cleaned and processed datasets.
+Contains implementation files and supporting resources for the almanac analysis agent.
 
-### notebooks/
+### `src/`
 
-Contains Jupyter Notebook files used for analysis and experimentation.
+Contains source code used by the forecasting, evaluation, and calibration processes.
 
-### src/
+### Root-Level Weekly Files
 
-Contains source code and project implementation files.
+The repository root contains the main weekly deliverables, including:
 
-### references/
+- Market snapshots
+- Actual market results
+- Technical analysis
+- Human scores
+- LLM response comparisons
+- Final prediction files
+- Decision records
+- Charts
+- Weekly presentations
 
-Contains references, research materials, and supporting resources.
+## Automation
 
----
+GitHub Actions is used to automate major parts of the weekly forecasting pipeline.
+
+The automated workflows include:
+
+- Market data collection
+- Almanac analysis
+- Macroeconomic analysis
+- Technical analysis
+- Multi-model LLM processing
+- Prediction verification and calibration
+- Dashboard generation and deployment
+- Repository maintenance
+
+Workflows can run through scheduled triggers or manual `workflow_dispatch` triggers when required.
 
 ## Project Progress
 
-### Week 1
+### Weeks 22–25: Project Foundation
 
-* Team roles assigned
-* Repository created
-* Folder structure established
-* README completed
-* Evidence folders created
+- Assigned the ten project roles.
+- Created the GitHub repository and collaboration structure.
+- Defined sprint goals and acceptance criteria.
+- Produced the initial weekly market forecasts.
+- Added macro, technical, almanac, LLM, and human-scoring evidence.
+- Created weekly presentations and release tags.
 
-### Week 2
+### Weeks 26–27: Pipeline Development
 
-* Repository management and maintenance
-* Team collaboration setup
-* Collection of project evidence
+- Expanded the weekly forecasting process.
+- Improved market data collection.
+- Added structured technical and macro outputs.
+- Developed role-specific scripts and workflow components.
+- Improved file naming and evidence organisation.
+- Continued testing the dependency order between roles.
 
-### Future Work
+### Week 28: Automation Sprint
 
-* Data collection
-* Analysis and forecasting
-* AI-assisted evaluation
-* Presentation preparation
-* Final project submission
+- Developed an automated end-to-end forecasting pipeline.
+- Added support for SPX, NDX, IWM, and all 11 S&P 500 sector ETFs.
+- Introduced GitHub Actions for market data and agent workflows.
+- Integrated multi-model LLM analysis.
+- Added calibration and weekly decision outputs.
+- Identified and documented remaining automation limitations.
 
----
+### Week 29: Reliability and Dependency Management
+
+- Defined the dependency order between project roles.
+- Improved coordination between data collection, analysis, LLM evaluation, human scoring, and final approval.
+- Added manual fallback procedures for failed automated steps.
+- Produced the W29 prediction, actual results, evaluation, charts, decision record, and presentation.
+- Published the corresponding weekly project deliverables.
+
+### Week 30: Dashboard and Deployment
+
+- Produced the complete W30 forecasting package.
+- Added updated actuals, technical analysis, human scoring, LLM comparison, calibration, and final decision records.
+- Developed the live project dashboard.
+- Configured GitHub Pages deployment through GitHub Actions.
+- Added deployment and repository-management workflows.
+- Verified the W30 results through the W31 sprint.
+
+### Week 31: Current Sprint
+
+- Continued automated weekly data collection and analysis.
+- Updated weekly charts and macro evidence.
+- Continued testing and improving the dashboard pipeline.
+- Reviewed workflow reliability and output completeness.
+- Verified the previous sprint results.
+- Prepared the latest forecasting and project submission materials.
+
+## Main Weekly Deliverables
+
+Each completed forecasting week may include:
+
+- `market_snapshot_WXX.json`
+- `actual_2026-WXX.md`
+- `technical_agent_WXX.json`
+- `technical_agent-WXX.md`
+- `human_score_2026-WXX.md`
+- `r8_raw_responses_WXX.json`
+- `r8_comparison_matrix_WXX.md`
+- `prediction_2026-WXX_team2.md`
+- `DECISION_2026-WXX.md`
+- Weekly market charts
+- Weekly presentation
+- GitHub version tag and release
 
 ## Evidence Collection
 
-All project evidence will be stored in:
+Project evidence is maintained in the `evidence/` directory, weekly deliverable files, and GitHub repository history.
 
-```text
-evidence/
-```
+Evidence includes:
 
-Examples include:
-
-* Meeting notes
-* GitHub commit history
-* Progress logs
-* Screenshots of work completed
-* Project deliverables
-
----
+- GitHub commits and pull requests
+- GitHub Actions execution records
+- Meeting notes
+- Weekly progress logs
+- Testing evidence
+- Screenshots
+- LLM responses
+- Market analysis
+- Prediction and evaluation files
+- Release tags and deployment records
 
 ## Technologies Used
 
-* GitHub
-* GitHub Desktop
-* Python
-* Jupyter Notebook
-* Visual Studio Code
-* Microsoft PowerPoint
-* AI Tools (ChatGPT, Claude, Gemini, DeepSeek)
+- GitHub
+- GitHub Actions
+- GitHub Pages
+- GitHub Desktop
+- Python
+- Jupyter Notebook
+- Visual Studio Code
+- Microsoft PowerPoint
+- Financial market data APIs
+- AI tools and LLM APIs
 
----
-
-## Version Control
+## Version Control and Releases
 
 GitHub is used to:
 
-* Maintain project documentation
-* Track project progress
-* Record development history
-* Support team collaboration
-* Store project evidence
-
----
+- Manage project documentation and source code
+- Coordinate work across all ten project roles
+- Track weekly progress and development history
+- Run automated workflows
+- Store project evidence
+- Review and merge team contributions
+- Publish weekly version tags and releases
+- Deploy and maintain the project dashboard
 
 ## Repository Status
 
-Repository setup completed.
-
-README completed.
-
-Evidence folder structure established.
-
-Ready for project collaboration and submission.
-
+- Weekly forecasting pipeline implemented
+- GitHub Actions automation implemented
+- SPX, NDX, IWM, and 11 sector ETFs supported
+- Multi-model LLM evaluation implemented
+- Human scoring and calibration evidence included
+- Weekly prediction and decision files available
+- Live project dashboard deployed through GitHub Pages
+- Current sprint verification and final project preparation in progress
