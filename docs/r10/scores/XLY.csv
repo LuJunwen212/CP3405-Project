@@ -4,3 +4,4 @@ W28,Neutral-Bullish,up,N/A,Medium,Medium,-1.54,down,False,N/A,0,sector_call_fall
 W29,Bearish,down,N/A,Medium,Medium,-0.49,down,True,N/A,2,sector_call_fallback
 W29,Bearish,down,N/A,Medium,Medium,-0.49,down,True,N/A,2,sector_call_fallback
 W29,Bearish,down,N/A,Medium,Medium,-5.22,down,True,N/A,2,sector_call_fallback
+W30,Down,down,-2.5% to +0.3%,Medium-High,High,6.11,up,False,Outside range,-2,sector_prediction_table
