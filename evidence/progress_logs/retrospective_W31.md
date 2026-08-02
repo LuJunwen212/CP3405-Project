@@ -5,8 +5,6 @@
 **Sprint:** Sprint 9 / `vW31`  
 **Related evidence:** `standup_midweek_W31.md`
 
----
-
 ## 1. Retrospective Summary
 
 Sprint 9 (our final sprint) focused on complete code and report reproducibility, streamlining deliverables with visual evidence, and building a front-end interface. The sprint proceeded much better than expected. The major dependencies and external data risks were surfaced and addressed by the Wednesday mid-week check-in.
