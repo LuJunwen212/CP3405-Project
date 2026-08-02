@@ -5,3 +5,4 @@ W29,Neutral → Down,down,-1.3% to +0.3%,Medium,Medium,0.85,up,False,Outside ran
 W29,Neutral → Down,down,-1.3% to +0.3%,Medium,Medium,0.85,up,False,Outside range,0,primary_prediction_section
 W29,Neutral → Down,down,-1.3% to +0.3%,Medium,Medium,-0.98,down,True,Inside range,2,primary_prediction_section
 W30,** Neutral → Down **Expected,down,** -1.8% to +0.5% **,Medium,Medium,0.6,up,False,Outside range,0,primary_prediction_section
+W30,** Neutral → Down **Expected,down,** -1.8% to +0.5% **,Medium,Medium,0.01,down,True,Inside range,2,primary_prediction_section

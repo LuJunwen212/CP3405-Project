@@ -27,17 +27,17 @@ The same scoring method from W22 is reused for consistency.
 
 | Target | Team Prediction | Predicted Direction | Predicted Range | Confidence | Actual Result | Actual Direction | Hit / Miss | Range Check | Score |
 |---|---|---|---:|---|---:|---|---|---|---:|
-| SPX | ** Down **Expected | down | ** -1.8% to +0.3% ** | Medium | +0.02% | down | HIT | Inside range | +2 |
-| NDX | ** Down **Expected | down | ** -2.5% to +0.2% ** | Medium | -0.32% | down | HIT | Inside range | +2 |
-| IWM | ** Neutral → Down **Expected | down | ** -1.8% to +0.5% ** | Medium | +0.60% | up | MISS | Outside range | +0 |
+| SPX | ** Down **Expected | down | ** -1.8% to +0.3% ** | Medium | +1.05% | up | MISS | Outside range | +0 |
+| NDX | ** Down **Expected | down | ** -2.5% to +0.2% ** | Medium | +0.52% | up | MISS | Outside range | +0 |
+| IWM | ** Neutral → Down **Expected | down | ** -1.8% to +0.5% ** | Medium | +0.01% | down | HIT | Inside range | +2 |
 
 ---
 
 ## Calibration Summary
 
-**Direction Result:** 2 HIT, 1 MISS
-**Hit Rate:** 2 / 3 = 66.7%
-**Working Calibration Score:** +4
+**Direction Result:** 1 HIT, 2 MISS
+**Hit Rate:** 1 / 3 = 33.3%
+**Working Calibration Score:** +2
 **Structured Result File:** `calibration_result_W30.json`
 
 ---
@@ -52,4 +52,4 @@ Missing predictions: XLK, XLC, XLY, XLP, XLE, XLF, XLV, XLI, XLB, XLRE, XLU
 
 This calibration measures directional accuracy with confidence weighting. The range check is reported separately and does not change the official W22-style score.
 
-Generated automatically at: 2026-07-29 13:04:17
+Generated automatically at: 2026-08-02 07:00:03

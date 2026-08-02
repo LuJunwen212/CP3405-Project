@@ -3,7 +3,7 @@
     "prediction_file": "prediction_2026-W30_team2.md",
     "actual_file": "actual_2026-W30.md",
     "scoring_rule": "W22 confidence-weighted directional scoring",
-    "generated_at": "2026-07-29 13:04:17",
+    "generated_at": "2026-08-02 07:00:03",
     "targets_requested": [
         "SPX",
         "NDX",
@@ -45,11 +45,11 @@
             "predicted_range": "** -1.8% to +0.3% **",
             "confidence_raw": "Medium",
             "confidence_scoring_bucket": "Medium",
-            "actual_pct": 0.02,
-            "actual_direction": "down",
-            "hit": true,
-            "range_result": "Inside range",
-            "score": 2,
+            "actual_pct": 1.05,
+            "actual_direction": "up",
+            "hit": false,
+            "range_result": "Outside range",
+            "score": 0,
             "prediction_source": "primary_prediction_section"
         },
         {
@@ -60,11 +60,11 @@
             "predicted_range": "** -2.5% to +0.2% **",
             "confidence_raw": "Medium",
             "confidence_scoring_bucket": "Medium",
-            "actual_pct": -0.32,
-            "actual_direction": "down",
-            "hit": true,
-            "range_result": "Inside range",
-            "score": 2,
+            "actual_pct": 0.52,
+            "actual_direction": "up",
+            "hit": false,
+            "range_result": "Outside range",
+            "score": 0,
             "prediction_source": "primary_prediction_section"
         },
         {
@@ -75,11 +75,11 @@
             "predicted_range": "** -1.8% to +0.5% **",
             "confidence_raw": "Medium",
             "confidence_scoring_bucket": "Medium",
-            "actual_pct": 0.6,
-            "actual_direction": "up",
-            "hit": false,
-            "range_result": "Outside range",
-            "score": 0,
+            "actual_pct": 0.01,
+            "actual_direction": "down",
+            "hit": true,
+            "range_result": "Inside range",
+            "score": 2,
             "prediction_source": "primary_prediction_section"
         }
     ],
@@ -98,9 +98,9 @@
     ],
     "missing_actuals": [],
     "summary": {
-        "hits": 2,
-        "misses": 1,
+        "hits": 1,
+        "misses": 2,
         "total_items": 3,
-        "working_calibration_score": 4
+        "working_calibration_score": 2
     }
 }
