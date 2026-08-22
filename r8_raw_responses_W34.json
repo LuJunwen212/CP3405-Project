@@ -1,0 +1,5 @@
+{
+    "ChatGPT_4o_Mini": "Inference Error on openai/gpt-4o-mini: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+    "Claude_Llama_Alternative": "Inference Error on meta-llama/llama-3.1-70b-instruct: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+    "Qwen_DeepSeek_Alternative": "Inference Error on deepseek/deepseek-chat: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}"
+}
